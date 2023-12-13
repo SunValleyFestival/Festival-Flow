@@ -1,0 +1,12 @@
+<div class="w-full h-screen flex justify-center items-center">
+  <form (ngSubmit)="onSubmit()">
+  <label class="form-control w-full max-w-xs">
+    <div class="label">
+      <span class="label-text">Welcome, insert passwrod</span>
+    </div>
+    <input type="password" name="password" placeholder="Password" class="input input-bordered w-full max-w-xs"  [(ngModel)]="password"/>
+    <div class="label">
+    </div>
+  </label>
+  </form>
+</div>
