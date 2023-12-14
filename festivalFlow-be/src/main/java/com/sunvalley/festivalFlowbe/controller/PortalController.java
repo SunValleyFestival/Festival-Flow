@@ -1,0 +1,18 @@
+package com.sunvalley.festivalFlowbe.controller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/portal")
+public class PortalController {
+
+  @GetMapping("")
+  public ResponseEntity<HttpStatus> get(){
+    return ResponseEntity.ok(HttpStatus.OK);
+  }
+
+}
