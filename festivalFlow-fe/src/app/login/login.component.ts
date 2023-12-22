@@ -1,7 +1,4 @@
 import { Component } from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {debounceTime} from 'rxjs';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,20 +6,21 @@ import {Router} from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  protected password: any;
+  protected phone: any;
 
-  constructor(private router: Router) {
+  constructor() {
   }
 
-  checkCredentials(password: string) {
-    if (password === 'admin') {
-      this.router.navigate(['/home']);
+  checkCredentials(phone: string) {
+    if (phone === '0041795890065') {
+      console.log('Login successful');
     } else {
       console.log('Login failed');
     }
   }
 
   onSubmit() {
-    this.checkCredentials(this.password);
+    this.phone = '0041' + this.phone;
+    this.checkCredentials(this.phone);
   }
 }
