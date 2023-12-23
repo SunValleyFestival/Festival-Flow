@@ -1,3 +1,14 @@
 .car{
   width: 55%;
 }
+.left{
+  width: 20%;
+}
+
+.right{
+  width: 80%;
+}
+
+.filter{
+  height: 100%;
+}
