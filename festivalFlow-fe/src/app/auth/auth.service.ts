@@ -16,4 +16,8 @@ export class AuthService {
   isRoleAdmin() {
     return this.isAdmin;
   }
+
+  setLoggedIn(isLoggedIn: boolean) {
+    this.isLoggedIn = isLoggedIn;
+  }
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {NavigationService} from "../services/navigation/navigation.service";
 
 @Component({
   selector: 'app-login',
@@ -8,12 +9,12 @@ import { Component } from '@angular/core';
 export class LoginComponent {
   protected phone: any;
 
-  constructor() {
+  constructor(private navigationService: NavigationService) {
   }
 
   checkCredentials(phone: string) {
     if (phone === '0041795890065') {
-      console.log('Login successful');
+      this.navigationService.authAndGoToHome();
     } else {
       console.log('Login failed');
     }
