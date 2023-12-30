@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {debounceTime} from 'rxjs';
-import {Router} from '@angular/router';
+import {NavigationService} from "../services/navigation/navigation.service";
 
 @Component({
   selector: 'app-login',
@@ -9,20 +7,22 @@ import {Router} from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  protected password: any;
+  protected phone: any;
 
-  constructor(private router: Router) {
+  constructor(private navigationService: NavigationService) {
   }
 
-  checkCredentials(password: string) {
-    if (password === 'admin') {
-      this.router.navigate(['/home']);
+  checkCredentials(phone: string) {
+    if (phone === '0000') {
+      this.navigationService.authAndGoToHome();
     } else {
-      console.log('Login failed');
+      console.log('phone number stored in DB')
+      this.navigationService.authAndGoToHome();
     }
   }
 
   onSubmit() {
-    this.checkCredentials(this.password);
+    this.phone = '0041' + this.phone;
+    this.checkCredentials(this.phone);
   }
 }

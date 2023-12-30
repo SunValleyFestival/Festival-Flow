@@ -1,0 +1,15 @@
+.prefix {
+  display: flex;
+  align-items: center;
+}
+
+.wrapper{
+  overflow-y: hidden;
+}
+
+.body{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: hidden;
+}
