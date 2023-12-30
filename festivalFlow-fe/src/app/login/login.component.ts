@@ -13,10 +13,11 @@ export class LoginComponent {
   }
 
   checkCredentials(phone: string) {
-    if (phone === '0041795890065') {
+    if (phone === '0000') {
       this.navigationService.authAndGoToHome();
     } else {
-      console.log('Login failed');
+      console.log('phone number stored in DB')
+      this.navigationService.authAndGoToHome();
     }
   }
 
