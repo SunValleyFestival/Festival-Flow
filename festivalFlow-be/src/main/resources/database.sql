@@ -49,5 +49,8 @@ create table association
     shift_id        int not null,
     collaborator_id int not null,
     status          int not null,
+    request varchar(1000),
+    collaborator_friend_id int,
+--maybe use telephone or username
     primary key (shift_id, collaborator_id)
 )
