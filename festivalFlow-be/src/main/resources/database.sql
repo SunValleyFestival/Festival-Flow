@@ -51,6 +51,6 @@ create table association
     status          int not null,
     request varchar(1000),
     collaborator_friend_id int,
---maybe use telephone or username
+##maybe use telephone or username
     primary key (shift_id, collaborator_id)
 )
