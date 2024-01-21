@@ -1,19 +1,15 @@
 package com.sunvalley.festivalFlowbe.entity;
 
-import jakarta.persistence.*;
 
-import java.util.Objects;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Table(name = "association", schema = "FestivalFlow", catalog = "")
 @IdClass(AssociationEntityPK.class)
 public class AssociationEntity {
