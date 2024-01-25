@@ -7,11 +7,17 @@ import jakarta.persistence.Id;
 import java.sql.Date;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+@Builder
+@Getter
+@Setter
 @Data
 @Entity
-@Table(name = "collaborator", schema = "FestivalFlow", catalog = "")
+@Table(name = "collaborator", schema = "FestivalFlow")
 public class CollaboratorEntity {
 
   @Id
