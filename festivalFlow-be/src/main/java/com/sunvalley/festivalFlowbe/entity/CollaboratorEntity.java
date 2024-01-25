@@ -6,15 +6,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.sql.Date;
 
 @Builder
 @Getter
 @Setter
 @Entity
 @Table(name = "collaborator", schema = "FestivalFlow")
+@AllArgsConstructor
 public class CollaboratorEntity {
 
   @Id
@@ -32,7 +36,7 @@ public class CollaboratorEntity {
   private String lastName;
 
   @Column(name = "age")
-  private java.sql.Date age;
+  private Date age;
 
   @Column(name = "size")
   private String size;
