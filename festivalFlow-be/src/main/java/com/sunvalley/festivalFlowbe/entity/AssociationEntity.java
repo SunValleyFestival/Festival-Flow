@@ -1,35 +1,21 @@
 package com.sunvalley.festivalFlowbe.entity;
 
-
 import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@Table(name = "association", schema = "FestivalFlow", catalog = "")
-@IdClass(AssociationEntityPK.class)
+@Getter
+@Setter
+@Entity
+@Table(name = "association", schema = "FestivalFlow")
 public class AssociationEntity {
+    @EmbeddedId
+    private AssociationEntityId id;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "shift_id")
-    private int shiftId;
+    @Column(name = "status", nullable = false)
+    private Integer status;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "collaborator_id")
-    private int collaboratorId;
-
-    @Column(name = "status")
-    private int status;
-
-    @Column(name = "request")
-    private String request;
-
-    @Column(name = "collaborator_friend_id")
-    private Integer collaboratorFriendId;
 }
