@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EnableJpaRepositories("com.sunvalley.festivalFlowbe.*")
 @ComponentScan(basePackages = { "com.sunvalley.festivalFlowbe.*" })
-@EntityScan("my.package.base.*")
+@EntityScan("com.sunvalley.festivalFlowbe.*")
 public class FestivalFlowBeApplication {
 
 	public static void main(String[] args) {
