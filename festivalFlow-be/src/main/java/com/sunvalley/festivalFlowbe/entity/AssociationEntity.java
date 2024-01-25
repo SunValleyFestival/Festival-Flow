@@ -2,14 +2,16 @@ package com.sunvalley.festivalFlowbe.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
-@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "association", schema = "FestivalFlow")
 public class AssociationEntity {
     @EmbeddedId

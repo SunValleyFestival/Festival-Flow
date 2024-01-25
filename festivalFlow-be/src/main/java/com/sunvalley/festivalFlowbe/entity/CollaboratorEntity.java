@@ -8,17 +8,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.sql.Date;
+import lombok.NoArgsConstructor;
 
 @Builder
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "collaborator", schema = "FestivalFlow")
-@AllArgsConstructor
 public class CollaboratorEntity {
 
   @Id
@@ -41,8 +41,4 @@ public class CollaboratorEntity {
   @Column(name = "size")
   private String size;
 
-
-  public CollaboratorEntity() {
-
-  }
 }
