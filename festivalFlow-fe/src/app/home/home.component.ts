@@ -1,4 +1,7 @@
 import {Component} from '@angular/core';
+import {AdminTestService} from "../service/http/admin-test.service";
+import {PortalTestService} from "../service/http/portal-test.service";
+
 
 @Component({
   selector: 'app-home',
@@ -7,4 +10,5 @@ import {Component} from '@angular/core';
 })
 export class HomeComponent {
   items: string[] = ['Elemento 1', 'Elemento 2', 'Elemento 3'];
+
 }
