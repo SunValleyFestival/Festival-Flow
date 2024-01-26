@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
-import {AdminTestService} from "../service/http/admin-test.service";
-import {PortalTestService} from "../service/http/portal-test.service";
+import {AdminTestService} from "../../service/http/admin-test.service";
+import {PortalTestService} from "../../service/http/portal-test.service";
 
 
 @Component({
