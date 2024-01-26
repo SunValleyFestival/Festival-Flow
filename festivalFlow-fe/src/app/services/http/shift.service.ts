@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 
-const BASE_URL = environment.apiUrl + "/shift";
+const BASE_URL = environment.baseUrl + "/shift";
 @Injectable({
   providedIn: 'root'
 })

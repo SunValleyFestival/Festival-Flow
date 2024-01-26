@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 
-const BASE_URL = environment.apiUrl + "/collaborator";
+const BASE_URL = environment.baseUrl + "/collaborator";
 @Injectable({
   providedIn: 'root'
 })
