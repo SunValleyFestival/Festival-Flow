@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/loation")
+@RequestMapping("/festival-flow/loation")
 public class LocationController {
 
   private final LocationService locationService;

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/collaborator")
+@RequestMapping("/festival-flow/collaborator")
 public class CollaboratorController {
 
   private final CollaboratorService collaboratorService;

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/day")
+@RequestMapping("/festival-flow/day")
 public class DayController {
 
   private final DayService dayService;
