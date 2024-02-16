@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./location-detail.component.css']
 })
 export class LocationDetailComponent {
+  signedIn = false;
 
 }
