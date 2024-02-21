@@ -1,6 +1,8 @@
 <div>
   <div role="alert" class="alert shadow-lg alert-success" *ngIf="signedIn">
-    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
     <div>
       <h3 class="font-bold">Ti sei iscritto!</h3>
       <div class="text-xs">Iscrizione eseguita con successo</div>
@@ -13,69 +15,15 @@
     <div class="flex-1"></div>
   </div>
 
-  <div class="m-3">
-    <div class="m-2">
-      <div class="collapse collapse-arrow bg-base-200">
-        <input type="radio" name="accordion" checked="checked"/>
-        <div class="collapse-title text-xl font-medium">
-          Venerdì
-        </div>
-        <div class="collapse-content">
-          <div class="flex flex-row items-center justify-start gap-10">
-            <div>
-              <div>18:00 - 20:00</div>
-              <progress class="progress progress-error w-56" value="40" max="100"></progress>
-            </div>
-            <div>
-              3 posti rimanenti
-            </div>
 
-            <div class="grow"></div>
-
-            <div class="justify-self-end">
-              <button class="btn btn-outline btn-accent" onclick="my_modal_5.showModal()">Iscriviti</button>
-            </div>
-          </div>
-
-          <div class="flex flex-row items-center justify-start gap-10 mt-3">
-            <div>
-              <div>20:00 - 22:00</div>
-              <progress class="progress progress-error w-56" value="90" max="100"></progress>
-            </div>
-            <div>
-              1 posti rimanenti
-            </div>
-
-            <div class="grow"></div>
-
-            <div class="justify-self-end">
-              <button class="btn btn-outline btn-accent" onclick="my_modal_5.showModal()">Iscriviti</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="m-2">
-      <div class="collapse collapse-arrow bg-base-200">
-        <input type="radio" name="accordion"/>
-        <div class="collapse-title text-xl font-medium">
-          Sabato
-        </div>
-        <div class="collapse-content">
-          <p>hello</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="m-2">
-      <div class="collapse collapse-arrow bg-base-200">
-        <input type="radio" name="accordion"/>
-        <div class="collapse-title text-xl font-medium">
-          Domenica
-        </div>
-        <div class="collapse-content">
-          <p>hello</p>
+  <div class="w-full">
+    <div class="card m-3 bg-base-300 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title">18:00 - 20:00</h2>
+        <p>3 posti rimanenti</p>
+        <progress class="progress progress-error w-56" value="40" max="100"></progress>
+        <div class="card-actions justify-end">
+          <button class="btn btn-outline btn-accent" onclick="my_modal_5.showModal()">Iscriviti</button>
         </div>
       </div>
     </div>
