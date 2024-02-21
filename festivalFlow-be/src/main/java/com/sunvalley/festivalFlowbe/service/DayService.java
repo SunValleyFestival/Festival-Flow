@@ -9,19 +9,19 @@ import java.util.List;
 
 @Service
 public class DayService {
-  private final DayRepository dayRepository;
+    private final DayRepository dayRepository;
 
-  @Autowired
-  public DayService(DayRepository dayRepository) {
-    this.dayRepository = dayRepository;
-  }
+    @Autowired
+    public DayService(DayRepository dayRepository) {
+        this.dayRepository = dayRepository;
+    }
 
-  public DayEntity getDayById(int id) {
-    return dayRepository.findById(id).orElse(null);
-  }
+    public DayEntity getDayById(int id) {
+        return dayRepository.findById(id).orElse(null);
+    }
 
-  public List<DayEntity> getAll(){
-    return dayRepository.findAll();
-  }
+    public List<DayEntity> getAll() {
+        return dayRepository.findAll();
+    }
 
 }
