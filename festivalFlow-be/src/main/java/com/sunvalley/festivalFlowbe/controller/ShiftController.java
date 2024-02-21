@@ -2,14 +2,14 @@ package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.ShiftEntity;
 import com.sunvalley.festivalFlowbe.service.ShiftService;
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@Slf4j
 @RestController
 @RequestMapping("/festival-flow/shift")
 public class ShiftController {
@@ -21,9 +21,18 @@ public class ShiftController {
   }
 
   @CrossOrigin
-  @GetMapping("/all")
+  @GetMapping("/")
   public ResponseEntity<List<ShiftEntity>> getAll() {
-    var shifts = shiftService.getAll();
+    List<ShiftEntity> shifts = shiftService.getAll();
     return new ResponseEntity<>(shifts, HttpStatus.OK);
   }
+
+  @CrossOrigin
+  @GetMapping("/{location}")
+  public ResponseEntity<List<ShiftEntity>> getById(@PathVariable int location) {
+    List<ShiftEntity> shifts = shiftService.getShiftsByLocationId(location);
+    return new ResponseEntity<>(shifts, HttpStatus.OK);
+  }
+
+
 }
