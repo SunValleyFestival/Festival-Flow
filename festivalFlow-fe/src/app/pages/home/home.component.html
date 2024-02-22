@@ -6,10 +6,8 @@
 
         <br>
 
-        <select class="select select-bordered w-full max-w-xs">
-          <option>Venerdì</option>
-          <option>Sabato</option>
-          <option>Domenica</option>
+        <select #id class="select select-bordered w-full max-w-xs"  (change)="getLocationsByDayId(id.value)">
+          <option *ngFor="let day of days" [value]="day.id">{{day.name}}</option>
         </select>
 
         <label class="form-control w-full max-w-xs">
@@ -60,15 +58,15 @@
   <div class="flex-grow lg:order-1">
     <div class="flex flex-col items-center gap-5" style="max-height: 96vh; overflow-y: auto;">
 
-      <div class="card lg:card-side bg-white text-black shadow-xl" *ngFor="let item of items">
+      <div class="card lg:card-side bg-white text-black shadow-xl" *ngFor="let location of locations">
         <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album"/></figure>
         <div class="card-body">
-          <h2 class="card-title">Postazione Bar</h2>
+          <h2 class="card-title">{{location.name}}</h2>
           <div role="alert" class="alert bg-gray-50 border-accent w-fit">
             <img src="../../../assets/icons/group.svg" alt="group">
-            <span>4 posti rimanenti.</span>
+            <span>3 left</span>
           </div>
-          <p>Click the button to listen on Spotiwhy app.</p>
+          <p>{{location.description}}</p>
           <div class="card-actions justify-end">
             <button class="btn btn-primary text-white" (click)="openDetail()">Iscriviti</button>
           </div>
