@@ -28,8 +28,8 @@ public class ShiftController {
   }
 
   @CrossOrigin
-  @GetMapping("/{location}")
-  public ResponseEntity<List<ShiftEntity>> getById(@PathVariable int location) {
+  @GetMapping("/location/{location}")
+  public ResponseEntity<List<ShiftEntity>> getByLocationId(@PathVariable int location) {
     List<ShiftEntity> shifts = shiftService.getShiftsByLocationId(location);
     return new ResponseEntity<>(shifts, HttpStatus.OK);
   }
