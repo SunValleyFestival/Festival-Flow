@@ -30,8 +30,8 @@ public class LocationController {
     }
 
     @CrossOrigin
-    @GetMapping("/{day}")
-    public ResponseEntity<List<LocationEntity>> getById(@PathVariable int day) {
+    @GetMapping("/day/{day}")
+    public ResponseEntity<List<LocationEntity>> getByDayId(@PathVariable int day) {
         List<LocationEntity> locations = locationService.getLocationsByDayId(day);
         return new ResponseEntity<>(locations, HttpStatus.OK);
     }
