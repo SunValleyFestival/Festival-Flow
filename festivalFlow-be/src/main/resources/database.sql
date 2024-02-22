@@ -15,7 +15,8 @@ create table location
     id          int auto_increment not null,
     name        varchar(20)        not null,
     description varchar(1000),
-    day_id      int,
+    image  blob,
+    day_id int,
     primary key (id),
     foreign key (day_id) references day (id)
 );
@@ -25,7 +26,7 @@ create table shift
     id              int auto_increment not null,
     description     varchar(1000),
     name            varchar(20)        not null,
-    location_id     int,
+    location_id int,
     time            time               not null,
     day             int                not null,
     maxCollaborator int                not null,
