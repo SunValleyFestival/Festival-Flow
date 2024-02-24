@@ -18,9 +18,9 @@
 
 
   <div class="w-full">
-    <div class="card m-3 bg-base-300 shadow-xl">
+    <div class="card m-3 bg-base-300 shadow-xl" *ngFor="let shift of shifts">
       <div class="card-body">
-        <h2 class="card-title">18:00 - 20:00</h2>
+        <h2 class="card-title">{{shift.time}}</h2>
         <p>3 posti rimanenti</p>
         <progress class="progress progress-error w-56" value="40" max="100"></progress>
         <div class="card-actions justify-end">

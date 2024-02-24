@@ -23,11 +23,14 @@ public class ShiftService {
 
 
   public List<ShiftEntity> getShiftsByLocationId(int id) {
-    LocationEntity location = locationService.getById(id);
-    return shiftRepository.findByLocation(location);
+    return shiftRepository.findByLocationId(id);
   }
 
   public List<ShiftEntity> getAll() {
     return shiftRepository.findAll();
+  }
+
+  public List<ShiftEntity> getShiftsByLocationAndDay(int location, int day) {
+    return  shiftRepository.findByLocationIdAndDay(location, day);
   }
 }

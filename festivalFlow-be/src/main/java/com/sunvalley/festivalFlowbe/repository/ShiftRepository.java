@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ShiftRepository extends JpaRepository<ShiftEntity, Integer> {
 
-    @Query("select s from ShiftEntity s where s.location = ?1")
-    List<ShiftEntity> findByLocation(LocationEntity location);
+    List<ShiftEntity> findByLocationId(int location);
+
+    List<ShiftEntity> findByLocationIdAndDay(int location, int day);
+
 }

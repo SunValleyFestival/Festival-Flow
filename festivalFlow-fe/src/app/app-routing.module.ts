@@ -8,7 +8,7 @@ import {LocationDetailComponent} from "./pages/location-detail/location-detail.c
 const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [authGuard]},
   {path: 'login', component: LoginComponent},
-  {path: 'location', component: LocationDetailComponent},
+  {path: 'location/:location/:day', component: LocationDetailComponent},
   {path: '**', redirectTo: 'login'}
 ];
 
