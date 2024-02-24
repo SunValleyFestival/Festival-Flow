@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
+import {Collaborator} from "../../interfaces/CollaboratorEntity";
 
 const BASE_URL = environment.baseUrl + "/collaborator";
 @Injectable({
@@ -15,4 +16,7 @@ export class CollaboratorService {
     return this.http.get(BASE_URL + "/all");
   }
 
+  saveCollaborator(collaborator: Collaborator) {
+
+  }
 }

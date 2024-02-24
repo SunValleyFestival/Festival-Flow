@@ -3,6 +3,6 @@ export interface Collaborator {
   phone: string;
   firstName?: string | null;
   lastName?: string | null;
-  age?: Date | null;
+  age?: string | null;
   size?: string | null;
 }
