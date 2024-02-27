@@ -1,5 +1,6 @@
 package com.sunvalley.festivalFlowbe;
 
+import com.sunvalley.festivalFlowbe.utility.EmailService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
