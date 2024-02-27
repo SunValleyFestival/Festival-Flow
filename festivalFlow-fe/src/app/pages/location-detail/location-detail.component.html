@@ -39,8 +39,13 @@
       <div class="flex justify-center">
         <form method="dialog" #myForm="ngForm" class="mt-2">
 
-          <label class="input input-bordered flex items-center mt-2 gap-1">
-            Telefono: +41
+          <label class="input input-bordered flex items-center mt-2 gap-2">
+            Email:
+            <input type="email" class="grow bg-base-100" [(ngModel)]="formData.email" name="email" placeholder="max.carota@gmail.com" required/>
+          </label>
+
+          <label class="input input-bordered flex items-center mt-2 gap-2">
+            Telefono:
             <input type="tel" class="grow bg-base-100" [(ngModel)]="formData.phone" name="phone" placeholder="123456789" required/>
           </label>
           <label class="input input-bordered flex items-center mt-2 gap-2">

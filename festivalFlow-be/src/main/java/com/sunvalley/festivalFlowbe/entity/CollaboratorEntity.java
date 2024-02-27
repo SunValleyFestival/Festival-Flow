@@ -26,6 +26,9 @@ public class CollaboratorEntity {
   @Column(name = "id")
   private int id;
 
+  @Column(name = "email")
+  private String email;
+
   @Column(name = "phone")
   private String phone;
 

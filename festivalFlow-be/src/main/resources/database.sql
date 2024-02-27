@@ -37,7 +37,8 @@ create table shift
 create table collaborator
 (
     id        int auto_increment not null,
-    phone     varchar(11)        not null,
+    email     varchar(100)       not null,
+    phone     varchar(11),
     firstName varchar(20),
     lastName  varchar(20),
     age       date,

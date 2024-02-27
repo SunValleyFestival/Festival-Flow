@@ -7,22 +7,19 @@ import {NavigationService} from "../../services/navigation/navigation.service";
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  protected phone: any;
+  protected mail: any;
 
   constructor(private navigationService: NavigationService) {
   }
 
-  checkCredentials(phone: string) {
-    if (phone === '0000') {
-      this.navigationService.authAndGoToHome();
-    } else {
-      console.log('phone number stored in DB')
+  checkCredentials(mail: string) {
+    if(RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$').test(mail)) {
+      this.mail = mail;
       this.navigationService.authAndGoToHome();
     }
   }
 
   onSubmit() {
-    this.phone = '0041' + this.phone;
-    this.checkCredentials(this.phone);
+    this.checkCredentials(this.mail);
   }
 }

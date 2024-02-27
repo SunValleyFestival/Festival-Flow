@@ -1,13 +1,12 @@
 <div class="w-screen h-screen wrapper">
-  <div class="body h-full">
+  <div class="body h-full w-screen">
     <form (ngSubmit)="onSubmit()">
-      <label class="form-control w-full max-w-xs">
+      <label class="form-control flex justify-center items-start">
         <div class="label">
-          <span class="label-text">Benvenuto, inserisci il tuo numero di telefono</span>
+          <span class="label-text">Benvenuto, inserisci la tua mail</span>
         </div>
-        <div class="join join-vertical lg:join-horizontal">
-          <div class="input input-bordered inline-block prefix">+41</div>
-          <input type="tel" name="phone" placeholder="Telefono" class="input input-bordered w-full max-w-xs" [(ngModel)]="phone"/>
+        <div class="join join-vertical lg:join-horizontal w-96">
+          <input type="email" name="email" placeholder="Email" class="input input-bordered w-full max-w-xs" [(ngModel)]="mail"/>
         </div>
       </label>
     </form>

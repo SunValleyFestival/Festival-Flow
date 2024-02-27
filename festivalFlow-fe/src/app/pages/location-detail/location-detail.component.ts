@@ -22,6 +22,7 @@ export class LocationDetailComponent implements OnInit {
   protected shifts: Shift[] | undefined;
 
   formData: Collaborator = {
+    email: '',
     phone: '',
     firstName: '',
     lastName: '',
@@ -66,6 +67,7 @@ export class LocationDetailComponent implements OnInit {
 
   resetFormData() {
     this.formData = {
+      email: '',
       phone: '',
       firstName: '',
       lastName: '',
