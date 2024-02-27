@@ -37,15 +37,13 @@ export class LocationDetailComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.locationService.getLocationById(params['location']).pipe().subscribe((location: any) => {
         this.selectedLocation = location
-        console.log("location:",location.id)
       });
 
       this.dayService.getDayById(params['day']).pipe().subscribe((day: any) => {
         this.selectedDay = day;
-        console.log("day:",day.id);
       });
 
-      this.shiftService.getShiftByLocationIdAndDay(this.selectedLocation?.id, this.selectedDay?.id).pipe().subscribe((shifts: any) => {
+      this.shiftService.getShiftByLocationIdAndDay(params['location'], params['day']).pipe().subscribe((shifts: any) => {
         this.shifts = shifts;
       });
     });
