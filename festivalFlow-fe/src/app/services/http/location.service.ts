@@ -21,4 +21,7 @@ export class LocationService {
     return this.http.get<Location[]>(BASE_URL + "day/" + dayId);
   }
 
+  getLocationById(param: any): Observable<Location> {
+    return this.http.get<Location>(BASE_URL + param);
+  }
 }

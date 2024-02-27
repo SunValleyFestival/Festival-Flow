@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +31,12 @@ public class DayController {
   public ResponseEntity<List<DayEntity>> getAll(){
     List<DayEntity> days = dayService.getAll();
     return new ResponseEntity<>(days, HttpStatus.OK);
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<DayEntity> getById(@PathVariable int id){
+    DayEntity day = dayService.getById(id);
+    return new ResponseEntity<>(day, HttpStatus.OK);
   }
 
 }

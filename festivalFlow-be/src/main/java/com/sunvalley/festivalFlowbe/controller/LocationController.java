@@ -29,6 +29,12 @@ public class LocationController {
         return new ResponseEntity<>(Locations, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<LocationEntity> getById(@PathVariable int id) {
+        LocationEntity location = locationService.getById(id);
+        return new ResponseEntity<>(location, HttpStatus.OK);
+    }
+
     @CrossOrigin
     @GetMapping("/day/{day}")
     public ResponseEntity<List<LocationEntity>> getByDayId(@PathVariable int day) {

@@ -10,23 +10,27 @@
     <button class="btn btn-sm">Vedi</button>
   </div>
 
-  <div class="flex flex-row">
-    <h1 class="m-5 text-5xl">Bar</h1>
-    <div class="flex-1"></div>
-  </div>
+  <div class="m-10">
 
+    <h1 class="mb-10 text-3xl">{{selectedLocation?.name}}</h1>
 
-  <div class="w-full">
-    <div class="card m-3 bg-base-300 shadow-xl" *ngFor="let shift of shifts">
-      <div class="card-body">
-        <h2 class="card-title">{{ shift.time }}</h2>
-        <p>3 posti rimanenti</p>
-        <progress class="progress progress-error w-56" value="40" max="100"></progress>
-        <div class="card-actions justify-end">
-          <button class="btn btn-outline btn-accent" (click)="showDialog(shift.id)">Iscriviti</button>
+    <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
+      <li *ngFor="let shift of shifts; index as i">
+        <div class="timeline-middle">
         </div>
-      </div>
-    </div>
+        <div class="timeline-start mb-10">
+          <time class="font-mono italic">{{ shift.time }}</time>
+          <div class="text-lg font-black">{{ shift.name }}</div>
+          <div class="flex flex-col gap-3">
+            {{ shift.description }}
+            <p>3 posti rimanenti</p>
+            <progress class="progress progress-error w-1/2" value="40" max="100"></progress>
+            <button class="btn btn-outline btn-accent" (click)="showDialog(shift.id)">Iscriviti</button>
+          </div>
+        </div>
+        <hr/>
+      </li>
+    </ul>
   </div>
 
   <dialog [id]="shift.id+ 'Dialog'" class="modal modal-bottom sm:modal-middle" *ngFor="let shift of shifts">

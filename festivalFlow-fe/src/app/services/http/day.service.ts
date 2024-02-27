@@ -16,4 +16,8 @@ export class DayService {
   getAllDays(): Observable<Day[]> {
     return this.http.get<Day[]>(BASE_URL + "/");
   }
+
+  getDayById(param: any): Observable<Day> {
+    return this.http.get<Day>(BASE_URL + "/" + param);
+  }
 }

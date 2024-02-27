@@ -5,6 +5,10 @@ import {Shift} from "../../interfaces/ShiftEntity";
 import {AssociationService} from "../../services/http/association.service";
 import {CollaboratorService} from "../../services/http/collaborator.service";
 import {Collaborator} from "../../interfaces/CollaboratorEntity";
+import {Location} from "../../interfaces/LocationEntity";
+import {Day} from "../../interfaces/DayEntity";
+import {DayService} from "../../services/http/day.service";
+import {LocationService} from "../../services/http/location.service";
 
 @Component({
   selector: 'app-location-detail',
@@ -12,8 +16,8 @@ import {Collaborator} from "../../interfaces/CollaboratorEntity";
   styleUrls: ['./location-detail.component.css']
 })
 export class LocationDetailComponent implements OnInit {
-  protected selectedDay: number | undefined;
-  protected selectedLocation: number | undefined;
+  protected selectedDay: Day | undefined;
+  protected selectedLocation: Location | undefined;
   protected signedIn: boolean = false;
   protected shifts: Shift[] | undefined;
 
@@ -25,17 +29,26 @@ export class LocationDetailComponent implements OnInit {
     size: 'Taglia Maglietta'
   }
 
-  constructor(private shiftService: ShiftService, private route: ActivatedRoute, private associationService: AssociationService, private collaboratorService: CollaboratorService) {}
+  constructor(private shiftService: ShiftService, private route: ActivatedRoute, private associationService: AssociationService,
+              private collaboratorService: CollaboratorService, private dayService: DayService, private locationService: LocationService) {
+  }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.selectedLocation = params['location'];
-      this.selectedDay = params['day'];
-    });
+      this.locationService.getLocationById(params['location']).pipe().subscribe((location: any) => {
+        this.selectedLocation = location
+        console.log("location:",location.id)
+      });
 
-    this.shiftService.getShiftByLocationIdAndDay(this.selectedLocation, this.selectedDay).pipe().subscribe((shifts: any) => {
-      this.shifts = shifts;
-    })
+      this.dayService.getDayById(params['day']).pipe().subscribe((day: any) => {
+        this.selectedDay = day;
+        console.log("day:",day.id);
+      });
+
+      this.shiftService.getShiftByLocationIdAndDay(this.selectedLocation?.id, this.selectedDay?.id).pipe().subscribe((shifts: any) => {
+        this.shifts = shifts;
+      });
+    });
   }
 
   showDialog(shiftId: number | undefined) {

@@ -24,4 +24,7 @@ public class DayService {
         return dayRepository.findAll();
     }
 
+  public DayEntity getById(final int id) {
+    return dayRepository.findById(id).orElse(null);
+  }
 }
