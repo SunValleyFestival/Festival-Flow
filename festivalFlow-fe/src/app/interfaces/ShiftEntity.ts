@@ -5,7 +5,8 @@ export interface Shift {
   description?: string | null;
   name: string;
   location: Location;
-  time: string;
+  startTime: string;
+  endTime: string;
   day: number;
   maxCollaborator: number;
 }
