@@ -55,6 +55,14 @@ create table association
     primary key (shift_id, collaborator_id)
 );
 
+CREATE VIEW shift_availability AS
+SELECT
+    s.id AS shift_id,
+    s.maxCollaborator - COUNT(a.collaborator_id) AS available_slots
+FROM shift s
+         LEFT JOIN association a ON s.id = a.shift_id
+GROUP BY s.id;
+
 insert into day (name, description)
 values ('Friday', 'First day of the festival');
 insert into day (name, description)
