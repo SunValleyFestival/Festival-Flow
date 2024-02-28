@@ -15,4 +15,7 @@ public class ShiftAvailabilityView {
 
   @Column(name = "available_slots")
   private int availableSlots;
+
+  @Column(name = "location_id")
+  private int locationId;
 }

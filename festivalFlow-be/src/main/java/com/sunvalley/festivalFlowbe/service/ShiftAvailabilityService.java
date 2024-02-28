@@ -18,4 +18,8 @@ public class ShiftAvailabilityService {
   public ShiftAvailabilityView getByShiftId(int shiftId) {
     return shiftAvailabilityRepository.findByShiftId(shiftId);
   }
+
+  public Integer getAvailableSlotsByLocationId(int locationId) {
+    return shiftAvailabilityRepository.getAvailableSlotsByLocationId(locationId);
+  }
 }

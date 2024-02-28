@@ -22,9 +22,15 @@ public class ShiftAvailabilityController {
   }
 
   @GetMapping("/{shiftId}")
-  public ResponseEntity<ShiftAvailabilityView> getShiftAvailability(@PathVariable int shiftId) {
+  public ResponseEntity<Integer> getShiftAvailability(@PathVariable int shiftId) {
     var shiftAvailability = shiftAvailabilityService.getByShiftId(shiftId);
-    return new ResponseEntity<>(shiftAvailability, HttpStatus.OK);
+    return new ResponseEntity<>(shiftAvailability.getAvailableSlots(), HttpStatus.OK);
+  }
+
+  @GetMapping("/location/{locationId}")
+  public ResponseEntity<Integer> getAvailableSlotsByLocationId(@PathVariable int locationId) {
+    var availableSlots = shiftAvailabilityService.getAvailableSlotsByLocationId(locationId);
+    return new ResponseEntity<>(availableSlots, HttpStatus.OK);
   }
 
 }
