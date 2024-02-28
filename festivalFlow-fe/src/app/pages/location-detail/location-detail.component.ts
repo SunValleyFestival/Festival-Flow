@@ -9,6 +9,8 @@ import {Location} from "../../interfaces/LocationEntity";
 import {Day} from "../../interfaces/DayEntity";
 import {DayService} from "../../services/http/day.service";
 import {LocationService} from "../../services/http/location.service";
+import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
+import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
 
 @Component({
   selector: 'app-location-detail',
@@ -20,6 +22,7 @@ export class LocationDetailComponent implements OnInit {
   protected selectedLocation: Location | undefined;
   protected signedIn: boolean = false;
   protected shifts: Shift[] | undefined;
+  protected shiftAvailability: ShiftAvailability[] = [];
 
   formData: Collaborator = {
     email: '',
@@ -31,7 +34,8 @@ export class LocationDetailComponent implements OnInit {
   }
 
   constructor(private shiftService: ShiftService, private route: ActivatedRoute, private associationService: AssociationService,
-              private collaboratorService: CollaboratorService, private dayService: DayService, private locationService: LocationService) {
+              private collaboratorService: CollaboratorService, private dayService: DayService, private locationService: LocationService,
+              protected shiftAvailabilityService: ShiftAvailabilityService) {
   }
 
   ngOnInit() {
@@ -46,6 +50,12 @@ export class LocationDetailComponent implements OnInit {
 
       this.shiftService.getShiftByLocationIdAndDay(params['location'], params['day']).pipe().subscribe((shifts: any) => {
         this.shifts = shifts;
+
+        for (let shift of shifts) {
+          this.shiftAvailabilityService.getShiftAvailability(shift.id).pipe().subscribe((shiftAvailability: any) => {
+            this.shiftAvailability.push(shiftAvailability);
+          });
+        }
       });
     });
   }

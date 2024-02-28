@@ -1,5 +1,6 @@
 package com.sunvalley.festivalFlowbe.controller;
 
+import com.sunvalley.festivalFlowbe.entity.ShiftAvailabilityView;
 import com.sunvalley.festivalFlowbe.service.ShiftAvailabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,15 +22,18 @@ public class ShiftAvailabilityController {
   }
 
   @GetMapping("/{shiftId}")
-  public ResponseEntity<Integer> getShiftAvailability(@PathVariable int shiftId) {
+  public ResponseEntity<ShiftAvailabilityView> getShiftAvailability(@PathVariable int shiftId) {
     var shiftAvailability = shiftAvailabilityService.getByShiftId(shiftId);
-    return new ResponseEntity<>(shiftAvailability.getAvailableSlots(), HttpStatus.OK);
+    return new ResponseEntity<>(shiftAvailability, HttpStatus.OK);
   }
 
   @GetMapping("/location/{locationId}")
-  public ResponseEntity<Integer> getAvailableSlotsByLocationId(@PathVariable int locationId) {
+  public ResponseEntity<ShiftAvailabilityView> getAvailableSlotsByLocationId(@PathVariable int locationId) {
     var availableSlots = shiftAvailabilityService.getAvailableSlotsByLocationId(locationId);
-    return new ResponseEntity<>(availableSlots, HttpStatus.OK);
+    var shiftAvailability = new ShiftAvailabilityView();
+    shiftAvailability.setAvailableSlots(availableSlots);
+    shiftAvailability.setLocationId(locationId);
+    return new ResponseEntity<>(shiftAvailability, HttpStatus.OK);
   }
 
 }
