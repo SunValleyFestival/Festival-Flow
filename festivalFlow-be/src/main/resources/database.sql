@@ -58,7 +58,8 @@ create table association
 CREATE VIEW shift_availability AS
 SELECT
     s.id AS shift_id,
-    s.maxCollaborator - COUNT(a.collaborator_id) AS available_slots
+    s.maxCollaborator - COUNT(a.collaborator_id) AS available_slots,
+    s.location_id as location_id
 FROM shift s
          LEFT JOIN association a ON s.id = a.shift_id
 GROUP BY s.id;

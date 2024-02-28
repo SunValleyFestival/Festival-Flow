@@ -5,6 +5,8 @@ import {DayService} from "../../services/http/day.service";
 import {Observable} from "rxjs";
 import {LocationService} from "../../services/http/location.service";
 import {Location} from "../../interfaces/LocationEntity";
+import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
+import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
 
 
 @Component({
@@ -16,11 +18,13 @@ export class HomeComponent implements OnInit {
   protected days: Day[] = [];
   protected locations: Location[] = [];
   protected currentDay: number = 0;
+  protected locationAvailability: ShiftAvailability[] = [];
 
   constructor(
     private router: Router,
     private dayService: DayService,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private shiftAvailabilityService: ShiftAvailabilityService,
   ) {
   }
 
@@ -47,7 +51,12 @@ export class HomeComponent implements OnInit {
     this.currentDay = Number(dayId);
     this.locationService.getLocationsByDayId(Number(dayId)).pipe().subscribe((locations: any) => {
       this.locations = locations;
-      console.log(this.locations);
+
+      for (let location of this.locations){
+        this.shiftAvailabilityService.getShiftAvailability(location.id).pipe().subscribe((shiftAvailability: any) => {
+          this.locationAvailability.push(shiftAvailability);
+        });
+      }
     });
   }
 
