@@ -57,13 +57,13 @@
   </div>
   <div class="flex-grow lg:order-1">
     <div class="flex flex-col items-center gap-5 ml-10 mr-10" style="max-height: 96vh; overflow-y: auto;">
-      <div class="card lg:card-side bg-white text-black shadow-xl w-full" *ngFor="let location of locations">
+      <div class="card lg:card-side bg-white text-black shadow-xl w-full" *ngFor="let location of locations; index as i">
         <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album"/></figure>
         <div class="card-body">
           <h2 class="card-title">{{location.name}}</h2>
           <div role="alert" class="alert bg-gray-50 border-accent w-fit">
             <img src="../../../assets/icons/group.svg" alt="group">
-            <span>3 Rimanenti</span>
+            <span>{{locationAvailability[i].availableSlots}} Rimanenti</span>
           </div>
           <p>{{location.description}}</p>
           <div class="card-actions justify-end">

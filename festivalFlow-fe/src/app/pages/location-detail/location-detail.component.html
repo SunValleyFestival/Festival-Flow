@@ -23,8 +23,8 @@
           <div class="text-lg font-black">{{ shift.name }}</div>
           <div class="flex flex-col gap-3">
             {{ shift.description }}
-            <p>3 posti rimanenti</p>
-            <progress class="progress progress-error w-1/2" value="40" max="100"></progress>
+            <p>{{shiftAvailability[i].availableSlots}} posti rimanenti</p>
+            <progress class="progress progress-error w-1/2" value="{{shiftAvailability[i].availableSlots}}" max="{{shift.maxCollaborator}}"></progress>
             <button class="btn btn-outline btn-accent" (click)="showDialog(shift.id)">Iscriviti</button>
           </div>
         </div>
@@ -44,7 +44,7 @@
             <input type="email" class="grow bg-base-100" [(ngModel)]="formData.email" name="email" placeholder="max.carota@gmail.com" required/>
           </label>
 
-          <label class="input input-bordered flex items-center mt-2 gap-2">
+          <label class="input input-bordered flex items-center mt-2 gap-2">po
             Telefono:
             <input type="tel" class="grow bg-base-100" [(ngModel)]="formData.phone" name="phone" placeholder="123456789" required/>
           </label>
