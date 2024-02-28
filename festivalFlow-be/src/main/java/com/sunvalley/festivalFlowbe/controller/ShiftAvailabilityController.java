@@ -1,6 +1,5 @@
 package com.sunvalley.festivalFlowbe.controller;
 
-import com.sunvalley.festivalFlowbe.entity.ShiftAvailabilityView;
 import com.sunvalley.festivalFlowbe.service.ShiftAvailabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
