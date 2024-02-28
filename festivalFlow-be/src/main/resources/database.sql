@@ -42,6 +42,7 @@ create table collaborator
     lastName  varchar(20),
     age       date,
     size      varchar(3),
+    email     varchar(100),
     primary key (id)
 
 );
@@ -94,16 +95,16 @@ values ('Third shift of the day', 'Third shift', 3, '16:00:00', '18:00:00', 5);
 insert into shift (description, name, location_id, startTime, endTime, maxCollaborator)
 values ('First shift of the day', 'First shift', 4, '12:00:00', '14:00:00', 5);
 
-insert into collaborator (phone, firstName, lastName, age, size)
-values ('0606060606', 'John', 'Doe', '1990-01-01', 'M');
-insert into collaborator (phone, firstName, lastName, age, size)
-values ('0606060607', 'Jane', 'Doe', '1990-01-01', 'S');
-insert into collaborator (phone, firstName, lastName, age, size)
-values ('0606060608', 'John', 'Smith', '1990-01-01', 'L');
-insert into collaborator (phone, firstName, lastName, age, size)
-values ('0606060609', 'Jane', 'Smith', '1990-01-01', 'M');
-insert into collaborator (phone, firstName, lastName, age, size)
-values ('0606060610', 'John', 'Doe', '1990-01-01', 'XL');
+insert into collaborator (phone, firstName, lastName, age, size, email)
+values ('0606060606', 'Il', 'Pirla', '1990-01-01', 'M', 'joekueng05@gmail.com');
+insert into collaborator (phone, firstName, lastName, age, size, email)
+values ('0606060607', 'Jane', 'Doe', '1990-01-01', 'S', 'jane.doe@gmail.com');
+insert into collaborator (phone, firstName, lastName, age, size, email)
+values ('0606060608', 'Bob', 'Smith', '1990-01-01', 'M', 'bob.smith@gmail.com');
+insert into collaborator (phone, firstName, lastName, age, size, email)
+values ('0606060609', 'Alice', 'Johnson', '1990-01-01', 'L', 'alice.johnson@gmail.com');
+insert into collaborator (phone, firstName, lastName, age, size, email)
+values ('0606060610', 'Charlie', 'Brown', '1990-01-01', 'XL', 'charlie.brown@gmail.com');
 
 insert into association (shift_id, collaborator_id, status)
 values (1, 1, 1);
