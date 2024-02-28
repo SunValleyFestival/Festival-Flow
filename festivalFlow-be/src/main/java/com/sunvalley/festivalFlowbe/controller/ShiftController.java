@@ -34,11 +34,4 @@ public class ShiftController {
     return new ResponseEntity<>(shifts, HttpStatus.OK);
   }
 
-  @GetMapping("/location/{location}/{day}")
-  public ResponseEntity<List<ShiftEntity>> getByLocationAndDay(@PathVariable int location, @PathVariable int day) {
-    List<ShiftEntity> shifts = shiftService.getShiftsByLocationAndDay(location, day);
-    return new ResponseEntity<>(shifts, HttpStatus.OK);
-  }
-
-
 }

@@ -7,6 +7,5 @@ export interface Shift {
   location: Location;
   startTime: string;
   endTime: string;
-  day: number;
   maxCollaborator: number;
 }

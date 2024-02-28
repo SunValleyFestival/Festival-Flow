@@ -26,9 +26,9 @@ create table shift
     id              int auto_increment not null,
     description     varchar(1000),
     name            varchar(20)        not null,
-    location_id int,
-    time            time               not null,
-    day             int                not null,
+    location_id     int,
+    startTime       time               not null,
+    endTime         time               not null,
     maxCollaborator int                not null,
     primary key (id),
     foreign key (location_id) references location (id)
@@ -37,8 +37,7 @@ create table shift
 create table collaborator
 (
     id        int auto_increment not null,
-    email     varchar(100)       not null,
-    phone     varchar(11),
+    phone     varchar(11)        not null,
     firstName varchar(20),
     lastName  varchar(20),
     age       date,
@@ -74,28 +73,26 @@ values ('Sunday', 'Third day of the festival');
 insert into location (name, description, day_id)
 values ('Main Stage', 'Main stage of the festival', 1);
 insert into location (name, description, day_id)
-values ('Second Stage', 'Second stage of the festival', 2);
+values ('Second Stage', 'Second stage of the festival', 1);
 insert into location (name, description, day_id)
 values ('Third Stage', 'Third stage of the festival', 2);
 insert into location (name, description, day_id)
 values ('Fourth Stage', 'Fourth stage of the festival', 3);
-insert into location (name, description, day_id)
-values ('Main Stage', 'Main stage of the festival', 1);
 
-insert into shift (description, name, location_id, time, day, maxCollaborator)
-values ('First shift of the day', 'First shift', 1, '12:00:00', 1, 5);
-insert into shift (description, name, location_id, time, day, maxCollaborator)
-values ('Second shift of the day', 'Second shift', 1, '14:00:00', 1, 5);
-insert into shift (description, name, location_id, time, day, maxCollaborator)
-values ('Third shift of the day', 'Third shift', 1, '16:00:00', 1, 5);
-insert into shift (description, name, location_id, time, day, maxCollaborator)
-values ('First shift of the day', 'First shift', 2, '12:00:00', 1, 5);
-insert into shift (description, name, location_id, time, day, maxCollaborator)
-values ('Second shift of the day', 'Second shift', 2, '14:00:00', 1, 5);
-insert into shift (description, name, location_id, time, day, maxCollaborator)
-values ('Third shift of the day', 'Third shift', 3, '16:00:00', 1, 5);
-insert into shift (description, name, location_id, time, day, maxCollaborator)
-values ('First shift of the day', 'First shift', 4, '12:00:00', 1, 5);
+insert into shift (description, name, location_id, startTime, endTime, maxCollaborator)
+values ('First shift of the day', 'First shift', 1, '12:00:00', '14:00:00', 5);
+insert into shift (description, name, location_id, startTime, endTime, maxCollaborator)
+values ('Second shift of the day', 'Second shift', 1, '14:00:00', '16:00:00', 5);
+insert into shift (description, name, location_id, startTime, endTime, maxCollaborator)
+values ('Third shift of the day', 'Third shift', 1, '16:00:00', '18:00:00', 5);
+insert into shift (description, name, location_id, startTime, endTime, maxCollaborator)
+values ('First shift of the day', 'First shift', 2, '12:00:00', '14:00:00', 5);
+insert into shift (description, name, location_id, startTime, endTime, maxCollaborator)
+values ('Second shift of the day', 'Second shift', 2, '14:00:00', '16:00:00', 5);
+insert into shift (description, name, location_id, startTime, endTime, maxCollaborator)
+values ('Third shift of the day', 'Third shift', 3, '16:00:00', '18:00:00', 5);
+insert into shift (description, name, location_id, startTime, endTime, maxCollaborator)
+values ('First shift of the day', 'First shift', 4, '12:00:00', '14:00:00', 5);
 
 insert into collaborator (phone, firstName, lastName, age, size)
 values ('0606060606', 'John', 'Doe', '1990-01-01', 'M');

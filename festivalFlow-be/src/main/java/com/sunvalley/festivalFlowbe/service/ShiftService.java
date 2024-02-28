@@ -29,8 +29,4 @@ public class ShiftService {
   public List<ShiftEntity> getAll() {
     return shiftRepository.findAll();
   }
-
-  public List<ShiftEntity> getShiftsByLocationAndDay(int location, int day) {
-    return  shiftRepository.findByLocationIdAndDay(location, day);
-  }
 }

@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit {
       this.locations = locations;
 
       for (let location of this.locations){
-        this.shiftAvailabilityService.getShiftAvailability(location.id).pipe().subscribe((shiftAvailability: any) => {
+        this.shiftAvailabilityService.getAvailableSlotsByLocationId(location.id).pipe().subscribe((shiftAvailability: any) => {
           this.locationAvailability.push(shiftAvailability);
         });
       }

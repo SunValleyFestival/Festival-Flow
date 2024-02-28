@@ -41,9 +41,6 @@ public class ShiftEntity {
     @Column(name = "endTime", nullable = false)
     private java.sql.Time endTime;
 
-    @Column(name = "day", nullable = false)
-    private int day;
-
     @Column(name = "maxCollaborator", nullable = false)
     private int maxCollaborator;
 }

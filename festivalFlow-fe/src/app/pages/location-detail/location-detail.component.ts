@@ -48,8 +48,18 @@ export class LocationDetailComponent implements OnInit {
         this.selectedDay = day;
       });
 
-      this.shiftService.getShiftByLocationIdAndDay(params['location'], params['day']).pipe().subscribe((shifts: any) => {
+      this.shiftService.getShiftsByLocationId(params['location']).pipe().subscribe((shifts: any) => {
         this.shifts = shifts;
+
+        shifts.sort((a: Shift, b: Shift) => {
+          if (this.parseTime(a.startTime) < this.parseTime(b.startTime)) {
+            return -1;
+          } else if (this.parseTime(a.startTime) > this.parseTime(b.startTime)) {
+            return 1;
+          } else {
+            return 0;
+          }
+        })
 
         for (let shift of shifts) {
           this.shiftAvailabilityService.getShiftAvailability(shift.id).pipe().subscribe((shiftAvailability: any) => {
@@ -85,4 +95,10 @@ export class LocationDetailComponent implements OnInit {
       size: 'Taglia Maglietta'
     }
   }
+
+  parseTime(timeString: string): number {
+    let value =  timeString.replaceAll(":", "");
+    return parseInt(value);
+  };
+
 }
