@@ -35,8 +35,11 @@ public class ShiftEntity {
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private LocationEntity location;
 
-    @Column(name = "time", nullable = false)
-    private java.sql.Time time;
+    @Column(name = "startTime", nullable = false)
+    private java.sql.Time startTime;
+
+    @Column(name = "endTime", nullable = false)
+    private java.sql.Time endTime;
 
     @Column(name = "day", nullable = false)
     private int day;

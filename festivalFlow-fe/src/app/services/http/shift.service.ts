@@ -24,6 +24,7 @@ export class ShiftService {
   }
 
   getShiftByLocationIdAndDay(locationId: number | undefined, day: number | undefined): Observable<Shift[]> {
+    console.log(BASE_URL + "location/" + locationId + "/" + day)
     return this.http.get<Shift[]>(BASE_URL + "location/" + locationId + "/" + day);
   }
 }

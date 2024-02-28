@@ -19,12 +19,12 @@
         <div class="timeline-middle">
         </div>
         <div class="timeline-start mb-10">
-          <time class="font-mono italic">{{ shift.time }}</time>
+          <time class="font-mono italic">{{ shift.startTime }} - {{shift.endTime}}</time>
           <div class="text-lg font-black">{{ shift.name }}</div>
           <div class="flex flex-col gap-3">
             {{ shift.description }}
-            <p>{{shiftAvailability[i].availableSlots}} posti rimanenti</p>
-            <progress class="progress progress-error w-1/2" value="{{shiftAvailability[i].availableSlots}}" max="{{shift.maxCollaborator}}"></progress>
+            <p>{{shiftAvailability[i]?.availableSlots}} posti rimanenti</p>
+            <progress class="progress progress-error w-1/2" value="{{shiftAvailability[i]?.availableSlots}}" max="{{shift.maxCollaborator}}"></progress>
             <button class="btn btn-outline btn-accent" (click)="showDialog(shift.id)">Iscriviti</button>
           </div>
         </div>
@@ -35,7 +35,7 @@
 
   <dialog [id]="shift.id+ 'Dialog'" class="modal modal-bottom sm:modal-middle" *ngFor="let shift of shifts">
     <div class="modal-box">
-      <h3 class="font-bold text-lg">Iscriviti ( {{ shift.time }} )</h3>
+      <h3 class="font-bold text-lg">Iscriviti ( {{ shift.startTime }} - {{shift.endTime}} )</h3>
       <div class="flex justify-center">
         <form method="dialog" #myForm="ngForm" class="mt-2">
 
