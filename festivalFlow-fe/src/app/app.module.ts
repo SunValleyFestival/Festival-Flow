@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './pages/login/login.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from "@angular/common/http";
+import { HeaderComponent } from './header/header.component';
 import { LocationDetailComponent } from './pages/location-detail/location-detail.component';
 
 @NgModule({
@@ -15,6 +16,8 @@ import { LocationDetailComponent } from './pages/location-detail/location-detail
     HomeComponent,
     LoginComponent,
     LocationDetailComponent,
+    LoginComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

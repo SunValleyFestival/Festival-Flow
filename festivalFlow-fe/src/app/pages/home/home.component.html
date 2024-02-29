@@ -1,10 +1,10 @@
-<div class="wrapper flex flex-col lg:flex-row-reverse mt-5 mb-5">
-  <div class="lg:order-2 h-full mb-10">
-    <div class="card bg-white shadow-xl ml-3 mr-3 filter text-black">
-      <div class="card-body">
-        <h2 class="card-title">Filter</h2>
-
-        <br>
+<div class="max-h-screen overflow-y-hidden">
+  <app-header></app-header>
+  <div class="wrapper flex flex-col lg:flex-row-reverse">
+    <div class="lg:order-2 h-full mt-5">
+      <div class="card bg-white shadow-xl ml-5 filter text-black">
+        <div class="card-body">
+          <h2 class="card-title">Filter</h2>
 
         <select #id class="select select-bordered w-full max-w-xs"  (change)="getLocationsByDayId(id.value)">
           <option *ngFor="let day of days" [value]="day.id">{{day.name}}</option>
@@ -56,7 +56,7 @@
     </div>
   </div>
   <div class="flex-grow lg:order-1">
-    <div class="flex flex-col items-center gap-5 ml-10 mr-10" style="max-height: 96vh; overflow-y: auto;">
+      <div class="flex flex-col items-center max-h-screen overflow-scroll">
       <div class="card lg:card-side bg-white text-black shadow-xl w-full" *ngFor="let location of locations; index as i">
         <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album"/></figure>
         <div class="card-body">
