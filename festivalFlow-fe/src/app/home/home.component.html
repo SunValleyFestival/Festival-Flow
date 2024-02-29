@@ -1,69 +1,72 @@
-<div class="wrapper flex flex-col lg:flex-row-reverse mt-5 mb-5">
-  <div class="lg:order-2" style="margin-bottom: 10px;">
-    <div class="card bg-white shadow-xl ml-3 mr-3 filter text-black">
-      <div class="card-body">
-        <h2 class="card-title">Filter</h2>
+<div class="h-screen">
+  <app-header></app-header>
+  <div class="wrapper flex flex-col lg:flex-row-reverse">
+    <div class="lg:order-2">
+      <div class="card bg-white shadow-xl ml-3 mr-3 filter text-black">
+        <div class="card-body">
+          <h2 class="card-title">Filter</h2>
 
-        <br>
+          <br>
 
-        <input type="text" placeholder="Type here" class="input input-secondary input-bordered w-full max-w-xs" />
+          <input type="text" placeholder="Type here" class="input input-secondary input-bordered w-full max-w-xs"/>
 
-        <br>
+          <br>
 
-        <input type="range" min="0" max="100" value="25" class="range range-secondary" step="25" />
-        <div class="w-full flex justify-between text-xs px-2">
-          <span>|</span>
-          <span>|</span>
-          <span>|</span>
-          <span>|</span>
-          <span>|</span>
+          <input type="range" min="0" max="100" value="25" class="range range-secondary" step="25"/>
+          <div class="w-full flex justify-between text-xs px-2">
+            <span>|</span>
+            <span>|</span>
+            <span>|</span>
+            <span>|</span>
+            <span>|</span>
+          </div>
+
+          <br>
+
+          <div class="form-control">
+            <label class="label cursor-pointer">
+              <span class="label-text">asd</span>
+              <input type="checkbox" class="toggle toggle-secondary"/>
+            </label>
+          </div>
+
+          <div class="form-control">
+            <label class="label cursor-pointer">
+              <span class="label-text">dsa</span>
+              <input type="checkbox" class="toggle toggle-secondary"/>
+            </label>
+          </div>
+
+          <div class="form-control">
+            <label class="label cursor-pointer">
+              <span class="label-text">sad</span>
+              <input type="checkbox" class="toggle toggle-secondary"/>
+            </label>
+          </div>
+
+
         </div>
-
-        <br>
-
-        <div class="form-control">
-          <label class="label cursor-pointer">
-            <span class="label-text">asd</span>
-            <input type="checkbox" class="toggle toggle-secondary" />
-          </label>
-        </div>
-
-        <div class="form-control">
-          <label class="label cursor-pointer">
-            <span class="label-text">dsa</span>
-            <input type="checkbox" class="toggle toggle-secondary" />
-          </label>
-        </div>
-
-        <div class="form-control">
-          <label class="label cursor-pointer">
-            <span class="label-text">sad</span>
-            <input type="checkbox" class="toggle toggle-secondary" />
-          </label>
-        </div>
-
-
       </div>
     </div>
-  </div>
-  <div class="flex-grow lg:order-1">
-    <div class="flex flex-col items-center gap-5" style="max-height: 96vh; overflow-y: auto;">
+    <div class="flex-grow lg:order-1">
+      <div class="flex flex-col items-center gap-5" style="max-height: 94vh; overflow-y: auto;">
 
-      <div class="card lg:card-side bg-white text-black shadow-xl" *ngFor="let item of items">
-        <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album"/></figure>
-        <div class="card-body">
-          <h2 class="card-title">Postazione Bar</h2>
-          <div role="alert" class="alert bg-gray-50 border-accent w-fit">
-            <img src="assets/icons/group.svg" alt="group">
-            <span>4 posti rimanenti.</span>
-          </div>
-          <p>Click the button to listen on Spotiwhy app.</p>
-          <div class="card-actions justify-end">
-            <button class="btn btn-primary text-white">Iscriviti</button>
+        <div class="card lg:card-side bg-white text-black shadow-xl" *ngFor="let item of items">
+          <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album"/></figure>
+          <div class="card-body">
+            <h2 class="card-title">Postazione Bar</h2>
+            <div role="alert" class="alert bg-gray-50 border-accent w-fit">
+              <img src="assets/icons/group.svg" alt="group">
+              <span>4 posti rimanenti.</span>
+            </div>
+            <p>Click the button to listen on Spotiwhy app.</p>
+            <div class="card-actions justify-end">
+              <button class="btn btn-primary text-white">Iscriviti</button>
+            </div>
           </div>
         </div>
+        <br>
       </div>
-      <br>
     </div>
   </div>
 </div>
