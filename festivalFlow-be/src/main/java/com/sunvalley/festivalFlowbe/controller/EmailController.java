@@ -1,6 +1,7 @@
 package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.utility.EmailService;
+import com.sunvalley.festivalFlowbe.utility.notification.EmailRequest;
 import jakarta.mail.MessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,15 @@ public class EmailController {
   private EmailService emailService;
 
   @PostMapping("/send-email")
-  public void sendEmail() {
+  public String sendEmail() {
     log.debug("Sending email...");
-    try {
-      emailService.sendEmail("aramis.grata@bluewin.ch", "Subject", "Hello, this is the body of the email!");
-      log.debug("Email sent successfully!");
-    } catch (MessagingException e) {
-      log.error("Error sending email: " + e.getMessage());
-    }
+    var email = new EmailRequest();
+    email.setTo("aramis.grata@bluewin.ch");
+    email.setSubject("Test");
+    email.setMessage("Test message");
+
+    emailService.sendEmail(email);
+    log.debug("Email sent successfully!");
+    return "Email sent successfully!";
   }
 }
