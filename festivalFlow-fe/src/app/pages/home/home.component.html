@@ -1,77 +1,81 @@
 <div class="max-h-screen overflow-y-hidden">
-  <app-header></app-header>
-  <div class="wrapper flex flex-col lg:flex-row-reverse">
-    <div class="lg:order-2 h-full mt-5">
-      <div class="card bg-white shadow-xl ml-5 filter text-black">
-        <div class="card-body">
-          <h2 class="card-title">Filter</h2>
+    <app-header></app-header>
+    <div class="wrapper flex flex-col lg:flex-row-reverse">
+        <div class="lg:order-2 h-full mt-5">
+            <div class="card bg-white ml-5 shadow filter text-black">
+                <div class="card-body">
+                    <h2 class="card-title">Filter</h2>
 
-        <select #id class="select select-bordered w-full max-w-xs"  (change)="getLocationsByDayId(id.value)">
-          <option *ngFor="let day of days" [value]="day.id">{{day.name}}</option>
-        </select>
+                    <select #id class="select select-bordered w-full max-w-xs" (change)="getLocationsByDayId(id.value)">
+                        <option *ngFor="let day of days" [value]="day.id">{{ day.name }}</option>
+                    </select>
 
-        <label class="form-control w-full max-w-xs">
-          <div class="label">
-            <span class="label-text">Postazione</span>
-          </div>
-          <input type="text" placeholder="Inserisci postazione..." class="input input-bordered w-full max-w-xs" />
-        </label>
+                    <label class="form-control w-full max-w-xs">
+                        <div class="label">
+                            <span class="label-text">Postazione</span>
+                        </div>
+                        <input type="text" placeholder="Inserisci postazione..." class="input input-bordered w-full max-w-xs"/>
+                    </label>
 
-        <br>
+                    <br>
 
-        <input type="range" min="0" max="100" value="25" class="range range-secondary" step="25" />
-        <div class="w-full flex justify-between text-xs px-2">
-          <span>|</span>
-          <span>|</span>
-          <span>|</span>
-          <span>|</span>
-          <span>|</span>
+                    <input type="range" min="0" max="100" value="25" class="range range-secondary" step="25"/>
+                    <div class="w-full flex justify-between text-xs px-2">
+                        <span>|</span>
+                        <span>|</span>
+                        <span>|</span>
+                        <span>|</span>
+                        <span>|</span>
+                    </div>
+
+                    <br>
+
+                    <div class="form-control">
+                        <label class="label cursor-pointer">
+                            <span class="label-text">asd</span>
+                            <input type="checkbox" class="toggle toggle-secondary"/>
+                        </label>
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label cursor-pointer">
+                            <span class="label-text">dsa</span>
+                            <input type="checkbox" class="toggle toggle-secondary"/>
+                        </label>
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label cursor-pointer">
+                            <span class="label-text">sad</span>
+                            <input type="checkbox" class="toggle toggle-secondary"/>
+                        </label>
+                    </div>
+
+
+                </div>
+            </div>
         </div>
-
-        <br>
-
-        <div class="form-control">
-          <label class="label cursor-pointer">
-            <span class="label-text">asd</span>
-            <input type="checkbox" class="toggle toggle-secondary" />
-          </label>
+        <div class="flex-grow lg:order-1">
+            <div class="flex flex-col items-center max-h-screen overflow-scroll">
+                <div class="card lg:card-side bg-white text-black shadow w-2/3 mt-5" *ngFor="let location of locations; index as i">
+                    <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album"/></figure>
+                    <div class="card-body">
+                        <h2 class="card-title">{{ location.name }}</h2>
+                        <div role="alert" class="alert bg-gray-50 border-accent w-fit">
+                            <img src="../../../assets/icons/group.svg" alt="group">
+                            <span>{{ locationAvailability[i]?.availableSlots }} Rimanenti</span>
+                        </div>
+                        <p>{{ location.description }}</p>
+                        <div class="card-actions justify-end">
+                            <button class="btn btn-primary text-white" (click)="openDetail(location.id)">Iscriviti</button>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+            </div>
         </div>
-
-        <div class="form-control">
-          <label class="label cursor-pointer">
-            <span class="label-text">dsa</span>
-            <input type="checkbox" class="toggle toggle-secondary" />
-          </label>
-        </div>
-
-        <div class="form-control">
-          <label class="label cursor-pointer">
-            <span class="label-text">sad</span>
-            <input type="checkbox" class="toggle toggle-secondary" />
-          </label>
-        </div>
-
-
-      </div>
     </div>
-  </div>
-  <div class="flex-grow lg:order-1">
-      <div class="flex flex-col items-center max-h-screen overflow-scroll">
-      <div class="card lg:card-side bg-white text-black shadow-xl w-full" *ngFor="let location of locations; index as i">
-        <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album"/></figure>
-        <div class="card-body">
-          <h2 class="card-title">{{location.name}}</h2>
-          <div role="alert" class="alert bg-gray-50 border-accent w-fit">
-            <img src="../../../assets/icons/group.svg" alt="group">
-            <span>{{locationAvailability[i]?.availableSlots}} Rimanenti</span>
-          </div>
-          <p>{{location.description}}</p>
-          <div class="card-actions justify-end">
-            <button class="btn btn-primary text-white" (click)="openDetail(location.id)">Iscriviti</button>
-          </div>
-        </div>
-      </div>
-      <br>
-    </div>
-  </div>
 </div>

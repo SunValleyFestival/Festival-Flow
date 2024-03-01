@@ -29,8 +29,4 @@ public class DayEntity {
 
     @Column(name = "description")
     private String description;
-
-    @ManyToOne
-    @JoinColumn(name = "day_id", referencedColumnName = "id")
-    private DayEntity day;
 }

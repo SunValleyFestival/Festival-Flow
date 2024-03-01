@@ -1,83 +1,90 @@
-<div>
-  <div role="alert" class="alert shadow-lg alert-success" *ngIf="signedIn">
-    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-    </svg>
-    <div>
-      <h3 class="font-bold">Ti sei iscritto!</h3>
-      <div class="text-xs">Iscrizione eseguita con successo</div>
-    </div>
-    <button class="btn btn-sm">Vedi</button>
-  </div>
-
-  <div class="m-10">
-
-    <h1 class="mb-10 text-3xl">{{selectedLocation?.name}}</h1>
-
-    <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
-      <li *ngFor="let shift of shifts; index as i">
-        <div class="timeline-middle">
-        </div>
-        <div class="timeline-start mb-10">
-          <time class="font-mono italic">{{ shift.startTime }} - {{shift.endTime}}</time>
-          <div class="text-lg font-black">{{ shift.name }}</div>
-          <div class="flex flex-col gap-3">
-            {{ shift.description }}
-            <p>{{shiftAvailability[i]?.availableSlots}} posti rimanenti</p>
-            <progress class="progress progress-error w-1/2" value="{{shift.maxCollaborator - (shiftAvailability[i]?.availableSlots ?? 0)}}" max="{{shift.maxCollaborator}}"></progress>
-            <button class="btn btn-outline btn-accent" (click)="showDialog(shift.id)">Iscriviti</button>
-          </div>
-        </div>
-        <hr/>
-      </li>
-    </ul>
-  </div>
-
-  <dialog [id]="shift.id+ 'Dialog'" class="modal modal-bottom sm:modal-middle" *ngFor="let shift of shifts">
-    <div class="modal-box">
-      <h3 class="font-bold text-lg">Iscriviti ( {{ shift.startTime }} - {{shift.endTime}} )</h3>
-      <div class="flex justify-center">
-        <form method="dialog" #myForm="ngForm" class="mt-2">
-
-          <label class="input input-bordered flex items-center mt-2 gap-2">
-            Email:
-            <input type="email" class="grow bg-base-100" [(ngModel)]="formData.email" name="email" placeholder="max.carota@gmail.com" required/>
-          </label>
-
-          <label class="input input-bordered flex items-center mt-2 gap-2">
-            Telefono:
-            <input type="tel" class="grow bg-base-100" [(ngModel)]="formData.phone" name="phone" placeholder="123456789" required/>
-          </label>
-          <label class="input input-bordered flex items-center mt-2 gap-2">
-            Nome:
-            <input type="text" class="grow bg-base-100" [(ngModel)]="formData.firstName" name="firstName" placeholder="Max" required/>
-          </label>
-
-          <label class="input input-bordered flex items-center mt-2 gap-2">
-            Cognome:
-            <input type="text" class="grow bg-base-100" [(ngModel)]="formData.lastName" name="lastName" placeholder="Carota" required/>
-          </label>
-
-          <label class="input input-bordered flex items-center mt-2 gap-2">
-            Età:
-            <input type="date" class="grow bg-base-100" [(ngModel)]="formData.age" name="age" placeholder="22" required/>
-          </label>
-
-          <div class="mt-2">
-            <select class="select select-bordered w-full max-w-xs" [(ngModel)]="formData.size" name="size" required>
-              <option disabled>Taglia Maglietta</option>
-              <option>S</option>
-              <option>M</option>
-              <option>L</option>
-              <option>XL</option>
-            </select>
-          </div>
-          <div class="mt-2 w-full flex justify-end">
-            <button class="btn" (click)="submitData(shift.id)">Conferma</button>
-          </div>
-        </form>
+<div class="max-h-screen overflow-y-hidden">
+  <app-header></app-header>
+  <div class="max-h-screen overflow-scroll">
+    <div role="alert" class="alert shadow-lg alert-success" *ngIf="signedIn">
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <div>
+        <h3 class="font-bold">Ti sei iscritto!</h3>
+        <div class="text-xs">Iscrizione eseguita con successo</div>
       </div>
+      <button class="btn btn-sm">Vedi</button>
     </div>
-  </dialog>
 
+    <div class="m-10">
+
+      <h1 class="mb-10 text-3xl">{{ selectedLocation?.name }}</h1>
+
+      <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
+        <li *ngFor="let shift of shifts; index as i">
+          <div class="timeline-middle">
+          </div>
+          <div class="timeline-start mb-10">
+            <time class="font-mono italic">{{ shift.startTime }} - {{ shift.endTime }}</time>
+            <div class="text-lg font-black">{{ shift.name }}</div>
+            <div class="flex flex-col gap-3">
+              {{ shift.description }}
+              <p>{{ shiftAvailability[i]?.availableSlots }} posti rimanenti</p>
+              <progress class="progress progress-error w-1/2" value="{{shift.maxCollaborator - (shiftAvailability[i]?.availableSlots ?? 0)}}"
+                        max="{{shift.maxCollaborator}}"></progress>
+              <button class="btn btn-outline btn-accent" (click)="showDialog(shift.id)">Iscriviti</button>
+            </div>
+          </div>
+          <hr/>
+        </li>
+      </ul>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <dialog [id]="shift.id+ 'Dialog'" class="modal modal-bottom sm:modal-middle" *ngFor="let shift of shifts">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg">Iscriviti ( {{ shift.startTime }} - {{ shift.endTime }} )</h3>
+        <div class="flex justify-center">
+          <form method="dialog" #myForm="ngForm" class="mt-2">
+
+            <label class="input input-bordered flex items-center mt-2 gap-2">
+              Email:
+              <input type="email" class="grow bg-base-100" [(ngModel)]="formData.email" name="email" placeholder="max.carota@gmail.com" required/>
+            </label>
+
+            <label class="input input-bordered flex items-center mt-2 gap-2">
+              Telefono:
+              <input type="tel" class="grow bg-base-100" [(ngModel)]="formData.phone" name="phone" placeholder="123456789" required/>
+            </label>
+            <label class="input input-bordered flex items-center mt-2 gap-2">
+              Nome:
+              <input type="text" class="grow bg-base-100" [(ngModel)]="formData.firstName" name="firstName" placeholder="Max" required/>
+            </label>
+
+            <label class="input input-bordered flex items-center mt-2 gap-2">
+              Cognome:
+              <input type="text" class="grow bg-base-100" [(ngModel)]="formData.lastName" name="lastName" placeholder="Carota" required/>
+            </label>
+
+            <label class="input input-bordered flex items-center mt-2 gap-2">
+              Età:
+              <input type="date" class="grow bg-base-100" [(ngModel)]="formData.age" name="age" placeholder="22" required/>
+            </label>
+
+            <div class="mt-2">
+              <select class="select select-bordered w-full max-w-xs" [(ngModel)]="formData.size" name="size" required>
+                <option disabled>Taglia Maglietta</option>
+                <option>S</option>
+                <option>M</option>
+                <option>L</option>
+                <option>XL</option>
+              </select>
+            </div>
+            <div class="mt-2 w-full flex justify-end">
+              <button class="btn" (click)="submitData(shift.id)">Conferma</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </dialog>
+  </div>
 </div>
