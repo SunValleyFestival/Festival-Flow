@@ -1,5 +1,6 @@
 package com.sunvalley.festivalFlowbe.controller.token;
 
+import com.sunvalley.festivalFlowbe.service.VerificationCodeService;
 import com.sunvalley.festivalFlowbe.util.JWTTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +18,28 @@ import java.util.Map;
 public class AuthController {
     private final JWTTokenProvider tokenProvider;
 
+    private VerificationCodeService verificationCodeService;
+
     @PostMapping("/login")
-    public String login(@RequestBody Map<String, Object> claims) {
-        return tokenProvider.generateToken(claims);
+    public String login(@RequestBody Integer userId) {
+        log.info("userId: " + userId);
+        verificationCodeService.createCode(Long.valueOf(userId));
+        verificationCodeService.logCode(Long.valueOf(userId));
+        //then send email
+
+        return "code sent to email";
     }
+
+    @PostMapping("/login/confirm")
+    public String loginConfirm(@RequestBody Map<String, Object> claims) {
+        if (verificationCodeService.isvalid((Long) claims.get("userId"), (String) claims.get("code"))) {
+            return tokenProvider.generateToken();
+        } else {
+            throw new RuntimeException("Invalid code");
+        }
+    }
+
+
+
 
 }

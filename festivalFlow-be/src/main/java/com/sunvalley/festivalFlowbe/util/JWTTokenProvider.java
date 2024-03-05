@@ -20,13 +20,19 @@ import java.util.Map;
 public class JWTTokenProvider {
     private final ApplicationJwtConfig applicationJwtConfig;
 
-    public String generateToken(Map<String, Object> claims) {
+    public String generateToken() {
 
         final RSAPrivateKey privateKey = applicationJwtConfig.getPrivateKey();
         final JWSHeader header = new JWSHeader(applicationJwtConfig.getAlgorithm());
-        final JWTClaimsSet claimsSet = buildJWTClaimsSet(claims);
+        final JWTClaimsSet claim = new JWTClaimsSet.Builder()
+                .subject("tipo")
+                .issuer("https://c2id.com")
+                .expirationTime(new Date(new Date().getTime() + 60 * 1000))
+                .claim("role", "user")
+                .build();
+//        final JWTClaimsSet claimsSet = buildJWTClaimsSet(claim);
 
-        final SignedJWT jwt = new SignedJWT(header, claimsSet);
+        final SignedJWT jwt = new SignedJWT(header, claim);
 
         try {
             final JWSSigner signer = new RSASSASigner(privateKey);
