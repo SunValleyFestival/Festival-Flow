@@ -1,7 +1,7 @@
 package com.sunvalley.festivalFlowbe.controller.token;
 
 import com.sunvalley.festivalFlowbe.service.VerificationCodeService;
-import com.sunvalley.festivalFlowbe.util.JWTTokenProvider;
+import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
-    private final JWTTokenProvider tokenProvider;
+    private final JWTTokenProviderService tokenProvider;
 
     private final VerificationCodeService verificationCodeService = new VerificationCodeService();
 

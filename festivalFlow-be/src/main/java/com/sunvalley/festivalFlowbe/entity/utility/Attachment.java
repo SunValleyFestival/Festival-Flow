@@ -1,6 +1,5 @@
-package com.sunvalley.festivalFlowbe.utility.notification;
+package com.sunvalley.festivalFlowbe.entity.utility;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor(staticName = "of")
 @Builder
-public class EmailRequest {
+public class Attachment {
 
-  private String to;
-  private String subject;
-  private String message;
+  private String filename;
+  private byte[] content;
 }

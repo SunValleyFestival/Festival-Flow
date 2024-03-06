@@ -1,18 +1,19 @@
-package com.sunvalley.festivalFlowbe.utility;
+package com.sunvalley.festivalFlowbe.service.utility;
 
-import com.sunvalley.festivalFlowbe.utility.notification.Attachment;
-import com.sunvalley.festivalFlowbe.utility.notification.EmailRequest;
+import com.sunvalley.festivalFlowbe.entity.utility.Attachment;
+import com.sunvalley.festivalFlowbe.entity.utility.EmailRequest;
 import io.micrometer.common.util.StringUtils;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j

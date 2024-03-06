@@ -1,4 +1,4 @@
-package com.sunvalley.festivalFlowbe.utility;
+package com.sunvalley.festivalFlowbe.service.utility;
 
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSHeader;
@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class JWTTokenProvider {
+public class JWTTokenProviderService {
     private final ApplicationJwtConfig applicationJwtConfig;
 
     public String generateToken() {
