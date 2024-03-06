@@ -1,10 +1,11 @@
-package com.sunvalley.festivalFlowbe.service;
+package com.sunvalley.festivalFlowbe.service.utility;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -13,6 +14,7 @@ public class VerificationCodeService {
 
     private final Cache<Object, Object> cache;
 
+    private EmailService emailService;
 
     public VerificationCodeService() {
         this.cache = Caffeine.newBuilder()
@@ -22,10 +24,11 @@ public class VerificationCodeService {
     }
 
 
-    public void createCode(Long userId) {
+    public void createCodeAndSend(Long userId) {
         //random 6 number code
         String code = String.valueOf((int) ((Math.random() * (999999 - 100000)) + 100000));
         saveCode(userId, code);
+        emailService.sendEmail(Objects.requireNonNull(cache.getIfPresent(userId)).toString());
     }
 
     public boolean isvalid(Long userId, String code) {

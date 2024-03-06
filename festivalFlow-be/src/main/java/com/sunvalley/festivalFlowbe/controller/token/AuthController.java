@@ -1,7 +1,7 @@
 package com.sunvalley.festivalFlowbe.controller.token;
 
-import com.sunvalley.festivalFlowbe.service.VerificationCodeService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
+import com.sunvalley.festivalFlowbe.service.utility.VerificationCodeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +23,7 @@ public class AuthController {
     @PostMapping("/login")
     public String login(@RequestBody Integer userId) {
         log.info("userId: " + userId);
-        verificationCodeService.createCode(Long.valueOf(userId));
+        verificationCodeService.createCodeAndSend(Long.valueOf(userId));
         verificationCodeService.logCode(Long.valueOf(userId));
         //then send email
 
