@@ -8,7 +8,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/FestivalFlow
     username: root
-    password: Eragon05
+    password: Admin123
 
   mail:
     host: wnbgpr5.thunderhosting.cloud
