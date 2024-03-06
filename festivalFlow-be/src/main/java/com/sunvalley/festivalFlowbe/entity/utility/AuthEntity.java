@@ -14,5 +14,5 @@ public class AuthEntity {
     private int userId;
     private String code;
     private String token;
-    private String isValid;
+    private boolean isValid;
 }

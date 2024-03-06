@@ -4,6 +4,7 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.RSASSASigner;
+import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.sunvalley.festivalFlowbe.config.ApplicationJwtConfig;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.text.ParseException;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
@@ -43,6 +46,17 @@ public class JWTTokenProviderService {
 
         return jwt.serialize();
     }
+
+    public boolean validateToken(String token) throws JOSEException, ParseException {
+        SignedJWT parsedJWT = SignedJWT.parse(token);
+        RSAPublicKey publicKey = applicationJwtConfig.getPublicKey();
+        if (!parsedJWT.verify(new RSASSAVerifier(publicKey))) {
+            return false;
+        }
+        JWTClaimsSet claims = parsedJWT.getJWTClaimsSet();
+        return !claims.getExpirationTime().before(new Date());
+    }
+
 
     private JWTClaimsSet buildJWTClaimsSet(Map<String, Object> claims) {
         final String issuer = applicationJwtConfig.getIssuer();
