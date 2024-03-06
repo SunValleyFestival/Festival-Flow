@@ -1,6 +1,6 @@
 package com.sunvalley.festivalFlowbe.controller.token;
 
-import com.sunvalley.festivalFlowbe.util.JWTTokenProvider;
+import com.sunvalley.festivalFlowbe.utility.JWTTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;

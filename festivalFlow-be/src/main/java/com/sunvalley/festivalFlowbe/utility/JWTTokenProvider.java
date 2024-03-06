@@ -1,4 +1,4 @@
-package com.sunvalley.festivalFlowbe.util;
+package com.sunvalley.festivalFlowbe.utility;
 
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSHeader;
