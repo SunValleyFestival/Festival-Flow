@@ -1,0 +1,110 @@
+<div class="max-h-screen overflow-y-hidden">
+  <app-header></app-header>
+  <div class="max-h-screen overflow-scroll">
+    <h1 class="ml-5 mt-5 text-4xl">Turno Bar</h1>
+    <div class="flex gap-3 flex-col m-5">
+      <div class="collapse collapse-arrow bg-base-200">
+        <input type="radio" name="my-accordion-2"/>
+        <div class="collapse-title text-xl justify-between flex font-medium">
+          <div class="self-center">
+            Turno 1 - 10:00 - 12:00
+          </div>
+          <div class="justify-self-end">
+            <button class="btn btn-circle" (click)="deleteShift()">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
+        </div>
+        <div class="collapse-content">
+          <div>
+            <div class="flex w-full justify-between">
+              <div class="self-center">
+                Timothé Ember
+              </div>
+              <div class="self-center">
+                079 123 45 67
+              </div>
+              <div class="self-center">
+                timothé.ember@coso.ch
+              </div>
+              <div class="self-center">
+                Pf assieme a Joe
+              </div>
+              <div class="flex gap-2">
+                <button class="btn btn-error">Elimina</button>
+                <button class="btn btn-success">Conferma</button>
+              </div>
+            </div>
+            <div class="flex flex-col w-full">
+              <div class="divider divider-start"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex w-full justify-between">
+              <div class="self-center">
+                Timothé Ember
+              </div>
+              <div class="self-center">
+                079 123 45 67
+              </div>
+              <div class="self-center">
+                timothé.ember@coso.ch
+              </div>
+              <div class="self-center">
+                Pf assieme a Joe
+              </div>
+              <div class="flex gap-2">
+                <button class="btn btn-error">Elimina</button>
+                <button class="btn btn-success">Conferma</button>
+              </div>
+            </div>
+            <div class="flex flex-col w-full">
+              <div class="divider divider-start"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-success" (click)="dialog.showModal()">Aggiungi Turno</button>
+    </div>
+    <br>
+    <br>
+
+  </div>
+</div>
+
+<dialog #dialog class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Crea Turno</h3>
+    <div class="flex justify-center">
+      <form method="dialog" #myForm="ngForm" class="mt-2">
+
+        <label class="input input-bordered flex items-center mt-2 gap-2">
+          Nome:
+          <input type="text" class="grow bg-base-100" [(ngModel)]="formData.name" name="name" placeholder="Turno 1" required/>
+        </label>
+
+        <label class="input input-bordered flex items-center mt-2 gap-2">
+          Descrizione:
+          <input type="text" class="grow bg-base-100" [(ngModel)]="formData.description" name="description" placeholder="Descrizione di Turno 1" required/>
+        </label>
+        <label class="input input-bordered flex items-center mt-2 gap-2">
+          Inizio:
+          <input type="time" class="grow bg-base-100" [(ngModel)]="formData.startTime" name="startTime" required/>
+        </label>
+
+        <label class="input input-bordered flex items-center mt-2 gap-2">
+          Fine:
+          <input type="time" class="grow bg-base-100" [(ngModel)]="formData.endTime" name="endTime" required/>
+        </label>
+
+        <label class="input input-bordered flex items-center mt-2 gap-2">
+          Numero di collaboratori:
+          <input type="number" class="grow bg-base-100" [(ngModel)]="formData.maxCollaborator" name="maxCollaborator" placeholder="1" required/>
+        </label>
+        <div class="mt-2 w-full flex justify-end">
+          <button class="btn" (click)="submitData()">Conferma</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</dialog>
