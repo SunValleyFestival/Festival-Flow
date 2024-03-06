@@ -16,9 +16,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
-    private final JWTTokenProviderService tokenProvider;
 
-    private final VerificationCodeService verificationCodeService = new VerificationCodeService();
+    private final JWTTokenProviderService tokenProvider;
+    private final VerificationCodeService verificationCodeService;
 
     @PostMapping("/login")
     public String login(@RequestBody Integer userId) {
@@ -29,7 +29,6 @@ public class AuthController {
 
         return "code sent to email";
     }
-
     @PostMapping("/login/confirm")
     public String loginConfirm(@RequestBody Map<String, Object> claims) {
         if (verificationCodeService.isvalid(Long.valueOf((Integer) claims.get("userId")), (String) claims.get("code"))) {

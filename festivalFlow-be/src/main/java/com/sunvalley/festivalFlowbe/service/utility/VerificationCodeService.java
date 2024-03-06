@@ -3,6 +3,7 @@ package com.sunvalley.festivalFlowbe.service.utility;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -14,9 +15,12 @@ public class VerificationCodeService {
 
     private final Cache<Object, Object> cache;
 
+    @Autowired
     private EmailService emailService;
 
-    public VerificationCodeService() {
+    @Autowired
+    public VerificationCodeService(EmailService emailService) {
+        this.emailService = emailService;
         this.cache = Caffeine.newBuilder()
                 //expire after 2 minutes
                 .expireAfterWrite(2, TimeUnit.MINUTES)

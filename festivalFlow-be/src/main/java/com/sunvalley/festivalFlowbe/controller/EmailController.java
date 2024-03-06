@@ -24,7 +24,7 @@ public class EmailController {
     email.setSubject("Test");
     email.setMessage("Test message");
 
-    emailService.sendEmail(email);
+//    emailService.sendEmail(email);
     log.debug("Email sent successfully!");
     return "Email sent successfully!";
   }
