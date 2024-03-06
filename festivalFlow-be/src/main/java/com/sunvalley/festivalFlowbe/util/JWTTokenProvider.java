@@ -58,5 +58,4 @@ public class JWTTokenProvider {
 
         return builder.build();
     }
-
 }

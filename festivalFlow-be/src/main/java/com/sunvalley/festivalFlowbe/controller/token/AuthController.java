@@ -18,7 +18,7 @@ import java.util.Map;
 public class AuthController {
     private final JWTTokenProvider tokenProvider;
 
-    private VerificationCodeService verificationCodeService;
+    private final VerificationCodeService verificationCodeService = new VerificationCodeService();
 
     @PostMapping("/login")
     public String login(@RequestBody Integer userId) {
@@ -32,14 +32,12 @@ public class AuthController {
 
     @PostMapping("/login/confirm")
     public String loginConfirm(@RequestBody Map<String, Object> claims) {
-        if (verificationCodeService.isvalid((Long) claims.get("userId"), (String) claims.get("code"))) {
+        if (verificationCodeService.isvalid(Long.valueOf((Integer) claims.get("userId")), (String) claims.get("code"))) {
             return tokenProvider.generateToken();
         } else {
-            throw new RuntimeException("Invalid code");
+            return "invalid code";
         }
     }
-
-
 
 
 }
