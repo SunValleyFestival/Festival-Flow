@@ -1,7 +1,10 @@
 package com.sunvalley.festivalFlowbe.controller.token;
 
-import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
+import com.nimbusds.jose.JOSEException;
+import com.sunvalley.festivalFlowbe.entity.utility.AuthEntity;
 import com.sunvalley.festivalFlowbe.service.utility.VerificationCodeService;
+import com.sunvalley.festivalFlowbe.service.utility.EmailService;
+import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,27 +19,52 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
-
     private final JWTTokenProviderService tokenProvider;
+
     private final VerificationCodeService verificationCodeService;
 
-    @PostMapping("/login")
-    public String login(@RequestBody Integer userId) {
-        log.info("userId: " + userId);
-        verificationCodeService.createCodeAndSend(Long.valueOf(userId));
-        verificationCodeService.logCode(Long.valueOf(userId));
-        //then send email
+    private final EmailService emailService;
 
-        return "code sent to email";
+
+    @PostMapping("/login")
+    public boolean login(@RequestBody AuthEntity authEntity) {
+        int userId = authEntity.getUserId();
+        log.info("userId: " + authEntity.getUserId());
+        verificationCodeService.createCode(userId);
+        verificationCodeService.logCode(userId);
+        String code = verificationCodeService.getCode(userId);
+        boolean emailSend = emailService.sendCodeViaEmail(code, userId);
+        if (!emailSend) {
+            verificationCodeService.removeCode(userId);
+            verificationCodeService.logCode(userId);
+        }
+        return emailSend;
     }
+
     @PostMapping("/login/confirm")
-    public String loginConfirm(@RequestBody Map<String, Object> claims) {
-        if (verificationCodeService.isvalid(Long.valueOf((Integer) claims.get("userId")), (String) claims.get("code"))) {
-            return tokenProvider.generateToken();
+    public AuthEntity loginConfirm(@RequestBody AuthEntity authEntity) {
+        if (verificationCodeService.isvalid( authEntity.getUserId(), authEntity.getCode())) {
+            authEntity.setToken(tokenProvider.generateToken(authEntity.getUserId()));
+            authEntity.setValid(true);
+            return authEntity;
         } else {
-            return "invalid code";
+            authEntity.setValid(false);
+            return authEntity;
         }
     }
 
+    @PostMapping("/validate")
+    public AuthEntity validateToken(@RequestBody AuthEntity authEntity) {
+        try {
+            if (tokenProvider.validateToken(authEntity)) {
+                authEntity.setValid(true);
+            } else {
+                authEntity.setValid(false);
+            }
+        } catch (JOSEException | ParseException e) {
+            authEntity.setValid(false);
+        }
+        return authEntity;
+    }
 
 }

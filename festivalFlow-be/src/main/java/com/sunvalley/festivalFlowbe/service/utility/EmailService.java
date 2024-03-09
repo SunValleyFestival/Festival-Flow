@@ -20,7 +20,11 @@ import java.util.List;
 @Slf4j
 public class EmailService {
 
+    @Autowired
     private final JavaMailSender mailSender;
+
+    @Autowired
+    private final CollaboratorService collaboratorService;
 
     @Value("${spring.mail.properties.mail.smtp.from}")
     private String senderAddress;
@@ -29,34 +33,40 @@ public class EmailService {
     @Value("${spring.mail.properties.test-receiver}")
     private String testReceiver;
 
-
-    @Autowired
-    public EmailService(JavaMailSender mailSender) {
+    public EmailService(JavaMailSender mailSender, CollaboratorService collaboratorService) {
         this.mailSender = mailSender;
+        this.collaboratorService = collaboratorService;
     }
 
-    public void sendEmail(String code) {
-
-
-        log.debug("Sending email...");
-
-        var email = new EmailRequest();
-        email.setTo(testReceiver);
-        email.setSubject("Test code");
-        email.setMessage("Your verification code is: " + code);
-
-        log.debug("Email sent successfully!");
+    public boolean sendEmail(EmailRequest emailRequest) {
+        log.info("Sending email to <{}> with subject<{}>...", emailRequest.getTo(), emailRequest.getSubject());
 
         if (!enabled) {
             log.info("Send email disabled, check configuration");
-            return;
+            return false;
         }
 
-        addTestReceiverIfConfigured(email);
-        sendMimeMessage(email);
+//        addTestReceiverIfConfigured(emailRequest);
+        return sendMimeMessage(emailRequest);
     }
 
-    private void sendMimeMessage(EmailRequest emailRequest) {
+    public boolean sendCodeViaEmail(String code, int userId) {
+        log.info("Sending code to user <{}>...", userId);
+        var emailRequest = new EmailRequest();
+        String email = collaboratorService.getEmailById(userId);
+        if (email == null || code.isEmpty()) {
+            return false;
+        }
+        emailRequest.setTo(email);
+        emailRequest.setSubject("Verification Code");
+
+        //add message with link
+        emailRequest.setMessage("Your verification code is: " + code);
+        return sendEmail(emailRequest);
+
+    }
+
+    private boolean sendMimeMessage(EmailRequest emailRequest) {
         var mimeMessage = mailSender.createMimeMessage();
         try {
             var helper = getMimeMessageHelper(emailRequest, mimeMessage);
@@ -64,9 +74,11 @@ public class EmailService {
 
             mailSender.send(mimeMessage);
             log.info("Email sent");
+            return true;
 
         } catch (MessagingException e) {
             log.error("Error sending email", e);
+            return false;
         }
     }
 
