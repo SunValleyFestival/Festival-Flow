@@ -15,4 +15,9 @@ export class AssociationService {
   getAssociations() {
     return this.http.get(BASE_URL) + "/all";
   }
+
+  saveAssociation(collaboratorId: number, shiftId: number) {
+    return this.http.post(BASE_URL + "/save", {collaboratorId, shiftId});
+
+  }
 }

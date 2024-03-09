@@ -15,8 +15,8 @@ export class CookiesService {
     this.cookieService.set('username', username);
   }
 
-  getUserId() {
-    return this.cookieService.get('username');
+  getUserId(): number {
+    return Number(this.cookieService.get('username'));
   }
 
   setToken(token: string) {
