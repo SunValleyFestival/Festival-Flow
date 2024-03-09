@@ -2,6 +2,7 @@ package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
 import com.sunvalley.festivalFlowbe.entity.LocationEntity;
+import com.sunvalley.festivalFlowbe.entity.ShiftEntity;
 import com.sunvalley.festivalFlowbe.service.AssociationService;
 import com.sunvalley.festivalFlowbe.service.LocationService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ public class AssociationController {
 
     private final AssociationService associationService;
 
-    private final LocationService locationService;
+    private final ShiftEntity shiftEntity;
 
     @Autowired
     public AssociationController(AssociationService associationService) {
