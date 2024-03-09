@@ -18,7 +18,6 @@ import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
   styleUrls: ['./location-detail.component.css']
 })
 export class LocationDetailComponent implements OnInit {
-  protected selectedDay: Day | undefined;
   protected selectedLocation: Location | undefined;
   protected signedIn: boolean = false;
   protected shifts: Shift[] | undefined;
@@ -39,13 +38,10 @@ export class LocationDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.route.params.subscribe(params => {
       this.locationService.getLocationById(params['location']).pipe().subscribe((location: any) => {
         this.selectedLocation = location
-      });
-
-      this.dayService.getDayById(params['day']).pipe().subscribe((day: any) => {
-        this.selectedDay = day;
       });
 
       this.shiftService.getShiftsByLocationId(params['location']).pipe().subscribe((shifts: any) => {

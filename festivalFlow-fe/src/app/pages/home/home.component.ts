@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
 
 
   openDetail(locationId: number | undefined) {
-    this.router.navigate(['location/' + locationId + '/' + this.currentDay]);
+    this.router.navigate(['location/' + locationId]);
   }
 
 
