@@ -18,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
     private static final String[] PERMITTED_PATTERNS = {
-            "/auth/**"
+            "festival-flow/auth/**"
     };
     private final ApplicationJwtConfig applicationJwtConfig;
 

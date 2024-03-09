@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.text.ParseException;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("festival-flow/auth")
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
