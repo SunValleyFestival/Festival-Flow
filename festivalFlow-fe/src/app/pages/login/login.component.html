@@ -1,15 +1,22 @@
 <div class="w-screen h-screen wrapper">
   <app-header></app-header>
   <div class="body h-full w-screen">
-    <form (ngSubmit)="onSubmit()">
+
+    <form (ngSubmit)="onSubmit()" class="flex">
       <label class="form-control flex justify-center items-start">
         <div class="label">
-          <span class="label-text">Benvenuto, inserisci la tua mail</span>
+          <span *ngIf="!isEmailInserted" class="label-text">Benvenuto, inserisci la tua mail</span>
+          <span *ngIf="isEmailInserted" class="label-text">Verifica la tua mail, ed inserisci il codice</span>
         </div>
-        <div class="join join-vertical lg:join-horizontal w-96">
-          <input type="email" name="email" placeholder="Email" class="input input-bordered w-full max-w-xs" [(ngModel)]="mail"/>
+        <div class="join join-vertical lg:join-horizontal w-96 gap-2">
+          <input *ngIf="!isEmailInserted" type="email" name="email" placeholder="Email" class="input input-bordered w-full max-w-xs" [(ngModel)]="mail"/>
+          <input *ngIf="isEmailInserted" type="number" name="code" placeholder="123456" class="input input-bordered w-full max-w-xs" [(ngModel)]="code"/>
+          <div class="btn btn-primary" (click)="onSubmit()" >Invia</div>
         </div>
       </label>
     </form>
+
+
+
   </div>
 </div>
