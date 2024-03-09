@@ -14,13 +14,9 @@ export class AuthService {
               ) { }
 
   isAuthenticated() {
-    /*
     let token = this.cookieService.getToken();
     let userId: number = Number(this.cookieService.getUserId());
     return this.tokenService.isValidToken(userId, token);
-     */
-
-    return this.isLoggedIn;
   }
 
   isRoleAdmin() {

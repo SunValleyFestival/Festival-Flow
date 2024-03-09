@@ -14,33 +14,37 @@ export class TokenService {
   constructor(private http: HttpClient) {
   }
 
-  public login(userId: number): boolean {
-    const loginData: AuthEntity = {userId};
-    this.http.post<boolean>(BASE_URL + "login", loginData)
+  public login(email: string): AuthEntity {
+    let loginData: AuthEntity = {email};
+    let responseData: AuthEntity = {};
+
+    this.http.post<AuthEntity>(BASE_URL + "login", loginData)
       .pipe(
         map(response => {
-          return response
+          responseData = response
         }),
         catchError(error => {
           console.error('Error during login:', error);
           return of(false);
         })
       );
-    return false;
+    return responseData;
   }
 
-  public loginConfirm(userId: number, code: string){
+  public loginConfirm(userId: number, code: string): AuthEntity{
     const loginData: AuthEntity = {userId, code};
+    let authEntity: AuthEntity = {};
     this.http.post<AuthEntity>(BASE_URL + "login/confirm", loginData)
       .pipe(
         map(response => {
-          return response
+          authEntity = response
         }),
         catchError(error => {
           console.error('Error during login confirmation:', error);
           return of(undefined);
         })
       );
+    return authEntity;
   }
 
   public isValidToken(userId: number, token: string): boolean {

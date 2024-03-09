@@ -78,13 +78,16 @@ export class LocationDetailComponent implements OnInit {
     }
   }
 
-  submitData(shiftId: number) {
-    let collaborator: Collaborator = this.formData;
-    collaborator.id = this.cookiesService.getUserId();
-    this.collaboratorService.saveCollaborator(collaborator);
+  submitData(shiftId: number | undefined) {
 
-    this.associationService.saveAssociation(this.cookiesService.getUserId(), shiftId);
-    this.resetFormData();
+    if (shiftId !== undefined) {
+      let collaborator: Collaborator = this.formData;
+      collaborator.id = this.cookiesService.getUserId();
+      this.collaboratorService.saveCollaborator(collaborator);
+
+      this.associationService.saveAssociation(this.cookiesService.getUserId(), shiftId);
+      this.resetFormData();
+    }
   }
 
   resetFormData() {
@@ -99,7 +102,7 @@ export class LocationDetailComponent implements OnInit {
   }
 
   parseTime(timeString: string): number {
-    let value =  timeString.replaceAll(":", "");
+    let value = timeString.replaceAll(":", "");
     return parseInt(value);
   };
 

@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {NavigationService} from "../../services/navigation/navigation.service";
 import {CookiesService} from "../../services/token/cookies.service";
 import {TokenService} from "../../services/http/token/token.service";
+import {AuthEntity} from "../../interfaces/utility/AuthEntity";
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -15,7 +17,7 @@ export class LoginComponent {
   constructor(private navigationService: NavigationService,
               private cookiesService: CookiesService,
               private tokenService: TokenService
-              ) {
+  ) {
   }
 
   checkCredentials(mail: string): boolean {
@@ -23,14 +25,20 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    if(this.mail !== undefined && this.code === undefined) {
-      if(this.checkCredentials(this.mail)) {
-        if(this.tokenService.login(this.mail)) {
+    if (this.mail !== undefined && this.code === undefined) {
+      if (this.checkCredentials(this.mail)) {
+        let authEntity: AuthEntity = this.tokenService.login(this.mail);
+        if (authEntity !== undefined) {
           this.isEmailInserted = true;
+          this.cookiesService.setUserId(String(authEntity.userId));
         }
       }
-    } else if(this.mail !== undefined && this.code !== undefined) {
-      this.tokenService.loginConfirm(this.mail, this.code);
+    } else if (this.mail !== undefined && this.code !== undefined) {
+      let authEntity = this.tokenService.loginConfirm(this.mail, this.code);
+      if (authEntity !== undefined) {
+        this.cookiesService.setToken(String(authEntity.token));
+        this.navigationService.goToHome()
+      }
     }
   }
 }

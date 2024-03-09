@@ -11,12 +11,12 @@ export class CookiesService {
   ) {
   }
 
-  setUserId(username: string) {
-    this.cookieService.set('username', username);
+  setUserId(userId: string) {
+    this.cookieService.set('userId', userId);
   }
 
   getUserId(): number {
-    return Number(this.cookieService.get('username'));
+    return Number(this.cookieService.get('userId'));
   }
 
   setToken(token: string) {
