@@ -1,4 +1,4 @@
-package com.sunvalley.festivalFlowbe.service;
+package com.sunvalley.festivalFlowbe.service.utility;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -22,19 +22,20 @@ public class VerificationCodeService {
     }
 
 
-    public void createCode(Long userId) {
+    public void createCode(int userId) {
         //random 6 number code
         String code = String.valueOf((int) ((Math.random() * (999999 - 100000)) + 100000));
         saveCode(userId, code);
     }
 
-    public boolean isvalid(Long userId, String code) {
-        if (code == null || userId == null) {
+    public boolean isvalid(int userId, String code) {
+        if (code == null) {
             return false;
         } else if (code.equals(cache.getIfPresent(userId))) {
             removeCode(userId);
             return true;
         } else {
+            removeCode(userId);
             return false;
 
         }
@@ -42,16 +43,20 @@ public class VerificationCodeService {
 
 
     //method only for test
-    public void logCode(Long userId) {
+    public void logCode(int userId) {
         log.info("code for user: " + userId + " is: " + cache.getIfPresent(userId));
     }
 
+    public String getCode(int userId) {
+        return (String) cache.getIfPresent(userId);
+    }
 
-    private void removeCode(Long userId) {
+
+    public void removeCode(int userId) {
         cache.invalidate(userId);
     }
 
-    private void saveCode(Long userId, String code) {
+    private void saveCode(int userId, String code) {
         cache.put(userId, code);
     }
 }

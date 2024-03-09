@@ -1,6 +1,6 @@
-export interface Association {
+export interface AuthEntity {
   userId: number;
-  code: string;
-  token: string;
-  isValid: boolean;
+  code?: string;
+  token?: string;
+  isValid?: boolean;
 }

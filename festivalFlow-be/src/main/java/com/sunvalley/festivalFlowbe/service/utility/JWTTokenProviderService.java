@@ -8,6 +8,7 @@ import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.sunvalley.festivalFlowbe.config.ApplicationJwtConfig;
+import com.sunvalley.festivalFlowbe.entity.utility.AuthEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,18 +24,18 @@ import java.util.Map;
 public class JWTTokenProviderService {
     private final ApplicationJwtConfig applicationJwtConfig;
 
-    public String generateToken() {
+    public String generateToken(int userId) {
 
         final RSAPrivateKey privateKey = applicationJwtConfig.getPrivateKey();
         final JWSHeader header = new JWSHeader(applicationJwtConfig.getAlgorithm());
-        final JWTClaimsSet claim = new JWTClaimsSet.Builder()
-                .subject("tipo")
-                .issuer("https://c2id.com")
-                .expirationTime(new Date(new Date().getTime() + 60 * 1000))
-                .claim("role", "user")
-                .build();
-//        final JWTClaimsSet claimsSet = buildJWTClaimsSet(claim);
 
+        JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
+        builder.subject(String.valueOf(userId));
+        builder.issuer("");
+        builder.expirationTime(new Date(new Date().getTime() + 60 * 1000));
+        builder.claim("role", "user");
+
+        final JWTClaimsSet claim = builder.build();
         final SignedJWT jwt = new SignedJWT(header, claim);
 
         try {
@@ -47,13 +48,16 @@ public class JWTTokenProviderService {
         return jwt.serialize();
     }
 
-    public boolean validateToken(String token) throws JOSEException, ParseException {
-        SignedJWT parsedJWT = SignedJWT.parse(token);
+    public boolean validateToken(AuthEntity authEntity) throws JOSEException, ParseException {
+        SignedJWT parsedJWT = SignedJWT.parse(authEntity.getToken());
         RSAPublicKey publicKey = applicationJwtConfig.getPublicKey();
-        if (!parsedJWT.verify(new RSASSAVerifier(publicKey))) {
+        JWTClaimsSet claims = parsedJWT.getJWTClaimsSet();
+
+        if (!parsedJWT.verify(new RSASSAVerifier(publicKey)) &&
+                !claims.getSubject().equals(String.valueOf(authEntity.getUserId()))) {
             return false;
         }
-        JWTClaimsSet claims = parsedJWT.getJWTClaimsSet();
+
         return !claims.getExpirationTime().before(new Date());
     }
 

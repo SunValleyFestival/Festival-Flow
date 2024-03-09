@@ -19,4 +19,8 @@ public class CollaboratorService {
   public List<CollaboratorEntity> getAll() {
     return collaboratorRepository.findAll();
   }
+
+  public String getEmailById(int id) {
+    return collaboratorRepository.getEmailById(id);
+  }
 }
