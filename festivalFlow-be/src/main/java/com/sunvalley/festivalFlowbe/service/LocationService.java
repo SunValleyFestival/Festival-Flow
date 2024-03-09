@@ -26,9 +26,10 @@ public class LocationService {
         return locationRepository.findAll();
     }
 
-    public LocationEntity create(LocationEntity location) {
-        return locationRepository.save(location);
+    public List<LocationEntity> getLocationsById(int id) {
+        return locationRepository.findById(id);
     }
+
 
     public List<LocationEntity> getLocationsByDayId(int id) {
         DayEntity day = dayService.getDayById(id);
@@ -38,4 +39,11 @@ public class LocationService {
     public LocationEntity getById(int id) {
         return locationRepository.findById(id).orElse(null);
     }
+
+    public LocationEntity create(LocationEntity location) {
+        return locationRepository.save(location);
+    }
+
+
+
 }

@@ -19,4 +19,8 @@ public class AssociationService {
   public List<AssociationEntity> getAll() {
     return associationRepository.findAll();
   }
+
+    public List<Integer> getByUserId(int userId) {
+        return associationRepository.findByUserId(userId);
+    }
 }

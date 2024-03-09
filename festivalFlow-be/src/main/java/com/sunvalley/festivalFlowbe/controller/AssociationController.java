@@ -1,7 +1,9 @@
 package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
+import com.sunvalley.festivalFlowbe.entity.LocationEntity;
 import com.sunvalley.festivalFlowbe.service.AssociationService;
+import com.sunvalley.festivalFlowbe.service.LocationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,17 +20,30 @@ import java.util.List;
 @RequestMapping("/festival-flow/association")
 public class AssociationController {
 
-  private final AssociationService associationService;
+    private final AssociationService associationService;
 
-  @Autowired
-  public AssociationController(AssociationService associationService) {
-    this.associationService = associationService;
-  }
+    private final LocationService locationService;
 
-  @CrossOrigin
-  @GetMapping("/")
-  public ResponseEntity<List<AssociationEntity>> getAll(){
-    List<AssociationEntity> associations = associationService.getAll();
-    return new ResponseEntity<>(associations, HttpStatus.OK);
-  }
+    @Autowired
+    public AssociationController(AssociationService associationService) {
+        this.associationService = associationService;
+    }
+
+    @CrossOrigin
+    @GetMapping("/")
+    public ResponseEntity<List<AssociationEntity>> getAll() {
+        List<AssociationEntity> associations = associationService.getAll();
+        return new ResponseEntity<>(associations, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @GetMapping("/userId/{id}")
+    public ResponseEntity<List<LocationEntity>> getByTypeAndId(String type, int id) {
+        List<LocationEntity> locationEntities;
+        locationEntities =  locationService.getloca associationService.getByUserId(id);
+            return new ResponseEntity<>(associations, HttpStatus.OK);
+
+        List<AssociationEntity> associations = associationService.getByTypeAndId(type, id);
+        return new ResponseEntity<>(associations, HttpStatus.OK);
+    }
 }
