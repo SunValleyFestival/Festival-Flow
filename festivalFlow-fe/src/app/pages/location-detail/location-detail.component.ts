@@ -26,7 +26,7 @@ export class LocationDetailComponent implements OnInit {
   protected shiftAvailability: ShiftAvailability[] = [];
 
   formData: Collaborator = {
-    email: '',
+    email: this.cookiesService.getUserEmail(),
     phone: '',
     firstName: '',
     lastName: '',
@@ -92,7 +92,7 @@ export class LocationDetailComponent implements OnInit {
 
   resetFormData() {
     this.formData = {
-      email: '',
+      email: this.cookiesService.getUserEmail(),
       phone: '',
       firstName: '',
       lastName: '',

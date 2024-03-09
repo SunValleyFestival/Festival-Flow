@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NavigationService} from "../../services/navigation/navigation.service";
 import {CookiesService} from "../../services/token/cookies.service";
 import {TokenService} from "../../services/http/token/token.service";
@@ -9,7 +9,7 @@ import {AuthEntity} from "../../interfaces/utility/AuthEntity";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   protected mail: any;
   protected code: any;
   protected isEmailInserted: boolean = false;
@@ -18,6 +18,14 @@ export class LoginComponent {
               private cookiesService: CookiesService,
               private tokenService: TokenService
   ) {
+  }
+
+  ngOnInit() {
+    console.log("userId", this.cookiesService.getUserId());
+    console.log("token", this.cookiesService.getToken());
+    if(this.cookiesService.getUserId() && this.cookiesService.getToken()){
+      this.navigationService.goToHome();
+    }
   }
 
   checkCredentials(mail: string): boolean {
@@ -35,6 +43,7 @@ export class LoginComponent {
               authEntity = response;
               this.isEmailInserted = true;
               this.cookiesService.setUserId(String(authEntity.userId));
+              this.cookiesService.setUserEmail(String(authEntity.email));
             }
           }
         );

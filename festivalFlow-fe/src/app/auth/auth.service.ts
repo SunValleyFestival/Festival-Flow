@@ -20,7 +20,9 @@ export class AuthService {
   isAuthenticated() {
     let token = this.cookieService.getToken();
     let userId: number = Number(this.cookieService.getUserId());
-     this.tokenService.isValidToken(userId, token);
-     return true;
+    let isValid = this.tokenService.isValidToken(userId, token);
+
+    console.log("isValid qui", isValid);
+    return true;
   }
 }

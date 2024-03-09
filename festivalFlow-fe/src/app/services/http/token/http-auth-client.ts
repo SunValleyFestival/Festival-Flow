@@ -11,18 +11,18 @@ export class HttpAuthClient {
 
 
   get(url: string): any {
-    let headers = new HttpHeaders();
-    let authString = 'Bearer ' + this.cookiesService.getToken();
-    headers.set('Authorization', authString);
+    let headers = new HttpHeaders({'Authorization': 'Bearer ' + this.cookiesService.getToken()});
+    console.log("headers", headers.getAll("Authorization"));
     return this.http.get(url, {
       headers: headers
     });
   }
 
   post(url: string, data: any): any {
-    let headers = new HttpHeaders();
-    let authString = 'Bearer ' + this.cookiesService.getToken();
-    headers.set('Authorization', authString);
+    let headers = new HttpHeaders({'Authorization': 'Bearer ' + this.cookiesService.getToken()});
+
+    console.log("headers", headers.getAll("Authorization"));
+
     return this.http.post(url, data, {
       headers: headers
     });

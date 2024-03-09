@@ -19,6 +19,14 @@ export class CookiesService {
     return Number(this.cookieService.get('userId'));
   }
 
+  setUserEmail(email: string) {
+    this.cookieService.set('userEmail', email);
+  }
+
+  getUserEmail(): string {
+    return this.cookieService.get('userEmail');
+  }
+
   setToken(token: string) {
     this.cookieService.set('token', token);
   }
