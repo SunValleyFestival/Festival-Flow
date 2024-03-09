@@ -37,4 +37,12 @@ public class CollaboratorService {
   public String getEmailById(int id) {
     return collaboratorRepository.getEmailById(id);
   }
+
+  public CollaboratorEntity getById(int id) {
+    return collaboratorRepository.findById(id).orElse(null);
+  }
+
+    public void deleteById(int id) {
+        collaboratorRepository.deleteById(id);
+    }
 }

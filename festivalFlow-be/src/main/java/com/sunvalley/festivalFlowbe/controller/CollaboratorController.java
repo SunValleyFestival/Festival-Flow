@@ -10,10 +10,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+
 @Slf4j
 @RestController
-@RequestMapping("/festival-flow/collaborator")
+@RequestMapping("/festival-flow")
 public class CollaboratorController {
+
+    private static final String ADMIN = "/admin/collaborator/";
+    private static final String COLLABORATOR = "/collaborator/";
 
     private final CollaboratorService collaboratorService;
 
@@ -23,7 +28,7 @@ public class CollaboratorController {
     }
 
     @CrossOrigin
-    @GetMapping("/")
+    @GetMapping(COLLABORATOR)
     public ResponseEntity<List<CollaboratorEntity>> getAll() {
         List<CollaboratorEntity> collaborators = collaboratorService.getAll();
         return new ResponseEntity<>(collaborators, HttpStatus.OK);
@@ -31,11 +36,10 @@ public class CollaboratorController {
 
 
     @CrossOrigin
-    @PostMapping("/login")
-    public ResponseEntity<CollaboratorEntity> login(@RequestBody String phoneNumber) {
-        log.info("phoneNumber: " + phoneNumber);
-        CollaboratorEntity collaborator = new CollaboratorEntity();
-        return new ResponseEntity<>(collaborator, HttpStatus.OK);
+    @DeleteMapping (ADMIN)
+    public ResponseEntity<CollaboratorEntity> deleteById(@RequestBody int collaboratorId) {
+        collaboratorService.deleteById(collaboratorId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
