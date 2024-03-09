@@ -8,4 +8,7 @@ public interface CollaboratorRepository extends JpaRepository<CollaboratorEntity
 
     @Query("select c.email from CollaboratorEntity c where c.id = ?1")
     String getEmailById(int id);
+
+    @Query("select c.id from CollaboratorEntity c where c.email = ?1")
+    int getIdByEmail(String email);
 }

@@ -1,6 +1,7 @@
 export interface AuthEntity {
-  userId: number;
-  code?: string;
-  token?: string;
-  isValid?: boolean;
+    userId?: number;
+    email?: string;
+    code?: string;
+    token?: string;
+    isValid?: boolean;
 }

@@ -20,6 +20,18 @@ public class CollaboratorService {
     return collaboratorRepository.findAll();
   }
 
+  public void createIfExistByEmail( String email) {
+    if (collaboratorRepository.getIdByEmail(email) == 0) {
+      CollaboratorEntity collaborator = new CollaboratorEntity();
+      collaborator.setEmail(email);
+      collaboratorRepository.save(collaborator);
+    }
+  }
+
+  public int getIdByEmail(String email) {
+    return collaboratorRepository.getIdByEmail(email);
+  }
+
   public String getEmailById(int id) {
     return collaboratorRepository.getEmailById(id);
   }
