@@ -6,37 +6,42 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/festival-flow/day")
+@RequestMapping("/festival-flow/")
 public class DayController {
 
-  private final DayService dayService;
+    private static final String ADMIN = "/admin/day/";
+    private static final String DAY = "/day/";
 
-  @Autowired
-  public DayController(DayService dayService) {
-    this.dayService = dayService;
-  }
+    private final DayService dayService;
 
-  @CrossOrigin
-  @GetMapping("/")
-  public ResponseEntity<List<DayEntity>> getAll(){
-    List<DayEntity> days = dayService.getAll();
-    return new ResponseEntity<>(days, HttpStatus.OK);
-  }
+    @Autowired
+    public DayController(DayService dayService) {
+        this.dayService = dayService;
+    }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<DayEntity> getById(@PathVariable int id){
-    DayEntity day = dayService.getById(id);
-    return new ResponseEntity<>(day, HttpStatus.OK);
-  }
+    @CrossOrigin
+    @GetMapping(DAY)
+    public ResponseEntity<List<DayEntity>> getAll() {
+        List<DayEntity> days = dayService.getAll();
+        return new ResponseEntity<>(days, HttpStatus.OK);
+    }
+
+    @GetMapping(DAY + "{id}")
+    public ResponseEntity<DayEntity> getById(@PathVariable int id) {
+        DayEntity day = dayService.getById(id);
+        return new ResponseEntity<>(day, HttpStatus.OK);
+    }
+
+    @DeleteMapping(ADMIN)
+    public ResponseEntity<DayEntity> deleteById(@RequestBody DayEntity dayEntity) {
+        dayService.deleteById(dayEntity.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

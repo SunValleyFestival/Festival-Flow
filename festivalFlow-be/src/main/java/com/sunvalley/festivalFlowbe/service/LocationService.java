@@ -38,4 +38,8 @@ public class LocationService {
     public LocationEntity getById(int id) {
         return locationRepository.findById(id).orElse(null);
     }
+
+    public void deleteById(int id) {
+        locationRepository.deleteById(id);
+    }
 }

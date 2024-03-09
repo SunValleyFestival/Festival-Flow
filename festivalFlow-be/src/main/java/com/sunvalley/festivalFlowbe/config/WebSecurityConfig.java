@@ -17,9 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    private static final String[] PERMITTED_PATTERNS = {
-            "festival-flow/auth/**",
-    };
+
     private final ApplicationJwtConfig applicationJwtConfig;
 
     @Bean
@@ -28,7 +26,6 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers( "festival-flow/auth/**",  "festival-flow/admin/**").permitAll()
-//                        .requestMatchers("festival-flow/admin/collaborator/").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(configure -> configure.sessionCreationPolicy(SessionCreationPolicy.NEVER))

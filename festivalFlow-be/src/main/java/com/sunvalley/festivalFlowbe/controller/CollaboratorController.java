@@ -35,10 +35,9 @@ public class CollaboratorController {
     }
 
 
-    @CrossOrigin
     @DeleteMapping (ADMIN)
-    public ResponseEntity<CollaboratorEntity> deleteById(@RequestBody int collaboratorId) {
-        collaboratorService.deleteById(collaboratorId);
+    public ResponseEntity<CollaboratorEntity> deleteById(@RequestBody CollaboratorEntity collaboratorEntity) {
+        collaboratorService.deleteById(collaboratorEntity.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

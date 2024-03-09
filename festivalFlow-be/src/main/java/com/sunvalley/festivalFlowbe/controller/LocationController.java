@@ -12,8 +12,12 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/festival-flow/location")
+@RequestMapping("/festival-flow/")
 public class LocationController {
+
+    private static final String ADMIN = "/admin/location/";
+    private static final String LOCATION = "/location/";
+
 
     private final LocationService locationService;
 
@@ -23,30 +27,37 @@ public class LocationController {
     }
 
     @CrossOrigin
-    @GetMapping("/")
+    @GetMapping(LOCATION)
     public ResponseEntity<List<LocationEntity>> getAll() {
         List<LocationEntity> Locations = locationService.getAll();
         return new ResponseEntity<>(Locations, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(LOCATION + "{id}")
     public ResponseEntity<LocationEntity> getById(@PathVariable int id) {
         LocationEntity location = locationService.getById(id);
         return new ResponseEntity<>(location, HttpStatus.OK);
     }
 
     @CrossOrigin
-    @GetMapping("/day/{day}")
+    @GetMapping(LOCATION + "day/{day}")
     public ResponseEntity<List<LocationEntity>> getByDayId(@PathVariable int day) {
         List<LocationEntity> locations = locationService.getLocationsByDayId(day);
         return new ResponseEntity<>(locations, HttpStatus.OK);
     }
 
     @CrossOrigin
-    @PostMapping("/")
+    @PostMapping(LOCATION)
     public ResponseEntity<LocationEntity> create(@RequestBody LocationEntity location) {
         LocationEntity newLocation = locationService.create(location);
         return new ResponseEntity<>(newLocation, HttpStatus.CREATED);
+    }
+
+    @CrossOrigin
+    @DeleteMapping(ADMIN)
+    public ResponseEntity<LocationEntity> deleteById(@RequestBody LocationEntity locationEntity) {
+        locationService.deleteById(locationEntity.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
