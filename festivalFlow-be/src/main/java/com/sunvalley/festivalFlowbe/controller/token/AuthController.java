@@ -33,7 +33,8 @@ public class AuthController {
     public AuthEntity login(@RequestBody AuthEntity authEntity) {
         collaboratorService.createIfExistByEmail(authEntity.getEmail());
         int userId = collaboratorService.getIdByEmail(authEntity.getEmail());
-        log.info("userId: " + authEntity.getUserId());
+        authEntity.setUserId(userId);
+        log.info("userId: " + userId);
         verificationCodeService.createCode(userId);
         verificationCodeService.logCode(userId);
         String code = verificationCodeService.getCode(userId);

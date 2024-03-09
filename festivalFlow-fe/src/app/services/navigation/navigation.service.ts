@@ -10,6 +10,7 @@ export class NavigationService {
   constructor(private router: Router) { }
 
   goToHome() {
+    console.log("goToHome");
     this.router.navigate(['/home']);
   }
 

@@ -9,14 +9,11 @@ export class HttpAuthClient {
               private cookiesService: CookiesService,
               ) {}
 
-  createAuthorizationHeader(headers: Headers) {
-    headers.append('Authorization', 'Basic ' +
-      btoa('username:password'));
-  }
 
   get(url: string): any {
     let headers = new HttpHeaders();
-    headers.set('Authorization', 'Bearer ' + this.cookiesService.getToken());
+    let authString = 'Bearer ' + this.cookiesService.getToken();
+    headers.set('Authorization', authString);
     return this.http.get(url, {
       headers: headers
     });
@@ -24,7 +21,8 @@ export class HttpAuthClient {
 
   post(url: string, data: any): any {
     let headers = new HttpHeaders();
-    headers.set('Authorization', 'Bearer ' + this.cookiesService.getToken());
+    let authString = 'Bearer ' + this.cookiesService.getToken();
+    headers.set('Authorization', authString);
     return this.http.post(url, data, {
       headers: headers
     });

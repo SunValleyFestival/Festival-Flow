@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {catchError, map, of} from "rxjs";
+import {catchError, map, Observable, of} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {AuthEntity} from "../../../interfaces/utility/AuthEntity";
 
@@ -14,43 +14,27 @@ export class TokenService {
   constructor(private http: HttpClient) {
   }
 
-    public login(email: string) {
+  public login(email: string): Observable<AuthEntity> {
     let loginData: AuthEntity = {email};
-
-        return this.http.post<AuthEntity>(BASE_URL + "login", loginData);
+    return this.http.post<AuthEntity>(BASE_URL + "login", loginData);
   }
 
-  public loginConfirm(userId: number, code: string): AuthEntity{
+  public loginConfirm(userId: number, code: string): Observable<AuthEntity> {
     const loginData: AuthEntity = {userId, code};
-    let authEntity: AuthEntity = {};
-    this.http.post<AuthEntity>(BASE_URL + "login/confirm", loginData)
-      .pipe(
-        map(response => {
-          authEntity = response
-        }),
-        catchError(error => {
-          console.error('Error during login confirmation:', error);
-          return of(undefined);
-        })
-      );
-    return authEntity;
+    return this.http.post<AuthEntity>(BASE_URL + "login/confirm", loginData);
   }
 
   public isValidToken(userId: number, token: string): boolean {
     const loginData: AuthEntity = {userId, token};
-    this.http.post<boolean>(BASE_URL + "validate", loginData)
-      .pipe(
-        map(response => {
-          return response
-        }),
-        catchError(error => {
-          console.error('Error during token validation:', error);
-          return of(false);
-        })
-      );
-    return false;
-  }
+    let isValid: undefined | boolean = false;
 
+    this.http.post<AuthEntity>(BASE_URL + "validate", loginData).subscribe((response: AuthEntity) => {
+      console.log("isValid:", response.valid);
+     isValid = response.valid;
+    })
+
+    return isValid;
+  }
 
 
 }

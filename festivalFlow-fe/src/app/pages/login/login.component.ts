@@ -25,7 +25,6 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    console.log(this.mail, this.code)
     if (this.mail !== undefined && this.code === undefined) {
       if (this.checkCredentials(this.mail)) {
         let authEntity: AuthEntity;
@@ -42,11 +41,12 @@ export class LoginComponent {
 
       }
     } else if (this.mail !== undefined && this.code !== undefined) {
-      let authEntity = this.tokenService.loginConfirm(this.mail, this.code);
-      if (authEntity !== undefined) {
-        this.cookiesService.setToken(String(authEntity.token));
-        this.navigationService.goToHome()
-      }
+      this.tokenService.loginConfirm(this.cookiesService.getUserId(), this.code).subscribe(response => {
+        if (response !== undefined) {
+          this.cookiesService.setToken(String(response.token));
+          this.navigationService.goToHome()
+        }
+      });
     }
   }
 }
