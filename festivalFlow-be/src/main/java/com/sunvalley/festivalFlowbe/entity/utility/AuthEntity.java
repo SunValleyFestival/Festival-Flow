@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AuthEntity {
     private int userId;
+    private String email;
     private String code;
     private String token;
+    private boolean emailSended;
     private boolean isValid;
 }

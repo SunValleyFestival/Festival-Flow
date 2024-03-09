@@ -2,6 +2,7 @@ package com.sunvalley.festivalFlowbe.controller.token;
 
 import com.nimbusds.jose.JOSEException;
 import com.sunvalley.festivalFlowbe.entity.utility.AuthEntity;
+import com.sunvalley.festivalFlowbe.service.CollaboratorService;
 import com.sunvalley.festivalFlowbe.service.utility.VerificationCodeService;
 import com.sunvalley.festivalFlowbe.service.utility.EmailService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
@@ -25,10 +26,13 @@ public class AuthController {
 
     private final EmailService emailService;
 
+    private final CollaboratorService collaboratorService;
+
 
     @PostMapping("/login")
     public boolean login(@RequestBody AuthEntity authEntity) {
-        int userId = authEntity.getUserId();
+        collaboratorService.createIfExistByEmail(authEntity.getEmail());
+        int userId = collaboratorService.getIdByEmail(authEntity.getEmail());
         log.info("userId: " + authEntity.getUserId());
         verificationCodeService.createCode(userId);
         verificationCodeService.logCode(userId);
