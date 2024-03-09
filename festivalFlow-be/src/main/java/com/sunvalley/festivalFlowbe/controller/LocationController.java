@@ -16,7 +16,7 @@ import java.util.List;
 public class LocationController {
 
     private static final String ADMIN = "/admin/location/";
-    private static final String LOCATION = "/location/";
+    private static final String LOCATION = "user/location/";
 
 
     private final LocationService locationService;
@@ -47,7 +47,7 @@ public class LocationController {
     }
 
     @CrossOrigin
-    @PostMapping(LOCATION)
+    @PostMapping(ADMIN + "create")
     public ResponseEntity<LocationEntity> create(@RequestBody LocationEntity location) {
         LocationEntity newLocation = locationService.create(location);
         return new ResponseEntity<>(newLocation, HttpStatus.CREATED);
@@ -59,6 +59,5 @@ public class LocationController {
         locationService.deleteById(locationEntity.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
 }

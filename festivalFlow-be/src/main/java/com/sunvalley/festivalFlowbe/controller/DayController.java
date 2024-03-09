@@ -16,7 +16,7 @@ import java.util.List;
 public class DayController {
 
     private static final String ADMIN = "/admin/day/";
-    private static final String DAY = "/day/";
+    private static final String DAY = "user/day/";
 
     private final DayService dayService;
 
@@ -32,16 +32,25 @@ public class DayController {
         return new ResponseEntity<>(days, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @GetMapping(DAY + "{id}")
     public ResponseEntity<DayEntity> getById(@PathVariable int id) {
         DayEntity day = dayService.getById(id);
         return new ResponseEntity<>(day, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @DeleteMapping(ADMIN)
     public ResponseEntity<DayEntity> deleteById(@RequestBody DayEntity dayEntity) {
         dayService.deleteById(dayEntity.getId());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @PostMapping(ADMIN + "create")
+    public ResponseEntity<DayEntity> create(@RequestBody DayEntity day) {
+        DayEntity newDay = dayService.create(day);
+        return new ResponseEntity<>(newDay, HttpStatus.CREATED);
     }
 
 }

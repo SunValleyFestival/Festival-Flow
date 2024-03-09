@@ -15,7 +15,7 @@ import java.util.List;
 public class ShiftController {
 
     private static final String ADMIN = "/admin/shift/";
-    private static final String SHIFT = "/shift/";
+    private static final String SHIFT = "user/shift/";
 
     private final ShiftService shiftService;
 
@@ -42,6 +42,13 @@ public class ShiftController {
     public ResponseEntity<ShiftEntity> getById(@PathVariable int id) {
         ShiftEntity shift = shiftService.getById(id);
         return new ResponseEntity<>(shift, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @PostMapping(SHIFT + "create")
+    public ResponseEntity<ShiftEntity> create(@RequestBody ShiftEntity shift) {
+        ShiftEntity newShift = shiftService.create(shift);
+        return new ResponseEntity<>(newShift, HttpStatus.CREATED);
     }
 
     @CrossOrigin

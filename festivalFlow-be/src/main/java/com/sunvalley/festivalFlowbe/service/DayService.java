@@ -31,4 +31,8 @@ public class DayService {
     public void deleteById(final int id) {
         dayRepository.deleteById(id);
     }
+
+    public DayEntity create(DayEntity day) {
+        return dayRepository.save(day);
+    }
 }

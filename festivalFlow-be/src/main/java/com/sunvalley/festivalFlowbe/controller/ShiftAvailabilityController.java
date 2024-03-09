@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/festival-flow/shift-availability")
 public class ShiftAvailabilityController {
 
-  private ShiftAvailabilityService shiftAvailabilityService;
+  private static final String ADMIN = "/admin/shift-availability/";
+  private static final String SHIFT_AVAILABILITY = "user/shift-availability/";
+
+  private final ShiftAvailabilityService shiftAvailabilityService;
 
   @Autowired
   public ShiftAvailabilityController(ShiftAvailabilityService shiftAvailabilityService) {

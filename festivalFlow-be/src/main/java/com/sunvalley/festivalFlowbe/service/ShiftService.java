@@ -36,4 +36,8 @@ public class ShiftService {
     public void deleteById(int id) {
         shiftRepository.deleteById(id);
     }
+
+    public ShiftEntity create(ShiftEntity shift) {
+        return shiftRepository.save(shift);
+    }
 }
