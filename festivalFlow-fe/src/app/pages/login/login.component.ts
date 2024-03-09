@@ -25,13 +25,21 @@ export class LoginComponent {
   }
 
   onSubmit() {
+    console.log(this.mail, this.code)
     if (this.mail !== undefined && this.code === undefined) {
       if (this.checkCredentials(this.mail)) {
-        let authEntity: AuthEntity = this.tokenService.login(this.mail);
-        if (authEntity !== undefined) {
-          this.isEmailInserted = true;
-          this.cookiesService.setUserId(String(authEntity.userId));
-        }
+        let authEntity: AuthEntity;
+        this.tokenService.login(this.mail).subscribe(
+          response => {
+            console.log(response)
+            if (response !== undefined) {
+              authEntity = response;
+              this.isEmailInserted = true;
+              this.cookiesService.setUserId(String(authEntity.userId));
+            }
+          }
+        );
+
       }
     } else if (this.mail !== undefined && this.code !== undefined) {
       let authEntity = this.tokenService.loginConfirm(this.mail, this.code);

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {catchError, map, Observable, of} from "rxjs";
+import {catchError, map, of} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {AuthEntity} from "../../../interfaces/utility/AuthEntity";
 
@@ -14,21 +14,10 @@ export class TokenService {
   constructor(private http: HttpClient) {
   }
 
-  public login(email: string): AuthEntity {
+    public login(email: string) {
     let loginData: AuthEntity = {email};
-    let responseData: AuthEntity = {};
 
-    this.http.post<AuthEntity>(BASE_URL + "login", loginData)
-      .pipe(
-        map(response => {
-          responseData = response
-        }),
-        catchError(error => {
-          console.error('Error during login:', error);
-          return of(false);
-        })
-      );
-    return responseData;
+        return this.http.post<AuthEntity>(BASE_URL + "login", loginData);
   }
 
   public loginConfirm(userId: number, code: string): AuthEntity{
