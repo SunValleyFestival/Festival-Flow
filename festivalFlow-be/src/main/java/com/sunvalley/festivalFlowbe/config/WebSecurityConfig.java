@@ -27,8 +27,8 @@ public class WebSecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(PERMITTED_PATTERNS).permitAll()
-                        .requestMatchers("festival-flow/admin/collaborator/").permitAll()
+                        .requestMatchers( "festival-flow/auth/**",  "festival-flow/admin/**").permitAll()
+//                        .requestMatchers("festival-flow/admin/collaborator/").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(configure -> configure.sessionCreationPolicy(SessionCreationPolicy.NEVER))
