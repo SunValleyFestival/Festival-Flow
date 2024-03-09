@@ -9,6 +9,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from "@angular/common/http";
 import { HeaderComponent } from './header/header.component';
 import { LocationDetailComponent } from './pages/location-detail/location-detail.component';
+import {HttpAuthClient} from "./services/http/token/http-auth-client";
 
 @NgModule({
   declarations: [
@@ -24,9 +25,9 @@ import { LocationDetailComponent } from './pages/location-detail/location-detail
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [HttpAuthClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

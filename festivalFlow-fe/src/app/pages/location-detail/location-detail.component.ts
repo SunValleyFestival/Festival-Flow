@@ -11,6 +11,7 @@ import {DayService} from "../../services/http/day.service";
 import {LocationService} from "../../services/http/location.service";
 import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
 import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
+import {CookiesService} from "../../services/token/cookies.service";
 
 @Component({
   selector: 'app-location-detail',
@@ -35,7 +36,7 @@ export class LocationDetailComponent implements OnInit {
 
   constructor(private shiftService: ShiftService, private route: ActivatedRoute, private associationService: AssociationService,
               private collaboratorService: CollaboratorService, private dayService: DayService, private locationService: LocationService,
-              protected shiftAvailabilityService: ShiftAvailabilityService) {
+              protected shiftAvailabilityService: ShiftAvailabilityService, private cookiesService: CookiesService) {
   }
 
   ngOnInit() {
@@ -77,11 +78,12 @@ export class LocationDetailComponent implements OnInit {
     }
   }
 
-  submitData(shiftId: number | undefined) {
-    console.log(this.formData);
+  submitData(shiftId: number) {
     let collaborator: Collaborator = this.formData;
+    collaborator.id = this.cookiesService.getUserId();
     this.collaboratorService.saveCollaborator(collaborator);
 
+    this.associationService.saveAssociation(this.cookiesService.getUserId(), shiftId);
     this.resetFormData();
   }
 

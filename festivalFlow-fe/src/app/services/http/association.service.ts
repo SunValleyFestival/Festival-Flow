@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpAuthClient} from "./token/http-auth-client";
 import {environment} from '../../../environments/environment';
 
 const BASE_URL = environment.baseUrl + "/association";
@@ -9,10 +9,15 @@ const BASE_URL = environment.baseUrl + "/association";
 })
 export class AssociationService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpAuthClient) {
   }
 
   getAssociations() {
     return this.http.get(BASE_URL) + "/all";
+  }
+
+  saveAssociation(collaboratorId: number, shiftId: number) {
+    return this.http.post(BASE_URL + "/save", {collaboratorId, shiftId});
+
   }
 }

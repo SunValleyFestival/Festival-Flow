@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../../../environments/environment";
-import {HttpClient} from "@angular/common/http";
+import {HttpAuthClient} from "./token/http-auth-client";
 import {Observable} from "rxjs";
 import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
 
@@ -11,14 +11,14 @@ const BASE_URL = environment.baseUrl + "/shift-availability/";
 })
 export class ShiftAvailabilityService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpAuthClient) {
   }
 
   getShiftAvailability(shiftId: number | undefined): Observable<ShiftAvailability> {
-    return this.http.get<ShiftAvailability>(BASE_URL + shiftId);
+    return this.http.get(BASE_URL + shiftId);
   }
 
   getAvailableSlotsByLocationId(locationId: number | undefined): Observable<ShiftAvailability> {
-    return this.http.get<ShiftAvailability>(BASE_URL + "/location/" + locationId);
+    return this.http.get(BASE_URL + "/location/" + locationId);
   }
 }
