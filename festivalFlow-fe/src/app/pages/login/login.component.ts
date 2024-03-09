@@ -28,9 +28,11 @@ export class LoginComponent {
     if (this.mail !== undefined && this.code === undefined) {
       if (this.checkCredentials(this.mail)) {
         let authEntity: AuthEntity = this.tokenService.login(this.mail);
-        if (authEntity !== undefined) {
+        if (authEntity !== undefined && authEntity.emailSent) {
           this.isEmailInserted = true;
           this.cookiesService.setUserId(String(authEntity.userId));
+        } else {
+          this.mail = undefined;
         }
       }
     } else if (this.mail !== undefined && this.code !== undefined) {

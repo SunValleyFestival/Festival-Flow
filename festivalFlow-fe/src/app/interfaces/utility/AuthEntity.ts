@@ -3,5 +3,6 @@ export interface AuthEntity {
     email?: string;
     code?: string;
     token?: string;
+    emailSent?: boolean;
     isValid?: boolean;
 }
