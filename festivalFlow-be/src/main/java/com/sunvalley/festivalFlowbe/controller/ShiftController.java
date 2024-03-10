@@ -11,7 +11,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/festival-flow/shift")
+@RequestMapping("/festival-flow")
 public class ShiftController {
 
     private static final String ADMIN = "/admin/shift/";

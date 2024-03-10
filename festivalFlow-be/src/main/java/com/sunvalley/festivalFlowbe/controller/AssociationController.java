@@ -4,7 +4,6 @@ import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
 import com.sunvalley.festivalFlowbe.entity.Status;
 import com.sunvalley.festivalFlowbe.service.AssociationService;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,7 @@ import java.util.List;
 public class AssociationController {
 
     private static final String ADMIN = "/admin/association/";
-    private static final String ASSOCIATION = "user/association/";
+    private static final String ASSOCIATION = "/user/association/";
 
     private final AssociationService associationService;
 

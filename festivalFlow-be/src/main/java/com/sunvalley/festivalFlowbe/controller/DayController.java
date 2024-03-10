@@ -12,11 +12,11 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/festival-flow/")
+@RequestMapping("/festival-flow")
 public class DayController {
 
     private static final String ADMIN = "/admin/day/";
-    private static final String DAY = "user/day/";
+    private static final String DAY = "/user/day/";
 
     private final DayService dayService;
 

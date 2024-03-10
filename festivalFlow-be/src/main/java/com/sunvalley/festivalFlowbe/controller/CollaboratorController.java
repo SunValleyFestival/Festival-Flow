@@ -17,7 +17,7 @@ import java.util.List;
 public class CollaboratorController {
 
     private static final String ADMIN = "/admin/collaborator/";
-    private static final String COLLABORATOR = "user/collaborator/";
+    private static final String COLLABORATOR = "/user/collaborator/";
 
     private final CollaboratorService collaboratorService;
 

@@ -12,11 +12,11 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/festival-flow/")
+@RequestMapping("/festival-flow")
 public class LocationController {
 
     private static final String ADMIN = "/admin/location/";
-    private static final String LOCATION = "user/location/";
+    private static final String LOCATION = "/user/location/";
 
 
     private final LocationService locationService;
