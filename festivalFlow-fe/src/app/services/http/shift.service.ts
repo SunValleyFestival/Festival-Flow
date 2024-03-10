@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import {Shift} from "../../interfaces/ShiftEntity";
 import {HttpAuthClient} from "./token/http-auth-client";
 
-const BASE_URL = environment.baseUrl + "/shift/";
+const BASE_URL = environment.userBaseUrl + "/shift/";
 
 @Injectable({
   providedIn: 'root'

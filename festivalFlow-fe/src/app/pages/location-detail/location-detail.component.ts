@@ -12,6 +12,7 @@ import {LocationService} from "../../services/http/location.service";
 import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
 import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
 import {CookiesService} from "../../services/token/cookies.service";
+import {Association} from "../../interfaces/AssociationEntity";
 
 @Component({
   selector: 'app-location-detail',
@@ -79,9 +80,14 @@ export class LocationDetailComponent implements OnInit {
     if (shiftId !== undefined) {
       let collaborator: Collaborator = this.formData;
       collaborator.id = this.cookiesService.getUserId();
-      this.collaboratorService.saveCollaborator(collaborator);
+      this.collaboratorService.updateCollaborator(collaborator);
+      let association: Association = {
+        collaborator_id: this.cookiesService.getUserId(),
+        shift_id: shiftId,
+        status: 0
+      }
 
-      this.associationService.saveAssociation(this.cookiesService.getUserId(), shiftId);
+      this.associationService.saveAssociation(association);
       this.resetFormData();
     }
   }

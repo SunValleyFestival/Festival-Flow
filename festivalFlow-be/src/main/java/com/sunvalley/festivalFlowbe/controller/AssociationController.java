@@ -4,6 +4,7 @@ import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
 import com.sunvalley.festivalFlowbe.entity.Status;
 import com.sunvalley.festivalFlowbe.service.AssociationService;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,13 @@ public class AssociationController {
     public ResponseEntity<List<AssociationEntity>> getAll() {
         List<AssociationEntity> associations = associationService.getAll();
         return new ResponseEntity<>(associations, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @PostMapping(ASSOCIATION + "create")
+    public ResponseEntity<AssociationEntity> create(@RequestBody AssociationEntity association) {
+        AssociationEntity newAssociation = associationService.save(association);
+        return new ResponseEntity<>(newAssociation, HttpStatus.OK);
     }
 
     @CrossOrigin

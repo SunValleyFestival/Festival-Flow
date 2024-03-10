@@ -4,7 +4,7 @@ import {HttpAuthClient} from "./token/http-auth-client";
 import {Observable} from "rxjs";
 import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
 
-const BASE_URL = environment.baseUrl + "/shift-availability/";
+const BASE_URL = environment.userBaseUrl + "/shift-availability/";
 
 @Injectable({
   providedIn: 'root'
