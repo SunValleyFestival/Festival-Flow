@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 
 @RestController
-@RequestMapping("/festival-flow/auth")
+@RequestMapping("/festival-flow/user/auth")
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
@@ -60,11 +60,7 @@ public class AuthController {
     @PostMapping("/validate")
     public AuthEntity validateToken(@RequestBody AuthEntity authEntity) {
         try {
-            if (tokenProvider.validateToken(authEntity)) {
-                authEntity.setValid(true);
-            } else {
-                authEntity.setValid(false);
-            }
+            authEntity.setValid(tokenProvider.validateToken(authEntity));
         } catch (JOSEException | ParseException e) {
             authEntity.setValid(false);
         }
