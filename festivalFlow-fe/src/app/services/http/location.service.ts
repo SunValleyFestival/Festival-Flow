@@ -3,7 +3,7 @@ import {HttpAuthClient} from "./token/http-auth-client";
 import {environment} from '../../../environments/environment';
 import {Observable} from "rxjs";
 
-const BASE_URL = environment.baseUrl + "/location/";
+const BASE_URL = environment.userBaseUrl + "/location/";
 
 @Injectable({
   providedIn: 'root'

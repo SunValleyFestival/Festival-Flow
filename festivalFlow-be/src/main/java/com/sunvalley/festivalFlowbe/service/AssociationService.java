@@ -25,4 +25,7 @@ public class AssociationService {
     return associationRepository.findAll();
   }
 
+  public AssociationEntity save(final AssociationEntity association) {
+    return associationRepository.save(association);
+  }
 }

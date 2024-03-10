@@ -4,7 +4,7 @@ import {catchError, map, Observable, of} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {AuthEntity} from "../../../interfaces/utility/AuthEntity";
 
-const BASE_URL = environment.baseUrl + "/auth/";
+const BASE_URL = environment.userBaseUrl + "/auth/";
 
 @Injectable({
   providedIn: 'root'

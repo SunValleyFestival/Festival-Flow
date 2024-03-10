@@ -12,7 +12,6 @@ export class HttpAuthClient {
 
   get(url: string): any {
     let headers = new HttpHeaders({'Authorization': 'Bearer ' + this.cookiesService.getToken()});
-    console.log("headers", headers.getAll("Authorization"));
     return this.http.get(url, {
       headers: headers
     });
@@ -20,10 +19,14 @@ export class HttpAuthClient {
 
   post(url: string, data: any): any {
     let headers = new HttpHeaders({'Authorization': 'Bearer ' + this.cookiesService.getToken()});
-
-    console.log("headers", headers.getAll("Authorization"));
-
     return this.http.post(url, data, {
+      headers: headers
+    });
+  }
+
+  put(url: string, data: any): any {
+    let headers = new HttpHeaders({'Authorization': 'Bearer ' + this.cookiesService.getToken()});
+    return this.http.put(url, data, {
       headers: headers
     });
   }
