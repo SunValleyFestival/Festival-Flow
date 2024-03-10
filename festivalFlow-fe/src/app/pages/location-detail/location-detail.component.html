@@ -9,7 +9,11 @@
         <h3 class="font-bold">Ti sei iscritto!</h3>
         <div class="text-xs">Iscrizione eseguita con successo</div>
       </div>
-      <button class="btn btn-sm">Vedi</button>
+    </div>
+
+    <div role="alert" class="alert alert-error" *ngIf="dataError">
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+      <span>Errore! Dati inseriti incompleti!</span>
     </div>
 
     <div class="m-10">
@@ -25,8 +29,8 @@
             <div class="text-lg font-black">{{ shift.name }}</div>
             <div class="flex flex-col gap-3">
               {{ shift.description }}
-              <p>{{ shiftAvailability[i]?.availableSlots }} posti rimanenti</p>
-              <progress class="progress progress-error w-1/2" value="{{shift.maxCollaborator - (shiftAvailability[i]?.availableSlots ?? 0)}}"
+              <p>{{ shiftAvailability[i].availableSlots }} posti rimanenti</p>
+              <progress class="progress progress-error w-1/2" value="{{shift.maxCollaborator - (shiftAvailability[i].availableSlots)}}"
                         max="{{shift.maxCollaborator}}"></progress>
               <button class="btn btn-outline btn-accent" (click)="showDialog(shift.id)">Iscriviti</button>
             </div>
@@ -45,6 +49,8 @@
         <h3 class="font-bold text-lg">Iscriviti ( {{ shift.startTime }} - {{ shift.endTime }} )</h3>
         <div class="flex justify-center">
           <form method="dialog" #myForm="ngForm" class="mt-2">
+
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 
             <label class="input input-bordered flex items-center mt-2 gap-2">
               Email:
@@ -80,7 +86,7 @@
               </select>
             </div>
             <div class="mt-2 w-full flex justify-end">
-              <button class="btn" (click)="submitData(shift.id)">Conferma</button>
+              <button type="submit" class="btn" (click)="submitData(shift.id)">Conferma</button>
             </div>
           </form>
         </div>

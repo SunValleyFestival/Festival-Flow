@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Day} from "../../../interfaces/DayEntity";
 import {Location} from "../../../interfaces/LocationEntity";
 import {ShiftAvailability} from "../../../interfaces/ShiftAvailabilityView";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {DayService} from "../../../services/http/day.service";
 import {LocationService} from "../../../services/http/location.service";
 import {ShiftAvailabilityService} from "../../../services/http/shift-availability.service";
@@ -14,8 +14,8 @@ import {ShiftAvailabilityService} from "../../../services/http/shift-availabilit
 })
 export class AdminComponent implements OnInit {
   protected days: Day[] = [{id: 0, name: "Venerdì"}];
-  protected locations: Location[] = [{id: 0, name: "Location 1", description: '', day: {id: 0, name: "Venerdì"}}, {id: 0, name: "Location 1", description: '', day: {id: 0, name: "Venerdì"}}, {id: 0, name: "Location 1", description: '', day: {id: 0, name: "Venerdì"}}, {id: 0, name: "Location 1", description: '', day: {id: 0, name: "Venerdì"}}, {id: 0, name: "Location 1", description: '', day: {id: 0, name: "Venerdì"}}, {id: 0, name: "Location 1", description: '', day: {id: 0, name: "Venerdì"}}, {id: 0, name: "Location 1", description: '', day: {id: 0, name: "Venerdì"}}, {id: 0, name: "Location 1", description: '', day: {id: 0, name: "Venerdì"}}];
-  protected currentDay: number = 0;
+  protected locations: Location[] = [];
+  protected currentDayId: number = 0;
   protected locationAvailability: ShiftAvailability[] = [];
   protected formData: Day = {
     name: '',
@@ -27,6 +27,7 @@ export class AdminComponent implements OnInit {
     private dayService: DayService,
     private locationService: LocationService,
     private shiftAvailabilityService: ShiftAvailabilityService,
+    private route: ActivatedRoute,
   ) {
   }
 
@@ -34,12 +35,15 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
     this.dayService.getAllDays().pipe().subscribe((days: Day[]) => {
       this.days = days;
-      if (days.length > 0) {
-        if (days[0].id) {
-          this.currentDay = days[0].id;
-          this.getLocationsByDayId(String(this.currentDay));
+      this.route.params.subscribe(params => {
+        if (params['day']) {
+          this.getLocationsByDayId(params['day']);
+        } else {
+          if (this.days.length > 0) {
+            this.getLocationsByDayId(String(this.days[0].id));
+          }
         }
-      }
+      });
     });
   }
 
@@ -48,13 +52,20 @@ export class AdminComponent implements OnInit {
     this.router.navigate(['edit']);
   }
 
+  changeDayAdmin(dayId: string) {
+    this.router.navigate(['admin/' + dayId]);
+  }
+
 
   getLocationsByDayId(dayId: string): void {
-    this.currentDay = Number(dayId);
+    this.currentDayId = Number(dayId);
+
     this.locationService.getLocationsByDayId(Number(dayId)).pipe().subscribe((locations: any) => {
       this.locations = locations;
 
-      for (let location of this.locations) {
+      this.locationAvailability = [];
+
+      for (let location of this.locations){
         this.shiftAvailabilityService.getAvailableSlotsByLocationId(location.id).pipe().subscribe((shiftAvailability: any) => {
           this.locationAvailability.push(shiftAvailability);
         });

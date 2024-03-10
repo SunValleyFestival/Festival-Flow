@@ -6,7 +6,7 @@
         <div class="card-body">
           <h2 class="card-title">Azioni</h2>
 
-          <select #id class="select select-bordered w-full max-w-xs" (change)="getLocationsByDayId(id.value)">
+          <select [(ngModel)]='currentDayId' #id class="select select-bordered w-full max-w-xs" (change)="changeDayAdmin(id.value)">
             <option *ngFor="let day of days" [value]="day.id">{{ day.name }}</option>
           </select>
 
@@ -42,7 +42,7 @@
             <h2 class="card-title">{{ location.name }}</h2>
             <div role="alert" class="alert bg-gray-50 border-accent w-fit">
               <img src="../../../assets/icons/group.svg" alt="group">
-              <span>{{ locationAvailability[i]?.availableSlots }} Rimanenti</span>
+              <span>{{ locationAvailability[i].availableSlots }} Rimanenti</span>
             </div>
             <p>{{ location.description }}</p>
             <div class="card-actions justify-end">
@@ -65,6 +65,7 @@
     <h3 class="font-bold text-lg">Crea Giorno</h3>
     <div class="flex justify-center">
       <form method="dialog" #myForm="ngForm" class="mt-2">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 
         <label class="input input-bordered flex items-center mt-2 gap-2">
           Nome:
