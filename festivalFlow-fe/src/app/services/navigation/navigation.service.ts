@@ -7,15 +7,14 @@ import {AuthService} from "../../auth/auth.service";
 })
 export class NavigationService {
 
-  constructor(private router: Router, private auth: AuthService) { }
+  constructor(private router: Router) { }
 
-  authAndGoToHome() {
-    this.auth.setLoggedIn(true);
+  goToHome() {
+    console.log("goToHome");
     this.router.navigate(['/home']);
   }
 
   logout() {
-    this.auth.setLoggedIn(false);
     this.router.navigate(['/login']);
   }
 }

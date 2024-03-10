@@ -1,17 +1,17 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {Observable} from "rxjs";
 import {Shift} from "../../interfaces/ShiftEntity";
+import {HttpAuthClient} from "./token/http-auth-client";
 
-const BASE_URL = environment.baseUrl + "/shift/";
+const BASE_URL = environment.userBaseUrl + "/shift/";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShiftService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpAuthClient) {
   }
 
   getAllShifts() {
@@ -20,6 +20,6 @@ export class ShiftService {
   }
 
   getShiftsByLocationId(locationId: number): Observable<Shift[]> {
-    return this.http.get<Shift[]>(BASE_URL + "/location/" + locationId);
+    return this.http.get(BASE_URL + "location/" + locationId);
   }
 }

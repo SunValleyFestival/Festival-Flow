@@ -6,7 +6,3 @@ export const authGuard: CanActivateFn = (route, state) => {
   return inject(AuthService).isAuthenticated();
 };
 
-export const adminGuard: CanActivateFn = (route, state) => {
-  return inject(AuthService).isRoleAdmin();
-}
-

@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpAuthClient} from "./token/http-auth-client";
 import {environment} from '../../../environments/environment';
 import {Observable} from "rxjs";
 
-const BASE_URL = environment.baseUrl + "/location/";
+const BASE_URL = environment.userBaseUrl + "/location/";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocationService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpAuthClient) {
   }
 
   getAll() {
@@ -18,10 +18,10 @@ export class LocationService {
   }
 
   getLocationsByDayId(dayId: number): Observable<Location[]> {
-    return this.http.get<Location[]>(BASE_URL + "day/" + dayId);
+    return this.http.get(BASE_URL + "day/" + dayId);
   }
 
   getLocationById(param: any): Observable<Location> {
-    return this.http.get<Location>(BASE_URL + param);
+    return this.http.get(BASE_URL + param);
   }
 }

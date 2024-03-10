@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {Collaborator} from "../../interfaces/CollaboratorEntity";
+import {HttpAuthClient} from "./token/http-auth-client";
 
-const BASE_URL = environment.baseUrl + "/collaborator";
+const BASE_URL = environment.userBaseUrl + "/collaborator";
 @Injectable({
   providedIn: 'root'
 })
 export class CollaboratorService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpAuthClient) {
   }
 
   getCollaborators() {
@@ -17,6 +17,9 @@ export class CollaboratorService {
   }
 
   saveCollaborator(collaborator: Collaborator) {
+  }
 
+  updateCollaborator(collaborator: Collaborator) {
+    return this.http.put(BASE_URL + "/update", collaborator);
   }
 }

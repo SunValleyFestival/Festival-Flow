@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Day} from "../../interfaces/DayEntity";
 import {DayService} from "../../services/http/day.service";
 import {Observable} from "rxjs";
@@ -17,7 +17,7 @@ import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
 export class HomeComponent implements OnInit {
   protected days: Day[] = [];
   protected locations: Location[] = [];
-  protected currentDay: number = 0;
+  protected currentDayId: number = 0;
   protected locationAvailability: ShiftAvailability[] = [];
 
   constructor(
@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
     private dayService: DayService,
     private locationService: LocationService,
     private shiftAvailabilityService: ShiftAvailabilityService,
+    private route: ActivatedRoute,
   ) {
   }
 
@@ -32,13 +33,20 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.dayService.getAllDays().pipe().subscribe((days: Day[]) => {
       this.days = days;
-      if (days.length > 0) {
-        if (days[0].id) {
-          this.currentDay = days[0].id;
-          this.getLocationsByDayId(String(this.currentDay));
+      this.route.params.subscribe(params => {
+        if (params['day']) {
+          this.getLocationsByDayId(params['day']);
+        } else {
+          if (this.days.length > 0) {
+            this.getLocationsByDayId(String(this.days[0].id));
+          }
         }
-      }
+      });
     });
+  }
+
+  changeDay(value: string) {
+    this.router.navigate([value]);
   }
 
 
@@ -48,9 +56,12 @@ export class HomeComponent implements OnInit {
 
 
   getLocationsByDayId(dayId: string): void {
-    this.currentDay = Number(dayId);
+    this.currentDayId = Number(dayId);
+
     this.locationService.getLocationsByDayId(Number(dayId)).pipe().subscribe((locations: any) => {
       this.locations = locations;
+
+      this.locationAvailability = [];
 
       for (let location of this.locations){
         this.shiftAvailabilityService.getAvailableSlotsByLocationId(location.id).pipe().subscribe((shiftAvailability: any) => {
@@ -59,5 +70,4 @@ export class HomeComponent implements OnInit {
       }
     });
   }
-
 }

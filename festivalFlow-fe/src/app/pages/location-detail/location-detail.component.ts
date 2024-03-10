@@ -6,11 +6,12 @@ import {AssociationService} from "../../services/http/association.service";
 import {CollaboratorService} from "../../services/http/collaborator.service";
 import {Collaborator} from "../../interfaces/CollaboratorEntity";
 import {Location} from "../../interfaces/LocationEntity";
-import {Day} from "../../interfaces/DayEntity";
-import {DayService} from "../../services/http/day.service";
 import {LocationService} from "../../services/http/location.service";
 import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
 import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
+import {CookiesService} from "../../services/token/cookies.service";
+import { timer } from 'rxjs';
+import {Association} from "../../interfaces/AssociationEntity";
 
 @Component({
   selector: 'app-location-detail',
@@ -20,11 +21,12 @@ import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
 export class LocationDetailComponent implements OnInit {
   protected selectedLocation: Location | undefined;
   protected signedIn: boolean = false;
+  protected dataError: boolean = false;
   protected shifts: Shift[] | undefined;
   protected shiftAvailability: ShiftAvailability[] = [];
 
   formData: Collaborator = {
-    email: '',
+    email: this.cookiesService.getUserEmail(),
     phone: '',
     firstName: '',
     lastName: '',
@@ -33,8 +35,8 @@ export class LocationDetailComponent implements OnInit {
   }
 
   constructor(private shiftService: ShiftService, private route: ActivatedRoute, private associationService: AssociationService,
-              private collaboratorService: CollaboratorService, private dayService: DayService, private locationService: LocationService,
-              protected shiftAvailabilityService: ShiftAvailabilityService) {
+              private collaboratorService: CollaboratorService, private locationService: LocationService,
+              protected shiftAvailabilityService: ShiftAvailabilityService, private cookiesService: CookiesService) {
   }
 
   ngOnInit() {
@@ -74,16 +76,40 @@ export class LocationDetailComponent implements OnInit {
   }
 
   submitData(shiftId: number | undefined) {
-    console.log(this.formData);
-    let collaborator: Collaborator = this.formData;
-    this.collaboratorService.saveCollaborator(collaborator);
 
-    this.resetFormData();
+    if (shiftId !== undefined) {
+      if(this.checkData()) return;
+
+      let collaborator: Collaborator = this.formData;
+      collaborator.id = this.cookiesService.getUserId();
+      this.collaboratorService.updateCollaborator(collaborator);
+      let association: Association = {
+        collaborator_id: this.cookiesService.getUserId(),
+        shift_id: shiftId,
+        status: 0
+      }
+
+      this.associationService.saveAssociation(association);
+      this.resetFormData();
+    }
+  }
+
+  checkData(): boolean {
+    let error = this.formData.firstName === '' || this.formData.lastName === '' || this.formData.phone === '' || this.formData.age === '' || this.formData.size === 'Taglia Maglietta';
+    this.dataError = error;
+
+    if(error) {
+      timer(5000).subscribe(() => {
+        this.dataError = false;
+      });
+    }
+
+    return error;
   }
 
   resetFormData() {
     this.formData = {
-      email: '',
+      email: this.cookiesService.getUserEmail(),
       phone: '',
       firstName: '',
       lastName: '',
@@ -93,7 +119,7 @@ export class LocationDetailComponent implements OnInit {
   }
 
   parseTime(timeString: string): number {
-    let value =  timeString.replaceAll(":", "");
+    let value = timeString.replaceAll(":", "");
     return parseInt(value);
   };
 

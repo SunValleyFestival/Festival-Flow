@@ -32,8 +32,30 @@ public class JWTTokenProviderService {
         JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
         builder.subject(String.valueOf(userId));
         builder.issuer("");
-        builder.expirationTime(new Date(new Date().getTime() + 60 * 1000));
+        builder.expirationTime(new Date(new Date().getTime() + 60 * 1000 * 60 * 24 * 7));
         builder.claim("role", "user");
+
+        final JWTClaimsSet claim = builder.build();
+        final SignedJWT jwt = new SignedJWT(header, claim);
+
+        try {
+            final JWSSigner signer = new RSASSASigner(privateKey);
+            jwt.sign(signer);
+        } catch (JOSEException e) {
+            throw new RuntimeException("JWS object couldn't be signed", e);
+        }
+
+        return jwt.serialize();
+    }
+
+    public String generateTokenForAdmin() {
+        final RSAPrivateKey privateKey = applicationJwtConfig.getPrivateKey();
+        final JWSHeader header = new JWSHeader(applicationJwtConfig.getAlgorithm());
+
+        JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
+        builder.issuer("");
+        builder.expirationTime(new Date(new Date().getTime() + 60 * 1000));
+        builder.claim("role", "admin");
 
         final JWTClaimsSet claim = builder.build();
         final SignedJWT jwt = new SignedJWT(header, claim);

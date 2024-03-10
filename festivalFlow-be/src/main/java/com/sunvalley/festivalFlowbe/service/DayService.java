@@ -24,7 +24,15 @@ public class DayService {
         return dayRepository.findAll();
     }
 
-  public DayEntity getById(final int id) {
-    return dayRepository.findById(id).orElse(null);
-  }
+    public DayEntity getById(final int id) {
+        return dayRepository.findById(id).orElse(null);
+    }
+
+    public void deleteById(final int id) {
+        dayRepository.deleteById(id);
+    }
+
+    public DayEntity create(DayEntity day) {
+        return dayRepository.save(day);
+    }
 }
