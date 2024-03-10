@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/festival-flow/shift-availability")
+@RequestMapping("/festival-flow")
 public class ShiftAvailabilityController {
 
   private static final String ADMIN = "/admin/shift-availability/";
-  private static final String SHIFT_AVAILABILITY = "user/shift-availability/";
+  private static final String SHIFT_AVAILABILITY = "/user/shift-availability/";
 
   private final ShiftAvailabilityService shiftAvailabilityService;
 
