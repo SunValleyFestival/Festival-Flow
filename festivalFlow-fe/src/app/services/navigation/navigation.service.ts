@@ -11,7 +11,7 @@ export class NavigationService {
 
   authAndGoToHome() {
     this.auth.setLoggedIn(true);
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
   }
 
   logout() {
