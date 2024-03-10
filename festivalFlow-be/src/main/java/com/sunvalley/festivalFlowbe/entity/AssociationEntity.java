@@ -1,9 +1,6 @@
 package com.sunvalley.festivalFlowbe.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -19,7 +16,8 @@ public class AssociationEntity {
     @EmbeddedId
     private AssociationEntityId id;
 
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "status", nullable = false)
-    private Integer status;
+    private Status status;
 
 }

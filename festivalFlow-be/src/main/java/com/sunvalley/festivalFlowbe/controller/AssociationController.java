@@ -1,6 +1,7 @@
 package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
+import com.sunvalley.festivalFlowbe.entity.Status;
 import com.sunvalley.festivalFlowbe.service.AssociationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +34,48 @@ public class AssociationController {
     }
 
     @CrossOrigin
-    @PutMapping(ADMIN + "update")
-    public ResponseEntity<AssociationEntity> update(@RequestBody AssociationEntity association) {
-        AssociationEntity association = associationService.getByUserId(association.get);
+    @PutMapping(ADMIN + "accept/{collaboratorId}")
+    public ResponseEntity<AssociationEntity> update(@PathVariable int collaboratorId) {
+        AssociationEntity association = associationService.getByCollaboratorId(collaboratorId);
 
-        return new ResponseEntity<>(association, HttpStatus.OK);
+        if (association == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (association.getStatus() == Status.ACCEPTED) {
+            return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
+        }
+        if (association.getStatus() == Status.REJECTED) {
+            return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
+        }
+        if (association.getStatus() == Status.PENDING) {
+            association.setStatus(Status.ACCEPTED);
+            return new ResponseEntity<>(association, HttpStatus.OK);
+        }
 
-        AssociationEntity newAssociation = associationService.update(association);
-        return new ResponseEntity<>(newAssociation, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    @CrossOrigin
+    @PutMapping(ADMIN + "reject/{collaboratorId}")
+    public ResponseEntity<AssociationEntity> reject(@PathVariable int collaboratorId) {
+        AssociationEntity association = associationService.getByCollaboratorId(collaboratorId);
+
+        if (association == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (association.getStatus() == Status.ACCEPTED) {
+            return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
+        }
+        if (association.getStatus() == Status.REJECTED) {
+            return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
+        }
+        if (association.getStatus() == Status.PENDING) {
+            association.setStatus(Status.REJECTED);
+            return new ResponseEntity<>(association, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+
 }

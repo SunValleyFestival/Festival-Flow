@@ -49,6 +49,7 @@ public class LocationController {
     @CrossOrigin
     @PostMapping(ADMIN + "create")
     public ResponseEntity<LocationEntity> create(@RequestBody LocationEntity location) {
+        location.setId(null);
         LocationEntity newLocation = locationService.create(location);
         return new ResponseEntity<>(newLocation, HttpStatus.CREATED);
     }

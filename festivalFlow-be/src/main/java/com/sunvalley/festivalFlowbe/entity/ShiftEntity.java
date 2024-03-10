@@ -1,13 +1,6 @@
 package com.sunvalley.festivalFlowbe.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +16,7 @@ public class ShiftEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "description", length = 1000)
     private String description;
@@ -35,12 +28,16 @@ public class ShiftEntity {
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private LocationEntity location;
 
-    @Column(name = "startTime", nullable = false)
+    @Column(name = "start_time", nullable = false)
     private java.sql.Time startTime;
 
-    @Column(name = "endTime", nullable = false)
+    @Column(name = "end_time", nullable = false)
     private java.sql.Time endTime;
 
-    @Column(name = "maxCollaborator", nullable = false)
+    @Column(name = "max_collaborator", nullable = false)
     private int maxCollaborator;
+
+    @Column(name = "adults_only", nullable = false)
+    private boolean adultsOnly;
+
 }

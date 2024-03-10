@@ -45,8 +45,9 @@ public class ShiftController {
     }
 
     @CrossOrigin
-    @PostMapping(SHIFT + "create")
+    @PostMapping(ADMIN + "create")
     public ResponseEntity<ShiftEntity> create(@RequestBody ShiftEntity shift) {
+        shift.setId(null);
         ShiftEntity newShift = shiftService.create(shift);
         return new ResponseEntity<>(newShift, HttpStatus.CREATED);
     }

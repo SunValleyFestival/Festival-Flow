@@ -49,6 +49,7 @@ public class DayController {
     @CrossOrigin
     @PostMapping(ADMIN + "create")
     public ResponseEntity<DayEntity> create(@RequestBody DayEntity day) {
+        day.setId(null);
         DayEntity newDay = dayService.create(day);
         return new ResponseEntity<>(newDay, HttpStatus.CREATED);
     }

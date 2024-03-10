@@ -24,13 +24,13 @@ public class ShiftAvailabilityController {
     this.shiftAvailabilityService = shiftAvailabilityService;
   }
 
-  @GetMapping("/{shiftId}")
+  @GetMapping(SHIFT_AVAILABILITY + "{shiftId}")
   public ResponseEntity<ShiftAvailabilityView> getShiftAvailability(@PathVariable int shiftId) {
     var shiftAvailability = shiftAvailabilityService.getByShiftId(shiftId);
     return new ResponseEntity<>(shiftAvailability, HttpStatus.OK);
   }
 
-  @GetMapping("/location/{locationId}")
+  @GetMapping(SHIFT_AVAILABILITY + "location/{locationId}")
   public ResponseEntity<ShiftAvailabilityView> getAvailableSlotsByLocationId(@PathVariable int locationId) {
     var availableSlots = shiftAvailabilityService.getAvailableSlotsByLocationId(locationId);
     var shiftAvailability = new ShiftAvailabilityView();
