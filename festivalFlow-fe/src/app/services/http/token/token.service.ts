@@ -14,50 +14,27 @@ export class TokenService {
   constructor(private http: HttpClient) {
   }
 
-  public login(userId: number): boolean {
-    const loginData: AuthEntity = {userId};
-    this.http.post<boolean>(BASE_URL + "login", loginData)
-      .pipe(
-        map(response => {
-          return response
-        }),
-        catchError(error => {
-          console.error('Error during login:', error);
-          return of(false);
-        })
-      );
-    return false;
+  public login(email: string): Observable<AuthEntity> {
+    let loginData: AuthEntity = {email};
+    return this.http.post<AuthEntity>(BASE_URL + "login", loginData);
   }
 
-  public loginConfirm(userId: number, code: string){
+  public loginConfirm(userId: number, code: string): Observable<AuthEntity> {
     const loginData: AuthEntity = {userId, code};
-    this.http.post<AuthEntity>(BASE_URL + "login/confirm", loginData)
-      .pipe(
-        map(response => {
-          return response
-        }),
-        catchError(error => {
-          console.error('Error during login confirmation:', error);
-          return of(undefined);
-        })
-      );
+    return this.http.post<AuthEntity>(BASE_URL + "login/confirm", loginData);
   }
 
   public isValidToken(userId: number, token: string): boolean {
     const loginData: AuthEntity = {userId, token};
-    this.http.post<boolean>(BASE_URL + "validate", loginData)
-      .pipe(
-        map(response => {
-          return response
-        }),
-        catchError(error => {
-          console.error('Error during token validation:', error);
-          return of(false);
-        })
-      );
-    return false;
-  }
+    let isValid: undefined | boolean = false;
 
+    this.http.post<AuthEntity>(BASE_URL + "validate", loginData).subscribe((response: AuthEntity) => {
+      console.log("isValid:", response.valid);
+     isValid = response.valid;
+    })
+
+    return isValid;
+  }
 
 
 }

@@ -14,6 +14,7 @@ import { AdminComponent } from './pages/admin-area/admin/admin.component';
 import { ManageLocationComponent } from './pages/admin-area/manage-location/manage-location.component';
 import { ManageUserComponent } from './pages/admin-area/manage-user/manage-user.component';
 import {CreateLocationComponent} from "./pages/admin-area/create-location/create-location.component";
+import {HttpAuthClient} from "./services/http/token/http-auth-client";
 
 @NgModule({
   declarations: [
@@ -35,9 +36,9 @@ import {CreateLocationComponent} from "./pages/admin-area/create-location/create
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [HttpAuthClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

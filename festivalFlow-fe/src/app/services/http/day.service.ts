@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpAuthClient} from "./token/http-auth-client";
 import {environment} from '../../../environments/environment';
 import {Observable} from "rxjs";
 import {Day} from "../../interfaces/DayEntity";
@@ -10,14 +10,14 @@ const BASE_URL = environment.baseUrl + "/day";
 })
 export class DayService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpAuthClient) {
   }
 
   getAllDays(): Observable<Day[]> {
-    return this.http.get<Day[]>(BASE_URL + "/");
+    return this.http.get(BASE_URL + "/");
   }
 
   getDayById(param: any): Observable<Day> {
-    return this.http.get<Day>(BASE_URL + "/" + param);
+    return this.http.get(BASE_URL + "/" + param);
   }
 }
