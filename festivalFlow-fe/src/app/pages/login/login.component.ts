@@ -1,25 +1,61 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NavigationService} from "../../services/navigation/navigation.service";
+import {CookiesService} from "../../services/token/cookies.service";
+import {TokenService} from "../../services/http/token/token.service";
+import {AuthEntity} from "../../interfaces/utility/AuthEntity";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   protected mail: any;
+  protected code: any;
+  protected isEmailInserted: boolean = false;
 
-  constructor(private navigationService: NavigationService) {
+  constructor(private navigationService: NavigationService,
+              private cookiesService: CookiesService,
+              private tokenService: TokenService
+  ) {
   }
 
-  checkCredentials(mail: string) {
-    if(RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$').test(mail)) {
-      this.mail = mail;
-      this.navigationService.authAndGoToHome();
+  ngOnInit() {
+    console.log("userId", this.cookiesService.getUserId());
+    console.log("token", this.cookiesService.getToken());
+    if(this.cookiesService.getUserId() && this.cookiesService.getToken()){
+      this.navigationService.goToHome();
     }
   }
 
+  checkCredentials(mail: string): boolean {
+    return RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$').test(mail);
+  }
+
   onSubmit() {
-    this.checkCredentials(this.mail);
+    if (this.mail !== undefined && this.code === undefined) {
+      if (this.checkCredentials(this.mail)) {
+        let authEntity: AuthEntity;
+        this.tokenService.login(this.mail).subscribe(
+          response => {
+            console.log(response)
+            if (response !== undefined) {
+              authEntity = response;
+              this.isEmailInserted = true;
+              this.cookiesService.setUserId(String(authEntity.userId));
+              this.cookiesService.setUserEmail(String(authEntity.email));
+            }
+          }
+        );
+
+      }
+    } else if (this.mail !== undefined && this.code !== undefined) {
+      this.tokenService.loginConfirm(this.cookiesService.getUserId(), this.code).subscribe(response => {
+        if (response !== undefined) {
+          this.cookiesService.setToken(String(response.token));
+          this.navigationService.goToHome()
+        }
+      });
+    }
   }
 }

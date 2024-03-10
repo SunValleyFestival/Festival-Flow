@@ -9,10 +9,12 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from "@angular/common/http";
 import { HeaderComponent } from './header/header.component';
 import { LocationDetailComponent } from './pages/location-detail/location-detail.component';
+import { NotFoundComponent } from './pages/error/not-found/not-found.component';
 import { AdminComponent } from './pages/admin-area/admin/admin.component';
 import { ManageLocationComponent } from './pages/admin-area/manage-location/manage-location.component';
 import { ManageUserComponent } from './pages/admin-area/manage-user/manage-user.component';
 import {CreateLocationComponent} from "./pages/admin-area/create-location/create-location.component";
+import {HttpAuthClient} from "./services/http/token/http-auth-client";
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import {CreateLocationComponent} from "./pages/admin-area/create-location/create
     LoginComponent,
     LocationDetailComponent,
     LoginComponent,
+    HeaderComponent,
+    NotFoundComponent,
     HeaderComponent,
     AdminComponent,
     ManageLocationComponent,
@@ -32,9 +36,9 @@ import {CreateLocationComponent} from "./pages/admin-area/create-location/create
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [HttpAuthClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

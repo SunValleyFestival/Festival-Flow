@@ -11,6 +11,7 @@ import {DayService} from "../../services/http/day.service";
 import {LocationService} from "../../services/http/location.service";
 import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
 import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
+import {CookiesService} from "../../services/token/cookies.service";
 
 @Component({
   selector: 'app-location-detail',
@@ -24,7 +25,7 @@ export class LocationDetailComponent implements OnInit {
   protected shiftAvailability: ShiftAvailability[] = [];
 
   formData: Collaborator = {
-    email: '',
+    email: this.cookiesService.getUserEmail(),
     phone: '',
     firstName: '',
     lastName: '',
@@ -34,7 +35,7 @@ export class LocationDetailComponent implements OnInit {
 
   constructor(private shiftService: ShiftService, private route: ActivatedRoute, private associationService: AssociationService,
               private collaboratorService: CollaboratorService, private dayService: DayService, private locationService: LocationService,
-              protected shiftAvailabilityService: ShiftAvailabilityService) {
+              protected shiftAvailabilityService: ShiftAvailabilityService, private cookiesService: CookiesService) {
   }
 
   ngOnInit() {
@@ -74,16 +75,20 @@ export class LocationDetailComponent implements OnInit {
   }
 
   submitData(shiftId: number | undefined) {
-    console.log(this.formData);
-    let collaborator: Collaborator = this.formData;
-    this.collaboratorService.saveCollaborator(collaborator);
 
-    this.resetFormData();
+    if (shiftId !== undefined) {
+      let collaborator: Collaborator = this.formData;
+      collaborator.id = this.cookiesService.getUserId();
+      this.collaboratorService.saveCollaborator(collaborator);
+
+      this.associationService.saveAssociation(this.cookiesService.getUserId(), shiftId);
+      this.resetFormData();
+    }
   }
 
   resetFormData() {
     this.formData = {
-      email: '',
+      email: this.cookiesService.getUserEmail(),
       phone: '',
       firstName: '',
       lastName: '',
@@ -93,7 +98,7 @@ export class LocationDetailComponent implements OnInit {
   }
 
   parseTime(timeString: string): number {
-    let value =  timeString.replaceAll(":", "");
+    let value = timeString.replaceAll(":", "");
     return parseInt(value);
   };
 

@@ -28,19 +28,20 @@ public class AuthController {
 
     @CrossOrigin
     @PostMapping("/login")
-    public boolean login(@RequestBody AuthEntity authEntity) {
+    public AuthEntity login(@RequestBody AuthEntity authEntity) {
         collaboratorService.createIfExistByEmail(authEntity.getEmail());
         int userId = collaboratorService.getIdByEmail(authEntity.getEmail());
-        log.info("userId: " + authEntity.getUserId());
+        authEntity.setUserId(userId);
+        log.info("userId: " + userId);
         verificationCodeService.createCode(userId);
         verificationCodeService.logCode(userId);
         String code = verificationCodeService.getCode(userId);
-        boolean emailSend = emailService.sendCodeViaEmail(code, userId);
-        if (!emailSend) {
+        authEntity.setEmailSended(emailService.sendCodeViaEmail(code, userId));
+        if (!authEntity.isEmailSended()) {
             verificationCodeService.removeCode(userId);
             verificationCodeService.logCode(userId);
         }
-        return emailSend;
+        return authEntity;
     }
 
     @CrossOrigin
@@ -59,7 +60,11 @@ public class AuthController {
     @PostMapping("/validate")
     public AuthEntity validateToken(@RequestBody AuthEntity authEntity) {
         try {
-            authEntity.setValid(tokenProvider.validateToken(authEntity));
+            if (tokenProvider.validateToken(authEntity)) {
+                authEntity.setValid(true);
+            } else {
+                authEntity.setValid(false);
+            }
         } catch (JOSEException | ParseException e) {
             authEntity.setValid(false);
         }

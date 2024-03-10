@@ -32,7 +32,7 @@ public class JWTTokenProviderService {
         JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
         builder.subject(String.valueOf(userId));
         builder.issuer("");
-        builder.expirationTime(new Date(new Date().getTime() + 60 * 1000));
+        builder.expirationTime(new Date(new Date().getTime() + 60 * 1000 * 60 * 24 * 7));
         builder.claim("role", "user");
 
         final JWTClaimsSet claim = builder.build();
