@@ -6,12 +6,11 @@ import {AssociationService} from "../../services/http/association.service";
 import {CollaboratorService} from "../../services/http/collaborator.service";
 import {Collaborator} from "../../interfaces/CollaboratorEntity";
 import {Location} from "../../interfaces/LocationEntity";
-import {Day} from "../../interfaces/DayEntity";
-import {DayService} from "../../services/http/day.service";
 import {LocationService} from "../../services/http/location.service";
 import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
 import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
 import {CookiesService} from "../../services/token/cookies.service";
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-location-detail',
@@ -21,6 +20,7 @@ import {CookiesService} from "../../services/token/cookies.service";
 export class LocationDetailComponent implements OnInit {
   protected selectedLocation: Location | undefined;
   protected signedIn: boolean = false;
+  protected dataError: boolean = false;
   protected shifts: Shift[] | undefined;
   protected shiftAvailability: ShiftAvailability[] = [];
 
@@ -34,7 +34,7 @@ export class LocationDetailComponent implements OnInit {
   }
 
   constructor(private shiftService: ShiftService, private route: ActivatedRoute, private associationService: AssociationService,
-              private collaboratorService: CollaboratorService, private dayService: DayService, private locationService: LocationService,
+              private collaboratorService: CollaboratorService, private locationService: LocationService,
               protected shiftAvailabilityService: ShiftAvailabilityService, private cookiesService: CookiesService) {
   }
 
@@ -77,6 +77,8 @@ export class LocationDetailComponent implements OnInit {
   submitData(shiftId: number | undefined) {
 
     if (shiftId !== undefined) {
+      if(this.checkData()) return;
+
       let collaborator: Collaborator = this.formData;
       collaborator.id = this.cookiesService.getUserId();
       this.collaboratorService.saveCollaborator(collaborator);
@@ -84,6 +86,19 @@ export class LocationDetailComponent implements OnInit {
       this.associationService.saveAssociation(this.cookiesService.getUserId(), shiftId);
       this.resetFormData();
     }
+  }
+
+  checkData(): boolean {
+    let error = this.formData.firstName === '' || this.formData.lastName === '' || this.formData.phone === '' || this.formData.age === '' || this.formData.size === 'Taglia Maglietta';
+    this.dataError = error;
+
+    if(error) {
+      timer(5000).subscribe(() => {
+        this.dataError = false;
+      });
+    }
+
+    return error;
   }
 
   resetFormData() {
