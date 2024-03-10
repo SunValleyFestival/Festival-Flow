@@ -1,17 +1,14 @@
-package com.sunvalley.festivalFlowbe.controller.token;
+package com.sunvalley.festivalFlowbe.controller.utility;
 
 import com.nimbusds.jose.JOSEException;
 import com.sunvalley.festivalFlowbe.entity.utility.AuthEntity;
 import com.sunvalley.festivalFlowbe.service.CollaboratorService;
-import com.sunvalley.festivalFlowbe.service.utility.VerificationCodeService;
 import com.sunvalley.festivalFlowbe.service.utility.EmailService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
+import com.sunvalley.festivalFlowbe.service.utility.VerificationCodeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 
@@ -29,6 +26,7 @@ public class AuthController {
     private final CollaboratorService collaboratorService;
 
 
+    @CrossOrigin
     @PostMapping("/login")
     public boolean login(@RequestBody AuthEntity authEntity) {
         collaboratorService.createIfExistByEmail(authEntity.getEmail());
@@ -45,6 +43,7 @@ public class AuthController {
         return emailSend;
     }
 
+    @CrossOrigin
     @PostMapping("/login/confirm")
     public AuthEntity loginConfirm(@RequestBody AuthEntity authEntity) {
         if (verificationCodeService.isvalid( authEntity.getUserId(), authEntity.getCode())) {
@@ -60,11 +59,7 @@ public class AuthController {
     @PostMapping("/validate")
     public AuthEntity validateToken(@RequestBody AuthEntity authEntity) {
         try {
-            if (tokenProvider.validateToken(authEntity)) {
-                authEntity.setValid(true);
-            } else {
-                authEntity.setValid(false);
-            }
+            authEntity.setValid(tokenProvider.validateToken(authEntity));
         } catch (JOSEException | ParseException e) {
             authEntity.setValid(false);
         }

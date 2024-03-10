@@ -48,6 +48,28 @@ public class JWTTokenProviderService {
         return jwt.serialize();
     }
 
+    public String generateTokenForAdmin() {
+        final RSAPrivateKey privateKey = applicationJwtConfig.getPrivateKey();
+        final JWSHeader header = new JWSHeader(applicationJwtConfig.getAlgorithm());
+
+        JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();
+        builder.issuer("");
+        builder.expirationTime(new Date(new Date().getTime() + 60 * 1000));
+        builder.claim("role", "admin");
+
+        final JWTClaimsSet claim = builder.build();
+        final SignedJWT jwt = new SignedJWT(header, claim);
+
+        try {
+            final JWSSigner signer = new RSASSASigner(privateKey);
+            jwt.sign(signer);
+        } catch (JOSEException e) {
+            throw new RuntimeException("JWS object couldn't be signed", e);
+        }
+
+        return jwt.serialize();
+    }
+
     public boolean validateToken(AuthEntity authEntity) throws JOSEException, ParseException {
         SignedJWT parsedJWT = SignedJWT.parse(authEntity.getToken());
         RSAPublicKey publicKey = applicationJwtConfig.getPublicKey();
