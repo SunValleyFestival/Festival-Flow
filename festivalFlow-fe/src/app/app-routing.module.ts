@@ -11,16 +11,17 @@ import {ManageUserComponent} from "./pages/admin-area/manage-user/manage-user.co
 import {CreateLocationComponent} from "./pages/admin-area/create-location/create-location.component";
 
 const routes: Routes = [
-  {path: '', component: HomeComponent, canActivate: [authGuard]},
-  {path: 'login', component: LoginComponent, canActivate: [authGuard]},
+  {path: 'login', component: LoginComponent},
   {path: 'location/:location', component: LocationDetailComponent, canActivate: [authGuard]},
   {path: 'edit', component: ManageLocationComponent},
   {path: 'user', component: ManageUserComponent},
   {path: 'create', component: CreateLocationComponent},
   {path: 'admin', component: AdminComponent},
-  {path: 'login', component: LoginComponent},
+  {path: 'admin/:day', component: AdminComponent},
   {path: 'location/:location/:day', component: LocationDetailComponent},
   {path: 'not-found', component: NotFoundComponent},
+  {path: '', component: HomeComponent, canActivate: [authGuard]},
+  {path: ':day', component: HomeComponent, canActivate: [authGuard]},
   {path: '**', redirectTo: '/not-found'}
 ];
 

@@ -20,6 +20,6 @@ export class ShiftService {
   }
 
   getShiftsByLocationId(locationId: number): Observable<Shift[]> {
-    return this.http.get(BASE_URL + "/location/" + locationId);
+    return this.http.get(BASE_URL + "location/" + locationId);
   }
 }
