@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface AssociationRepository extends JpaRepository<AssociationEntity, AssociationEntityId> {
 
-    @Query("SELECT a FROM AssociationEntity a WHERE a.collaborator_id = ?1")
+    @Query("SELECT a FROM AssociationEntity a WHERE a.id.collaboratorId = ?1")
     AssociationEntity findByCollaboratorId(int id);
 
 }
