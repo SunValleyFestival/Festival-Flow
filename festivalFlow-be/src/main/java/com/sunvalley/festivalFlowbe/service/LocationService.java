@@ -39,7 +39,7 @@ public class LocationService {
         return locationRepository.findById(id).orElse(null);
     }
 
-  public void deleteById(final Integer id) {
-    locationRepository.deleteById(id);
-  }
+    public void deleteById(int id) {
+        locationRepository.deleteById(id);
+    }
 }

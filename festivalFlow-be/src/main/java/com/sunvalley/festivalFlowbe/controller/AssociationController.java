@@ -1,18 +1,19 @@
 package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
-import com.sunvalley.festivalFlowbe.entity.AssociationEntityId;
 import com.sunvalley.festivalFlowbe.entity.Status;
-import com.sunvalley.festivalFlowbe.entity.LocationEntity;
-import com.sunvalley.festivalFlowbe.entity.ShiftEntity;
 import com.sunvalley.festivalFlowbe.service.AssociationService;
-import com.sunvalley.festivalFlowbe.service.LocationService;
+import com.sunvalley.festivalFlowbe.service.CollaboratorService;
+import com.sunvalley.festivalFlowbe.service.ShiftService;
+import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -24,10 +25,17 @@ public class AssociationController {
     private static final String ASSOCIATION = "/user/association/";
 
     private final AssociationService associationService;
+    private final ShiftService shiftService;
+    private final CollaboratorService collaboratorService;
+
+    private final JWTTokenProviderService jwtTokenProviderService;
 
     @Autowired
-    public AssociationController(AssociationService associationService) {
+    public AssociationController(AssociationService associationService, ShiftService shiftService, CollaboratorService collaboratorService, JWTTokenProviderService jwtTokenProviderService) {
         this.associationService = associationService;
+        this.shiftService = shiftService;
+        this.collaboratorService = collaboratorService;
+        this.jwtTokenProviderService = jwtTokenProviderService;
     }
 
     @CrossOrigin
@@ -38,12 +46,25 @@ public class AssociationController {
     }
 
     @CrossOrigin
-    @PostMapping(ASSOCIATION + "create")
-    public ResponseEntity<AssociationEntity> create(@RequestBody AssociationEntityId associationId) {
-        var association = new AssociationEntity();
-        association.setId(associationId);
-        AssociationEntity newAssociation = associationService.save(association);
-        return new ResponseEntity<>(newAssociation, HttpStatus.OK);
+    @PostMapping(ASSOCIATION + "create}")
+    public ResponseEntity<AssociationEntity> create(@RequestBody AssociationEntity associationEntity, @RequestHeader("Authorization") String token) throws ParseException {
+        if (!jwtTokenProviderService.getUserIdFromToken(token).equals(associationEntity.getId().getCollaboratorId())) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } else {
+            if (shiftService.getById(associationEntity.getId().getShiftId()).isAdultsOnly()) {
+                Date dataNascita = collaboratorService.getById(associationEntity.getId().getCollaboratorId()).getAge();
+                long differenzaMillisecondi = new Date().getTime() - dataNascita.getTime();
+                long anni = differenzaMillisecondi / (1000L * 60 * 60 * 24 * 365);
+                if (anni < 18) {
+                    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+                }
+            }
+            associationEntity.setStatus(Status.PENDING);
+            associationService.save(associationEntity);
+            return new ResponseEntity<>(associationEntity, HttpStatus.OK);
+        }
+
+
     }
 
     @CrossOrigin
