@@ -17,12 +17,21 @@ public class AssociationService {
     this.associationRepository = associationRepository;
   }
 
-  public AssociationEntity getByCollaboratorId(int id) {
+  public List<AssociationEntity> getByCollaboratorId(int id) {
     return associationRepository.findByCollaboratorId(id);
+  }
+
+  public AssociationEntity getByCollaboratorIdAndShiftId(int collaboratorId, int shiftId) {
+    return associationRepository.findByIdCollaboratorIdAndIdShiftId(collaboratorId, shiftId);
   }
 
   public List<AssociationEntity> getAll() {
     return associationRepository.findAll();
   }
+
+  public void save(AssociationEntity association) {
+    associationRepository.save(association);
+  }
+
 
 }

@@ -47,6 +47,13 @@ public class CollaboratorController {
         return new ResponseEntity<>(newCollaborator, HttpStatus.OK);
     }
 
+    @CrossOrigin
+    @GetMapping(ADMIN + "shift/{shiftId}")
+    public ResponseEntity<List<CollaboratorEntity>> getByShiftId(@PathVariable int shiftId) {
+        List<CollaboratorEntity> collaborators = collaboratorService.getByShiftId(shiftId);
+        return new ResponseEntity<>(collaborators, HttpStatus.OK);
+    }
+
 
     @CrossOrigin
     @DeleteMapping(ADMIN)
