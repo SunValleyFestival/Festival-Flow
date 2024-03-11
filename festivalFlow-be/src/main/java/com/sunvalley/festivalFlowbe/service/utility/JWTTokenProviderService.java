@@ -11,6 +11,7 @@ import com.sunvalley.festivalFlowbe.config.ApplicationJwtConfig;
 import com.sunvalley.festivalFlowbe.entity.utility.AuthEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
+@Service
 public class JWTTokenProviderService {
     private final ApplicationJwtConfig applicationJwtConfig;
 
@@ -81,6 +83,12 @@ public class JWTTokenProviderService {
         }
 
         return !claims.getExpirationTime().before(new Date());
+    }
+
+    public Integer getUserIdFromToken(String token) throws ParseException {
+        SignedJWT parsedJWT = SignedJWT.parse(token);
+        JWTClaimsSet claims = parsedJWT.getJWTClaimsSet();
+        return Integer.parseInt(claims.getSubject());
     }
 
 
