@@ -10,7 +10,7 @@ import {LocationService} from "../../services/http/location.service";
 import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
 import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
 import {CookiesService} from "../../services/token/cookies.service";
-import { timer } from 'rxjs';
+import {timer} from 'rxjs';
 import {Association} from "../../interfaces/AssociationEntity";
 
 @Component({
@@ -76,21 +76,22 @@ export class LocationDetailComponent implements OnInit {
   }
 
   submitData(shiftId: number | undefined) {
-
     if (shiftId !== undefined) {
-      if(this.checkData()) return;
+      if (this.checkData()) return;
 
       let collaborator: Collaborator = this.formData;
       collaborator.id = this.cookiesService.getUserId();
-      this.collaboratorService.updateCollaborator(collaborator);
+      this.collaboratorService.updateCollaborator(collaborator).pipe().subscribe();
       let association: Association = {
-        collaborator_id: this.cookiesService.getUserId(),
-        shift_id: shiftId,
+        collaboratorId: this.cookiesService.getUserId(),
+        shiftId: shiftId,
         status: 0
       }
 
-      this.associationService.saveAssociation(association);
+      this.associationService.saveAssociation(association).pipe().subscribe();
       this.resetFormData();
+
+      window.location.reload();
     }
   }
 
@@ -98,7 +99,7 @@ export class LocationDetailComponent implements OnInit {
     let error = this.formData.firstName === '' || this.formData.lastName === '' || this.formData.phone === '' || this.formData.age === '' || this.formData.size === 'Taglia Maglietta';
     this.dataError = error;
 
-    if(error) {
+    if (error) {
       timer(5000).subscribe(() => {
         this.dataError = false;
       });

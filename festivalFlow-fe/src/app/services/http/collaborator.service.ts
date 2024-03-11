@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {Collaborator} from "../../interfaces/CollaboratorEntity";
 import {HttpAuthClient} from "./token/http-auth-client";
+import {HttpClient} from "@angular/common/http";
 
 const BASE_URL = environment.userBaseUrl + "/collaborator";
 @Injectable({

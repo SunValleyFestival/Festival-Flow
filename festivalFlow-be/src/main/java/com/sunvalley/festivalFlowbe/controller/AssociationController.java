@@ -1,8 +1,10 @@
 package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
+import com.sunvalley.festivalFlowbe.entity.AssociationEntityId;
 import com.sunvalley.festivalFlowbe.entity.Status;
 import com.sunvalley.festivalFlowbe.service.AssociationService;
+import java.util.LinkedHashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,7 +37,9 @@ public class AssociationController {
 
     @CrossOrigin
     @PostMapping(ASSOCIATION + "create")
-    public ResponseEntity<AssociationEntity> create(@RequestBody AssociationEntity association) {
+    public ResponseEntity<AssociationEntity> create(@RequestBody AssociationEntityId associationId) {
+        var association = new AssociationEntity();
+        association.setId(associationId);
         AssociationEntity newAssociation = associationService.save(association);
         return new ResponseEntity<>(newAssociation, HttpStatus.OK);
     }
