@@ -2,10 +2,9 @@ package com.sunvalley.festivalFlowbe.service;
 
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
 import com.sunvalley.festivalFlowbe.repository.AssociationRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AssociationService {
@@ -28,4 +27,8 @@ public class AssociationService {
   public AssociationEntity save(final AssociationEntity association) {
     return associationRepository.save(association);
   }
+
+    public List<Integer> getByUserId(int userId) {
+        return associationRepository.findByUserId(userId);
+    }
 }

@@ -30,6 +30,10 @@ public class LocationService {
         return locationRepository.save(location);
     }
 
+  public List<LocationEntity> getLocationsById(int id) {
+    return locationRepository.findById(id);
+  }
+
     public List<LocationEntity> getLocationsByDayId(int id) {
         DayEntity day = dayService.getDayById(id);
         return locationRepository.findByDay(day);
@@ -37,9 +41,5 @@ public class LocationService {
 
     public LocationEntity getById(int id) {
         return locationRepository.findById(id).orElse(null);
-    }
-
-    public void deleteById(int id) {
-        locationRepository.deleteById(id);
     }
 }

@@ -3,8 +3,10 @@ package com.sunvalley.festivalFlowbe.controller;
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
 import com.sunvalley.festivalFlowbe.entity.AssociationEntityId;
 import com.sunvalley.festivalFlowbe.entity.Status;
+import com.sunvalley.festivalFlowbe.entity.LocationEntity;
+import com.sunvalley.festivalFlowbe.entity.ShiftEntity;
 import com.sunvalley.festivalFlowbe.service.AssociationService;
-import java.util.LinkedHashMap;
+import com.sunvalley.festivalFlowbe.service.LocationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -88,5 +90,14 @@ public class AssociationController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @CrossOrigin
+    @GetMapping("/userId/{id}")
+    public ResponseEntity<List<LocationEntity>> getByTypeAndId(String type, int id) {
+        List<LocationEntity> locationEntities;
+        locationEntities =  locationService.getloca associationService.getByUserId(id);
+            return new ResponseEntity<>(associations, HttpStatus.OK);
 
+        List<AssociationEntity> associations = associationService.getByTypeAndId(type, id);
+        return new ResponseEntity<>(associations, HttpStatus.OK);
+    }
 }
