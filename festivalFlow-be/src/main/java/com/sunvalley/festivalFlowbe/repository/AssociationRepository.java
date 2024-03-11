@@ -10,7 +10,10 @@ import java.util.List;
 public interface AssociationRepository extends JpaRepository<AssociationEntity, AssociationEntityId> {
 
     @Query("SELECT a FROM AssociationEntity a WHERE a.id.collaboratorId = ?1")
-    AssociationEntity findByCollaboratorId(int id);
+    List<AssociationEntity> findByCollaboratorId(int id);
+
+    @Query("SELECT a FROM AssociationEntity a WHERE a.id.collaboratorId = ?1 AND a.id.shiftId = ?2")
+    AssociationEntity findByIdCollaboratorIdAndIdShiftId(int collaboratorId, int shiftId);
 
 
     @Query("SELECT a. FROM AssociationEntity a WHERE a.id.userId = ?1")

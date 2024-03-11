@@ -21,21 +21,25 @@ public class CollaboratorService {
         return collaboratorRepository.findAll();
     }
 
-  public void createIfExistByEmail( String email) {
-    if (null == collaboratorRepository.getIdByEmail(email)) {
-      CollaboratorEntity collaborator = new CollaboratorEntity();
-      collaborator.setEmail(email);
-      collaboratorRepository.save(collaborator);
+    public void createIfExistByEmail(String email) {
+        if (null == collaboratorRepository.getIdByEmail(email)) {
+            CollaboratorEntity collaborator = new CollaboratorEntity();
+            collaborator.setEmail(email);
+            collaboratorRepository.save(collaborator);
+        }
     }
-  }
 
 
-  public int getIdByEmail(String email) {
-    return collaboratorRepository.getIdByEmail(email).getId();
-  }
+    public int getIdByEmail(String email) {
+        return collaboratorRepository.getIdByEmail(email).getId();
+    }
 
     public String getEmailById(int id) {
         return collaboratorRepository.getEmailById(id);
+    }
+
+    public List<CollaboratorEntity> getByShiftId(int shiftId) {
+        return collaboratorRepository.findByShiftId(shiftId);
     }
 
     public CollaboratorEntity getById(int id) {

@@ -3,9 +3,6 @@ package com.sunvalley.festivalFlowbe.controller;
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
 import com.sunvalley.festivalFlowbe.entity.Status;
 import com.sunvalley.festivalFlowbe.service.AssociationService;
-import com.sunvalley.festivalFlowbe.service.CollaboratorService;
-import com.sunvalley.festivalFlowbe.service.ShiftService;
-import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,6 +43,14 @@ public class AssociationController {
     }
 
     @CrossOrigin
+    @GetMapping(ASSOCIATION + "collaboratorId/{id}")
+    public ResponseEntity<List<AssociationEntity>> getByTypeAndId(int id) {
+        List<AssociationEntity> locationEntities;
+        locationEntities = associationService.getByCollaboratorId(id);
+        return new ResponseEntity<>(locationEntities, HttpStatus.OK);
+    }
+
+    @CrossOrigin
     @PostMapping(ASSOCIATION + "create}")
     public ResponseEntity<AssociationEntity> create(@RequestBody AssociationEntity associationEntity, @RequestHeader("Authorization") String token) throws ParseException {
         if (!jwtTokenProviderService.getUserIdFromToken(token).equals(associationEntity.getId().getCollaboratorId())) {
@@ -68,9 +73,9 @@ public class AssociationController {
     }
 
     @CrossOrigin
-    @PutMapping(ADMIN + "accept/{collaboratorId}")
-    public ResponseEntity<AssociationEntity> update(@PathVariable int collaboratorId) {
-        AssociationEntity association = associationService.getByCollaboratorId(collaboratorId);
+    @PutMapping(ADMIN + "accept/")
+    public ResponseEntity<AssociationEntity> accept(@RequestBody AssociationEntity associationEntity) {
+        AssociationEntity association = associationService.getByCollaboratorIdAndShiftId(associationEntity.getId().getCollaboratorId(), associationEntity.getId().getShiftId());
 
         if (association == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -111,11 +116,5 @@ public class AssociationController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @CrossOrigin
-    @GetMapping("/userId/{id}")
-    public ResponseEntity<List<Integer>> getByTypeAndId(String type, int id) {
-        List<Integer> locationEntities;
-        locationEntities = associationService.getByUserId(id);
-        return new ResponseEntity<>(locationEntities, HttpStatus.OK);
-    }
+
 }
