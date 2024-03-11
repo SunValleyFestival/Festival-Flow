@@ -92,12 +92,9 @@ public class AssociationController {
 
     @CrossOrigin
     @GetMapping("/userId/{id}")
-    public ResponseEntity<List<LocationEntity>> getByTypeAndId(String type, int id) {
-        List<LocationEntity> locationEntities;
-        locationEntities =  locationService.getloca associationService.getByUserId(id);
-            return new ResponseEntity<>(associations, HttpStatus.OK);
-
-        List<AssociationEntity> associations = associationService.getByTypeAndId(type, id);
-        return new ResponseEntity<>(associations, HttpStatus.OK);
+    public ResponseEntity<List<Integer>> getByTypeAndId(String type, int id) {
+        List<Integer> locationEntities;
+        locationEntities = associationService.getByUserId(id);
+        return new ResponseEntity<>(locationEntities, HttpStatus.OK);
     }
 }
