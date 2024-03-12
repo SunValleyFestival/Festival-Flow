@@ -30,20 +30,16 @@ public class CollaboratorController {
     }
 
     @CrossOrigin
-    @GetMapping(COLLABORATOR + "{id}")
-    public ResponseEntity<CollaboratorEntity> getById(@PathVariable int id, @RequestHeader("Authorization") String token) throws ParseException {
-        if (!jwtTokenProviderService.getUserIdFromToken(token).equals(id)) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        } else {
-            CollaboratorEntity collaborator = collaboratorService.getById(id);
-            return new ResponseEntity<>(collaborator, HttpStatus.OK);
-        }
+    @GetMapping(COLLABORATOR)
+    public ResponseEntity<CollaboratorEntity> get(@RequestHeader("Authorization") String token) throws ParseException {
+        CollaboratorEntity collaborator = collaboratorService.getById(jwtTokenProviderService.getUserIdFromToken(token));
+        return new ResponseEntity<>(collaborator, HttpStatus.OK);
     }
 
     @CrossOrigin
     @PutMapping(COLLABORATOR + "update")
     public ResponseEntity<CollaboratorEntity> update(@RequestBody CollaboratorEntity collaborator, @RequestHeader("Authorization") String token) throws ParseException {
-        if (jwtTokenProviderService.getUserIdFromToken(token) != collaborator.getId()) {
+        if (!jwtTokenProviderService.getUserIdFromToken(token).equals(collaborator.getId())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else {
             CollaboratorEntity newCollaborator = collaboratorService.update(collaborator);
