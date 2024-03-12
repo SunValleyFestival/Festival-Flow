@@ -40,7 +40,7 @@ public class AssociationController {
 
     @CrossOrigin
     @GetMapping(ASSOCIATION + "collaboratorId/{id}")
-    public ResponseEntity<List<AssociationEntity>> getByTypeAndId(int id, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<List<AssociationEntity>> getByTypeAndId(int id, @RequestHeader("Authorization") String token) throws ParseException {
         if (!jwtTokenProviderService.getUserIdFromToken(token).equals(id)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else {
