@@ -51,7 +51,7 @@ public class AssociationController {
     }
 
     @CrossOrigin
-    @PostMapping(ASSOCIATION + "create}")
+    @PostMapping(ASSOCIATION + "create")
     public ResponseEntity<AssociationEntity> create(@RequestBody AssociationEntity associationEntity, @RequestHeader("Authorization") String token) throws ParseException {
         if (!jwtTokenProviderService.getUserIdFromToken(token).equals(associationEntity.getId().getCollaboratorId())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -73,7 +73,7 @@ public class AssociationController {
     }
 
     @CrossOrigin
-    @PutMapping(ADMIN + "accept/")
+    @PutMapping(ADMIN + "accept")
     public ResponseEntity<AssociationEntity> accept(@RequestBody AssociationEntity associationEntity) {
         AssociationEntity association = associationService.getByCollaboratorIdAndShiftId(associationEntity.getId().getCollaboratorId(), associationEntity.getId().getShiftId());
 
@@ -95,9 +95,9 @@ public class AssociationController {
     }
 
     @CrossOrigin
-    @PutMapping(ADMIN + "reject/{collaboratorId}")
-    public ResponseEntity<AssociationEntity> reject(@PathVariable int collaboratorId) {
-        AssociationEntity association = associationService.getByCollaboratorId(collaboratorId);
+    @PutMapping(ADMIN + "reject")
+    public ResponseEntity<AssociationEntity> reject(@RequestBody AssociationEntity associationEntity) {
+        AssociationEntity association = associationService.getByCollaboratorIdAndShiftId(associationEntity.getId().getCollaboratorId(), associationEntity.getId().getShiftId());
 
         if (association == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
