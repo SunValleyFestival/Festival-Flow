@@ -1,6 +1,8 @@
 package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.ShiftEntity;
+import com.sunvalley.festivalFlowbe.entity.ShiftEntityAdmin;
+import com.sunvalley.festivalFlowbe.service.CollaboratorService;
 import com.sunvalley.festivalFlowbe.service.ShiftService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,8 @@ public class ShiftController {
     private static final String SHIFT = "user/shift/";
 
     private final ShiftService shiftService;
+
+    private final CollaboratorService collaboratorService;
 
     public ShiftController(ShiftService shiftService) {
         this.shiftService = shiftService;
@@ -43,6 +47,15 @@ public class ShiftController {
         List<ShiftEntity> shifts = shiftService.getShiftsByLocationId(location);
         return new ResponseEntity<>(shifts, HttpStatus.OK);
     }
+
+    @CrossOrigin
+    @GetMapping(ADMIN + "location/{location}")
+    public ResponseEntity<List<ShiftEntityAdmin>> getAdminShiftByLocationId(@PathVariable int location) {
+        List<ShiftEntity> shifts = shiftService.getShiftsByLocationId(location);
+        List<ShiftEntityAdmin> shiftEntityAdminList = shiftService.getShiftAdmin(shifts);
+        return new ResponseEntity<>(shiftEntityAdminList, HttpStatus.OK);
+    }
+
 
     @CrossOrigin
     @PostMapping(ADMIN + "create")
