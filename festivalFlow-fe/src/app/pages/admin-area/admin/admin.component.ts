@@ -48,8 +48,8 @@ export class AdminComponent implements OnInit {
   }
 
 
-  openDetail(locationId: number | undefined) {
-    this.router.navigate(['edit']);
+  openDetail(location: Location | undefined) {
+    this.router.navigate(['admin/location/' + location?.name + "/" + location?.id]);
   }
 
   changeDayAdmin(dayId: string) {
@@ -81,8 +81,11 @@ export class AdminComponent implements OnInit {
     this.router.navigate(['create']);
   }
 
-  deleteLocation(id: number | undefined) {
-
+  deleteLocation(location: Location | undefined) {
+      if(location !== undefined) {
+        this.locationService.deleteLocation(location).pipe().subscribe();
+        //window.location.reload();
+      }
   }
 
   submitData() {

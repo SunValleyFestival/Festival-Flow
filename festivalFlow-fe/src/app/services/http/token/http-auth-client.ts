@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CookiesService} from "../../token/cookies.service";
+import {Observable} from "rxjs";
 
 @Injectable()
 export class HttpAuthClient {
@@ -10,7 +11,7 @@ export class HttpAuthClient {
               ) {}
 
 
-  get(url: string): any {
+  get(url: string): Observable<any> {
     let headers = new HttpHeaders({'Authorization': 'Bearer ' + this.cookiesService.getToken()});
     return this.http.get(url, {
       headers: headers
@@ -28,6 +29,14 @@ export class HttpAuthClient {
     let headers = new HttpHeaders({'Authorization': 'Bearer ' + this.cookiesService.getToken()});
     return this.http.put(url, data, {
       headers: headers
+    });
+  }
+
+  delete(url: string, data: any): any {
+    let headers = new HttpHeaders({'Authorization': 'Bearer ' + this.cookiesService.getToken()});
+    return this.http.delete(url, {
+      headers: headers,
+      body: data
     });
   }
 }

@@ -1,11 +1,11 @@
 package com.sunvalley.festivalFlowbe.service;
 
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
+import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
 import com.sunvalley.festivalFlowbe.repository.AssociationRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AssociationService {
@@ -33,5 +33,15 @@ public class AssociationService {
     associationRepository.save(association);
   }
 
+    public List<Integer> getByUserId(int userId) {
+        return associationRepository.findByUserId(userId);
+    }
 
+  public List<AssociationEntity> getByShiftId(final int locationId) {
+    return associationRepository.findByShiftId(locationId);
+  }
+
+  public List<CollaboratorEntity> getCollaboratorsByShiftId(final int shiftId) {
+    return associationRepository.getCollaboratorsByShiftId(shiftId);
+  }
 }

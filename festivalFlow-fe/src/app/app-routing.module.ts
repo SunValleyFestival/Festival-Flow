@@ -13,7 +13,7 @@ import {CreateLocationComponent} from "./pages/admin-area/create-location/create
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'location/:location', component: LocationDetailComponent, canActivate: [authGuard]},
-  {path: 'edit', component: ManageLocationComponent},
+  {path: 'admin/location/:name/:location', component: ManageLocationComponent},
   {path: 'user', component: ManageUserComponent},
   {path: 'create', component: CreateLocationComponent},
   {path: 'admin', component: AdminComponent},

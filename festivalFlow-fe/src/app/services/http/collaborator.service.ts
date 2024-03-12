@@ -4,7 +4,7 @@ import {Collaborator} from "../../interfaces/CollaboratorEntity";
 import {HttpAuthClient} from "./token/http-auth-client";
 import {HttpClient} from "@angular/common/http";
 
-const BASE_URL = environment.userBaseUrl + "/collaborator";
+const BASE_URL = environment.userBaseUrl + "/collaborator/";
 @Injectable({
   providedIn: 'root'
 })
@@ -14,13 +14,13 @@ export class CollaboratorService {
   }
 
   getCollaborators() {
-    return this.http.get(BASE_URL + "/all");
+    return this.http.get(BASE_URL);
   }
 
   saveCollaborator(collaborator: Collaborator) {
   }
 
   updateCollaborator(collaborator: Collaborator) {
-    return this.http.put(BASE_URL + "/update", collaborator);
+    return this.http.put(BASE_URL + "update", collaborator);
   }
 }

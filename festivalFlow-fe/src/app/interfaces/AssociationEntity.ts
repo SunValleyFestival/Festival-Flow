@@ -1,5 +1,7 @@
 export interface Association {
-  shiftId: number;
-  collaboratorId: number;
+  id: {
+    collaboratorId: number;
+    shiftId: number;
+  }
   status: number;
 }

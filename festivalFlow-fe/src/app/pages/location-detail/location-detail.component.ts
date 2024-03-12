@@ -83,8 +83,10 @@ export class LocationDetailComponent implements OnInit {
       collaborator.id = this.cookiesService.getUserId();
       this.collaboratorService.updateCollaborator(collaborator).pipe().subscribe();
       let association: Association = {
-        collaboratorId: this.cookiesService.getUserId(),
-        shiftId: shiftId,
+        id: {
+          collaboratorId: this.cookiesService.getUserId(),
+          shiftId: shiftId
+        },
         status: 0
       }
 

@@ -1,4 +1,5 @@
 import {Location} from './LocationEntity';
+import {Collaborator} from "./CollaboratorEntity";
 
 export interface Shift {
   id?: number;
@@ -8,4 +9,6 @@ export interface Shift {
   startTime: string;
   endTime: string;
   maxCollaborator: number;
+  collaboratorName?: string[],
+  collaborators?: Collaborator[]
 }

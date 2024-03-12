@@ -106,14 +106,4 @@ public class JWTTokenProviderService {
 
         return builder.build();
     }
-
-
-    public String getUserIdFromToken(String token) {
-        try {
-            SignedJWT signedJWT = SignedJWT.parse(token);
-            return signedJWT.getJWTClaimsSet().getSubject();
-        } catch (ParseException e) {
-            throw new RuntimeException("Token couldn't be parsed", e);
-        }
-    }
 }

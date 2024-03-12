@@ -1,65 +1,47 @@
 <div class="max-h-screen overflow-y-hidden">
   <app-header></app-header>
   <div role="alert" class="alert alert-error" *ngIf="dataError">
-    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
     <span>Errore! Dati inseriti incompleti!</span>
   </div>
   <div class="max-h-screen overflow-scroll">
-    <h1 class="ml-5 mt-5 text-4xl">Turno Bar</h1>
+    <h1 class="ml-5 mt-5 text-4xl">{{ locationName }}</h1>
     <div class="flex gap-3 flex-col m-5">
-      <div class="collapse collapse-arrow bg-base-200">
+      <div class="collapse collapse-arrow bg-base-200" *ngFor="let shift of shifts">
         <input type="radio" name="my-accordion-2"/>
         <div class="collapse-title text-xl justify-between flex font-medium">
           <div class="self-center">
-            Turno 1 - 10:00 - 12:00
+            {{ shift.name }} - {{ shift.startTime }} - {{ shift.endTime }}
           </div>
           <div class="justify-self-end">
             <button class="btn btn-circle" (click)="deleteShift()">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
             </button>
           </div>
         </div>
         <div class="collapse-content">
-          <div>
+          <div *ngFor="let collaborator of shift.collaborators">
+            <div>{{ collaborator.firstName }}</div>
             <div class="flex w-full justify-between">
               <div class="self-center">
-                Timothé Ember
+                {{ collaborator.firstName }} {{ collaborator.lastName }}
               </div>
               <div class="self-center">
-                079 123 45 67
+                {{ collaborator.phone }}
               </div>
               <div class="self-center">
-                timothé.ember@coso.ch
+                {{ collaborator.email }}
               </div>
               <div class="self-center">
-                Pf assieme a Joe
+                note...
               </div>
               <div class="flex gap-2">
-                <button class="btn btn-error">Elimina</button>
-                <button class="btn btn-success">Conferma</button>
-              </div>
-            </div>
-            <div class="flex flex-col w-full">
-              <div class="divider divider-start"></div>
-            </div>
-          </div>
-          <div>
-            <div class="flex w-full justify-between">
-              <div class="self-center">
-                Timothé Ember
-              </div>
-              <div class="self-center">
-                079 123 45 67
-              </div>
-              <div class="self-center">
-                timothé.ember@coso.ch
-              </div>
-              <div class="self-center">
-                Pf assieme a Joe
-              </div>
-              <div class="flex gap-2">
-                <button class="btn btn-error">Elimina</button>
-                <button class="btn btn-success">Conferma</button>
+                <button class="btn btn-error" (click)="rejectAssociation(collaborator.id, shift.id)">Elimina</button>
+                <button class="btn btn-success" (click)="approveAssociation(collaborator.id, shift.id)">Conferma</button>
               </div>
             </div>
             <div class="flex flex-col w-full">
@@ -72,7 +54,6 @@
     </div>
     <br>
     <br>
-
   </div>
 </div>
 

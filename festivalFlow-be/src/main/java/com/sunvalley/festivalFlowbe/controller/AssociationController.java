@@ -1,8 +1,12 @@
 package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
+import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
 import com.sunvalley.festivalFlowbe.entity.Status;
 import com.sunvalley.festivalFlowbe.service.AssociationService;
+import com.sunvalley.festivalFlowbe.service.CollaboratorService;
+import com.sunvalley.festivalFlowbe.service.ShiftService;
+import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,8 +54,22 @@ public class AssociationController {
         return new ResponseEntity<>(locationEntities, HttpStatus.OK);
     }
 
+  @CrossOrigin
+  @GetMapping(ASSOCIATION + "{shiftId}")
+  public ResponseEntity<List<AssociationEntity>> getByShiftId(@PathVariable int shiftId) {
+    List<AssociationEntity> associations = associationService.getByShiftId(shiftId);
+    return new ResponseEntity<>(associations, HttpStatus.OK);
+  }
+
+  @CrossOrigin
+  @GetMapping(ASSOCIATION + "shift/{shiftId}")
+  public ResponseEntity<List<CollaboratorEntity>> getCollaboratorsByShiftId(@PathVariable int shiftId) {
+     List<CollaboratorEntity> collaborators = associationService.getCollaboratorsByShiftId(shiftId);
+    return new ResponseEntity<>(collaborators, HttpStatus.OK);
+  }
+
     @CrossOrigin
-    @PostMapping(ASSOCIATION + "create}")
+    @PostMapping(ASSOCIATION + "create")
     public ResponseEntity<AssociationEntity> create(@RequestBody AssociationEntity associationEntity, @RequestHeader("Authorization") String token) throws ParseException {
         if (!jwtTokenProviderService.getUserIdFromToken(token).equals(associationEntity.getId().getCollaboratorId())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -97,7 +115,7 @@ public class AssociationController {
     @CrossOrigin
     @PutMapping(ADMIN + "reject/{collaboratorId}")
     public ResponseEntity<AssociationEntity> reject(@PathVariable int collaboratorId) {
-        AssociationEntity association = associationService.getByCollaboratorId(collaboratorId);
+        /*AssociationEntity association = associationService.getByCollaboratorId(collaboratorId);
 
         if (association == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -112,6 +130,8 @@ public class AssociationController {
             association.setStatus(Status.REJECTED);
             return new ResponseEntity<>(association, HttpStatus.OK);
         }
+
+         */
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
