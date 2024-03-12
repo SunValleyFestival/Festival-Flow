@@ -23,8 +23,9 @@ public class ShiftController {
 
     private final CollaboratorService collaboratorService;
 
-    public ShiftController(ShiftService shiftService) {
+    public ShiftController(ShiftService shiftService, CollaboratorService collaboratorService) {
         this.shiftService = shiftService;
+        this.collaboratorService = collaboratorService;
     }
 
     @CrossOrigin
