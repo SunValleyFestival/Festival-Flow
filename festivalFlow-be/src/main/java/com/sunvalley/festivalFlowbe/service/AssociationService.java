@@ -33,5 +33,9 @@ public class AssociationService {
     associationRepository.save(association);
   }
 
+  public Integer countByShiftIdAndStatusNotReject(int shiftId) {
+    return associationRepository.countByShiftIdAndStatusNotReject(shiftId);
+  }
+
 
 }
