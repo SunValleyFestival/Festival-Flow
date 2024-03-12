@@ -31,17 +31,17 @@ public class ShiftController {
     }
 
     @CrossOrigin
-    @GetMapping(SHIFT + "location/{location}")
-    public ResponseEntity<List<ShiftEntity>> getByLocationId(@PathVariable int location) {
-        List<ShiftEntity> shifts = shiftService.getShiftsByLocationId(location);
-        return new ResponseEntity<>(shifts, HttpStatus.OK);
-    }
-
-    @CrossOrigin
     @GetMapping(SHIFT + "{id}")
     public ResponseEntity<ShiftEntity> getById(@PathVariable int id) {
         ShiftEntity shift = shiftService.getById(id);
         return new ResponseEntity<>(shift, HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @GetMapping(SHIFT + "location/{location}")
+    public ResponseEntity<List<ShiftEntity>> getByLocationId(@PathVariable int location) {
+        List<ShiftEntity> shifts = shiftService.getShiftsByLocationId(location);
+        return new ResponseEntity<>(shifts, HttpStatus.OK);
     }
 
     @CrossOrigin

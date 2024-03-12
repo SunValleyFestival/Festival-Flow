@@ -3,6 +3,9 @@ package com.sunvalley.festivalFlowbe.controller;
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
 import com.sunvalley.festivalFlowbe.entity.Status;
 import com.sunvalley.festivalFlowbe.service.AssociationService;
+import com.sunvalley.festivalFlowbe.service.CollaboratorService;
+import com.sunvalley.festivalFlowbe.service.ShiftService;
+import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,18 +39,15 @@ public class AssociationController {
     }
 
     @CrossOrigin
-    @GetMapping(ASSOCIATION)
-    public ResponseEntity<List<AssociationEntity>> getAll() {
-        List<AssociationEntity> associations = associationService.getAll();
-        return new ResponseEntity<>(associations, HttpStatus.OK);
-    }
-
-    @CrossOrigin
     @GetMapping(ASSOCIATION + "collaboratorId/{id}")
-    public ResponseEntity<List<AssociationEntity>> getByTypeAndId(int id) {
-        List<AssociationEntity> locationEntities;
-        locationEntities = associationService.getByCollaboratorId(id);
-        return new ResponseEntity<>(locationEntities, HttpStatus.OK);
+    public ResponseEntity<List<AssociationEntity>> getByTypeAndId(int id, @RequestHeader("Authorization") String token) {
+        if (!jwtTokenProviderService.getUserIdFromToken(token).equals(id)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } else {
+            List<AssociationEntity> locationEntities;
+            locationEntities = associationService.getByCollaboratorId(id);
+            return new ResponseEntity<>(locationEntities, HttpStatus.OK);
+        }
     }
 
     @CrossOrigin
