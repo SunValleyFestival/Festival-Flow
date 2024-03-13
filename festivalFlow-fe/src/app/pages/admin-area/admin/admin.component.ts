@@ -76,11 +76,11 @@ export class AdminComponent implements OnInit {
   }
 
   goToUserPage() {
-    this.router.navigate(['user']);
+    this.router.navigate(['admin/user']);
   }
 
   goToCreateLocationPage() {
-    this.router.navigate(['create']);
+    this.router.navigate(['admin/create']);
   }
 
   deleteLocation(location: Location | undefined) {

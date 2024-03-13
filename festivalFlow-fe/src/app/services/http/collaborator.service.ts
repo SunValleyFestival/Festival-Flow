@@ -19,4 +19,12 @@ export class CollaboratorService {
   updateCollaborator(collaborator: Collaborator) {
     return this.http.put(BASE_URL + "update", collaborator);
   }
+
+  getCollaboratorById(id: number) {
+    return this.http.get(BASE_URL + id);
+  }
+
+  deleteCollaborator(collaborator: Collaborator) {
+    return this.http.delete(BASE_URL + "delete/", collaborator);
+  }
 }
