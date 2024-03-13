@@ -3,7 +3,6 @@ import {HttpAuthClient} from "./token/http-auth-client";
 import {environment} from '../../../environments/environment';
 import {Association} from "../../interfaces/AssociationEntity";
 import {Observable} from "rxjs";
-import {Collaborator} from "../../interfaces/CollaboratorEntity";
 
 const BASE_URL = environment.userBaseUrl + "/association/";
 
@@ -25,15 +24,6 @@ export class AssociationService {
 
   getAssociationByShiftId(shiftId: number | undefined): Observable<Association[]> {
     return this.http.get(BASE_URL + shiftId);
-  }
-
-  getCollaboratorsByShiftId(shiftId: number | undefined): Collaborator[] {
-    let result: Collaborator[] = [];
-    this.http.get(BASE_URL + "collaborators/" + shiftId).pipe().subscribe((collaborators: Collaborator[]) => {
-      result = collaborators;
-    })
-
-    return result;
   }
 
   rejectAssociation(association: Association) {

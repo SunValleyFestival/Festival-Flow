@@ -14,11 +14,6 @@ export class ShiftService {
   constructor(private http: HttpAuthClient) {
   }
 
-  getAllShifts() {
-    return this.http.get(BASE_URL);
-
-  }
-
   getShiftsByLocationId(locationId: number): Observable<Shift[]> {
     return this.http.get(BASE_URL + "location/" + locationId);
   }

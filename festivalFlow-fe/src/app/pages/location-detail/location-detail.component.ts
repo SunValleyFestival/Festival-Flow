@@ -83,15 +83,15 @@ export class LocationDetailComponent implements OnInit {
   }
 
   submitData(shiftId: number | undefined) {
-    if (shiftId !== undefined) {
+    if (shiftId !== undefined && this.activeCollaborator?.id) {
       if (this.checkData()) return;
 
       let collaborator: Collaborator = this.formData;
-      collaborator.id = this.cookiesService.getUserId();
+      collaborator.id = this.activeCollaborator.id;
       this.collaboratorService.updateCollaborator(collaborator).pipe().subscribe();
       let association: Association = {
         id: {
-          collaboratorId: this.cookiesService.getUserId(),
+          collaboratorId: this.activeCollaborator.id,
           shiftId: shiftId
         },
         status: 0

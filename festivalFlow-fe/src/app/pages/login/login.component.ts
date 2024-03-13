@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
       }
     } else if (this.mail !== undefined && this.code !== undefined) {
       this.tokenService.loginConfirm(this.cookiesService.getUserId(), this.code).subscribe(response => {
-        if (response !== undefined) {
+        if (response !== undefined && response.valid) {
           this.cookiesService.setToken(String(response.token));
           this.navigationService.goToHome()
         }

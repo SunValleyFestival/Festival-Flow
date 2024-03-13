@@ -15,10 +15,6 @@ export class LocationService {
   constructor(private http: HttpAuthClient) {
   }
 
-  getAll() {
-    return this.http.get(BASE_URL);
-  }
-
   getLocationsByDayId(dayId: number): Observable<Location[]> {
     return this.http.get(BASE_URL + "day/" + dayId);
   }

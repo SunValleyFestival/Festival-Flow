@@ -19,10 +19,6 @@ export class DayService {
     return this.http.get(BASE_URL);
   }
 
-  getDayById(param: any): Observable<Day> {
-    return this.http.get(BASE_URL + param);
-  }
-
   saveDay(day: Day) {
     return this.http.post(ADMIN_BASE_URL, day);
   }
