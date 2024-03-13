@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {catchError, map, Observable, of} from "rxjs";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {AuthEntity} from "../../../interfaces/utility/AuthEntity";
+import {Collaborator} from "../../../interfaces/CollaboratorEntity";
+import {CookiesService} from "../../token/cookies.service";
 
 const BASE_URL = environment.userBaseUrl + "/auth/";
 
@@ -11,7 +13,10 @@ const BASE_URL = environment.userBaseUrl + "/auth/";
 })
 export class TokenService {
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private cookiesService: CookiesService,
+  ) {
   }
 
   public login(email: string): Observable<AuthEntity> {
@@ -24,17 +29,25 @@ export class TokenService {
     return this.http.post<AuthEntity>(BASE_URL + "login/confirm", loginData);
   }
 
-  public isValidToken(userId: number, token: string): boolean {
+  isValidToken(userId: number, token: string): Promise<boolean> {
     const loginData: AuthEntity = {userId, token};
-    let isValid: undefined | boolean = false;
-
-    this.http.post<AuthEntity>(BASE_URL + "validate", loginData).subscribe((response: AuthEntity) => {
-      console.log("isValid:", response.valid);
-     isValid = response.valid;
-    })
-
-    return isValid;
+    return new Promise((resolve, reject) => {
+      this.http.post<AuthEntity>(BASE_URL + "validate", loginData).pipe().subscribe(response => {
+        if (response.valid !== undefined) {
+          resolve(response.valid);
+        }
+      }, error => {
+        reject(error);
+      });
+    });
   }
 
-
+  getCollaboratorFromToken(token: string): Observable<Collaborator> {
+    let headers = new HttpHeaders({'Authorization': 'Bearer ' + this.cookiesService.getToken()});
+    return this.http.get<Collaborator>(BASE_URL + "collaborator/" + token,
+      {
+        headers: headers
+      }
+    )
+  }
 }

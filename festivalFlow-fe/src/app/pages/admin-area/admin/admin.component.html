@@ -1,5 +1,11 @@
 <div class="max-h-screen overflow-y-hidden">
   <app-header></app-header>
+  <div *ngIf="dataError" class="alert alert-error" role="alert">
+    <svg class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    </svg>
+    <span>Errore! Dati inseriti incompleti!</span>
+  </div>
   <div class="wrapper flex flex-col lg:flex-row-reverse">
     <div class="lg:order-2 h-full mt-5">
       <div class="card bg-white ml-5 shadow filter text-black">
@@ -69,7 +75,7 @@
 
         <label class="input input-bordered flex items-center mt-2 gap-2">
           Nome:
-          <input type="text" class="grow bg-base-100" [(ngModel)]="formData.name" name="name" placeholder="Turno 1" required/>
+          <input [(ngModel)]="formData.name" class="grow bg-base-100" name="name" placeholder="Lunedì" required type="text"/>
         </label>
 
         <label class="input input-bordered flex items-center mt-2 gap-2">

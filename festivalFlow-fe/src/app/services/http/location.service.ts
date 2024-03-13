@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpAuthClient} from "./token/http-auth-client";
 import {environment} from '../../../environments/environment';
 import {Observable} from "rxjs";
@@ -28,8 +28,10 @@ export class LocationService {
   }
 
   deleteLocation(location: Location) {
-    console.log("path", BASE_URL)
-    console.log("deleteLocation", location);
     return this.http.delete(ADMIN_BASE_URL, location);
+  }
+
+  createLocation(formData: Location) {
+    return this.http.post(ADMIN_BASE_URL, formData);
   }
 }

@@ -82,15 +82,37 @@ export class ManageLocationComponent implements OnInit {
     return error;
   }
 
-  deleteShift() {
+  deleteShift(shift: Shift | undefined) {
     console.log('delete shift');
+    if (shift !== undefined) {
+      this.shiftService.deleteShift(shift).pipe().subscribe();
+    }
   }
 
-  rejectAssociation(id: number | undefined, id2: number | undefined) {
-
+  rejectAssociation(collaborator_id: number | undefined, shift_id: number | undefined) {
+    if (collaborator_id !== undefined && shift_id !== undefined) {
+      let association: Association = {
+        id: {
+          collaboratorId: collaborator_id,
+          shiftId: shift_id
+        },
+        status: 0
+      }
+      this.associationService.rejectAssociation(association).pipe().subscribe();
+    }
   }
 
-  approveAssociation(id: number | undefined, id2: number | undefined) {
+  approveAssociation(collaborator_id: number | undefined, shift_id: number | undefined) {
+    if (collaborator_id !== undefined && shift_id !== undefined) {
+      let association: Association = {
+        id: {
+          collaboratorId: collaborator_id,
+          shiftId: shift_id
+        },
+        status: 0
+      }
 
+      this.associationService.approveAssociation(association).pipe().subscribe();
+    }
   }
 }

@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpAuthClient} from "./token/http-auth-client";
 import {environment} from '../../../environments/environment';
 import {Association} from "../../interfaces/AssociationEntity";
-import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Collaborator} from "../../interfaces/CollaboratorEntity";
 
@@ -35,5 +34,13 @@ export class AssociationService {
     })
 
     return result;
+  }
+
+  rejectAssociation(association: Association) {
+    return this.http.put(BASE_URL + "reject/", association);
+  }
+
+  approveAssociation(association: Association) {
+    return this.http.put(BASE_URL + "approve/", association);
   }
 }

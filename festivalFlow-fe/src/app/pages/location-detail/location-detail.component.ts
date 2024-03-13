@@ -12,6 +12,7 @@ import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
 import {CookiesService} from "../../services/token/cookies.service";
 import {timer} from 'rxjs';
 import {Association} from "../../interfaces/AssociationEntity";
+import {TokenService} from "../../services/http/token/token.service";
 
 @Component({
   selector: 'app-location-detail',
@@ -24,19 +25,20 @@ export class LocationDetailComponent implements OnInit {
   protected dataError: boolean = false;
   protected shifts: Shift[] | undefined;
   protected shiftAvailability: ShiftAvailability[] = [];
-
   formData: Collaborator = {
-    email: this.cookiesService.getUserEmail(),
+    email: '',
     phone: '',
     firstName: '',
     lastName: '',
     age: '',
     size: 'Taglia Maglietta'
   }
+  protected activeCollaborator: Collaborator | undefined;
 
   constructor(private shiftService: ShiftService, private route: ActivatedRoute, private associationService: AssociationService,
               private collaboratorService: CollaboratorService, private locationService: LocationService,
-              protected shiftAvailabilityService: ShiftAvailabilityService, private cookiesService: CookiesService) {
+              protected shiftAvailabilityService: ShiftAvailabilityService, private cookiesService: CookiesService,
+              private tokenService: TokenService) {
   }
 
   ngOnInit() {
@@ -65,6 +67,11 @@ export class LocationDetailComponent implements OnInit {
           });
         }
       });
+    });
+
+    this.tokenService.getCollaboratorFromToken(this.cookiesService.getToken()).pipe().subscribe((collaborator: any) => {
+      this.activeCollaborator = collaborator;
+      this.resetFormData();
     });
   }
 
@@ -111,14 +118,15 @@ export class LocationDetailComponent implements OnInit {
   }
 
   resetFormData() {
-    this.formData = {
-      email: this.cookiesService.getUserEmail(),
-      phone: '',
-      firstName: '',
-      lastName: '',
-      age: '',
-      size: 'Taglia Maglietta'
+    this.formData.firstName = this.activeCollaborator?.firstName
+    this.formData.lastName = this.activeCollaborator?.lastName
+
+    if (this.activeCollaborator?.email !== undefined) {
+      this.formData.email = this.activeCollaborator.email
     }
+    this.formData.phone = this.activeCollaborator?.phone
+    this.formData.age = this.activeCollaborator?.age
+    this.formData.size = this.activeCollaborator?.size
   }
 
   parseTime(timeString: string): number {

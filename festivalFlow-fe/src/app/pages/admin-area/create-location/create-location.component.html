@@ -1,5 +1,11 @@
 <div class="max-h-screen overflow-y-hidden">
     <app-header></app-header>
+  <div *ngIf="dataError" class="alert alert-error" role="alert">
+    <svg class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+    </svg>
+    <span>Errore! Dati inseriti incompleti!</span>
+  </div>
     <div class="max-h-screen overflow-y-scroll max-w-screen m-5 flex flex-col gap-y-5">
         <h1 class="text-2xl">Nuova Location</h1>
         <div class="flex w-full">
@@ -8,7 +14,7 @@
                 <div class="label">
                     <span class="label-text">Nome</span>
                 </div>
-                <input type="text" placeholder="Nome" class="input input-bordered" required/>
+              <input [(ngModel)]="formData.name" class="input input-bordered" name="name" placeholder="Nome" required type="text"/>
             </label>
 
             <label class="form-control w-1/3 mr-10">
@@ -22,7 +28,7 @@
                 <div class="label">
                     <span class="label-text">Giorno</span>
                 </div>
-                <select class="select select-bordered" required>
+              <select [(ngModel)]="formData.day.id" class="select select-bordered" name="id" required>
                     <option disabled selected>Giorno</option>
                     <option>Venerdì</option>
                     <option>Sabato</option>
@@ -35,12 +41,12 @@
                 <div class="label">
                     <span class="label-text">Descrizione</span>
                 </div>
-                <textarea class="textarea textarea-bordered h-24" placeholder="Descrizione" required></textarea>
+              <textarea [(ngModel)]="formData.description" class="textarea textarea-bordered h-24" name="description" placeholder="Descrizione" required></textarea>
             </label>
         </div>
 
         <div class="w-full flex justify-end">
-            <button class="btn btn-success w-1/12">Crea</button>
+          <button (click)="submitData()" class="btn btn-success w-1/12">Crea</button>
         </div>
     </div>
 </div>

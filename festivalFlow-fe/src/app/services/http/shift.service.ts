@@ -22,4 +22,8 @@ export class ShiftService {
   getShiftsByLocationId(locationId: number): Observable<Shift[]> {
     return this.http.get(BASE_URL + "location/" + locationId);
   }
+
+  deleteShift(shift: Shift) {
+    return this.http.delete(BASE_URL, shift);
+  }
 }

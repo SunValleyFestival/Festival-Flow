@@ -43,7 +43,6 @@ export class LoginComponent implements OnInit {
               authEntity = response;
               this.isEmailInserted = true;
               this.cookiesService.setUserId(String(authEntity.userId));
-              this.cookiesService.setUserEmail(String(authEntity.email));
             }
           }
         );
