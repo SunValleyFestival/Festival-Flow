@@ -33,6 +33,10 @@ public class AssociationService {
     associationRepository.save(association);
   }
 
+  public Integer countByShiftIdAndStatusNotReject(int shiftId) {
+    return associationRepository.countByShiftIdAndStatusNotReject(shiftId);
+  }
+
     public List<Integer> getByUserId(int userId) {
         return associationRepository.findByUserId(userId);
     }

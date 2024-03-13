@@ -19,6 +19,9 @@ public interface AssociationRepository extends JpaRepository<AssociationEntity, 
   @Query("SELECT a FROM AssociationEntity a WHERE a.id.collaboratorId = ?1")
   List<Integer> findByUserId(int userId);
 
+    @Query("SELECT COUNT(a) FROM AssociationEntity a WHERE a.id.shiftId = ?1 AND a.status != 2")
+    Integer countByShiftIdAndStatusNotReject(int shiftId);
+
   @Query("SELECT a FROM AssociationEntity a WHERE a.id.shiftId = ?1")
   List<AssociationEntity> findByShiftId(int locationId);
 

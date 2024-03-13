@@ -31,22 +31,15 @@ public class CollaboratorController {
 
     @CrossOrigin
     @GetMapping(COLLABORATOR)
-    public ResponseEntity<List<CollaboratorEntity>> getAll() {
-        List<CollaboratorEntity> collaborators = collaboratorService.getAll();
-        return new ResponseEntity<>(collaborators, HttpStatus.OK);
-    }
-
-    @CrossOrigin
-    @GetMapping(COLLABORATOR + "{id}")
-    public ResponseEntity<CollaboratorEntity> getById(@PathVariable int id) {
-        CollaboratorEntity collaborator = collaboratorService.getById(id);
+    public ResponseEntity<CollaboratorEntity> get(@RequestHeader("Authorization") String token) throws ParseException {
+        CollaboratorEntity collaborator = collaboratorService.getById(jwtTokenProviderService.getUserIdFromToken(token));
         return new ResponseEntity<>(collaborator, HttpStatus.OK);
     }
 
     @CrossOrigin
     @PutMapping(COLLABORATOR + "update")
     public ResponseEntity<CollaboratorEntity> update(@RequestBody CollaboratorEntity collaborator, @RequestHeader("Authorization") String token) throws ParseException {
-        if (jwtTokenProviderService.getUserIdFromToken(token) != collaborator.getId()) {
+        if (!jwtTokenProviderService.getUserIdFromToken(token).equals(collaborator.getId())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else {
             CollaboratorEntity newCollaborator = collaboratorService.update(collaborator);

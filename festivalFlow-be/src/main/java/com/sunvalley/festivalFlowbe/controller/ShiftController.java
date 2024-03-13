@@ -1,6 +1,8 @@
 package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.ShiftEntity;
+import com.sunvalley.festivalFlowbe.entity.ShiftEntityAdmin;
+import com.sunvalley.festivalFlowbe.service.CollaboratorService;
 import com.sunvalley.festivalFlowbe.service.ShiftService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,8 +21,11 @@ public class ShiftController {
 
     private final ShiftService shiftService;
 
-    public ShiftController(ShiftService shiftService) {
+    private final CollaboratorService collaboratorService;
+
+    public ShiftController(ShiftService shiftService, CollaboratorService collaboratorService) {
         this.shiftService = shiftService;
+        this.collaboratorService = collaboratorService;
     }
 
     @CrossOrigin
@@ -31,6 +36,13 @@ public class ShiftController {
     }
 
     @CrossOrigin
+    @GetMapping(SHIFT + "{id}")
+    public ResponseEntity<ShiftEntity> getById(@PathVariable int id) {
+        ShiftEntity shift = shiftService.getById(id);
+        return new ResponseEntity<>(shift, HttpStatus.OK);
+    }
+
+    @CrossOrigin
     @GetMapping(SHIFT + "location/{location}")
     public ResponseEntity<List<ShiftEntity>> getByLocationId(@PathVariable int location) {
         List<ShiftEntity> shifts = shiftService.getShiftsByLocationId(location);
@@ -38,11 +50,13 @@ public class ShiftController {
     }
 
     @CrossOrigin
-    @GetMapping(SHIFT + "{id}")
-    public ResponseEntity<ShiftEntity> getById(@PathVariable int id) {
-        ShiftEntity shift = shiftService.getById(id);
-        return new ResponseEntity<>(shift, HttpStatus.OK);
+    @GetMapping(ADMIN + "location/{location}")
+    public ResponseEntity<List<ShiftEntityAdmin>> getAdminShiftByLocationId(@PathVariable int location) {
+        List<ShiftEntity> shifts = shiftService.getShiftsByLocationId(location);
+        List<ShiftEntityAdmin> shiftEntityAdminList = shiftService.getShiftAdmin(shifts);
+        return new ResponseEntity<>(shiftEntityAdminList, HttpStatus.OK);
     }
+
 
     @CrossOrigin
     @PostMapping(ADMIN + "create")
