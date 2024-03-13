@@ -19,11 +19,11 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/festival-flow")
+@RequestMapping("/festival-flow/")
 public class AssociationController {
 
-    private static final String ADMIN = "/admin/association/";
-    private static final String ASSOCIATION = "/user/association/";
+    private static final String ADMIN = "admin/association/";
+    private static final String ASSOCIATION = "user/association/";
 
     private final AssociationService associationService;
     private final ShiftService shiftService;

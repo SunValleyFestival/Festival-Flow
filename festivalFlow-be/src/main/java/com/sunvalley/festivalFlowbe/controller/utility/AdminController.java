@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/festival-flow/admin")
+@RequestMapping("/festival-flow/")
 @RequiredArgsConstructor
 @Slf4j
 public class AdminController {
@@ -15,7 +15,7 @@ public class AdminController {
     private final JWTTokenProviderService tokenProvider;
 
     @CrossOrigin
-    @GetMapping("/token")
+    @GetMapping("admin/token")
     public AuthEntity login() {
         AuthEntity authEntity = new AuthEntity();
         authEntity.setToken(tokenProvider.generateTokenForAdmin());
@@ -23,7 +23,7 @@ public class AdminController {
     }
 
     @CrossOrigin
-    @PostMapping("/export")
+    @PostMapping("admin/export")
     public String loginConfirm() {
         return "not implmented yet";
     }

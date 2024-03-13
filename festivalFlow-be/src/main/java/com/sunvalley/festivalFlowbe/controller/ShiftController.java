@@ -13,10 +13,10 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/festival-flow")
+@RequestMapping("/festival-flow/")
 public class ShiftController {
 
-    private static final String ADMIN = "/admin/shift/";
+    private static final String ADMIN = "admin/shift/";
     private static final String SHIFT = "user/shift/";
 
     private final ShiftService shiftService;

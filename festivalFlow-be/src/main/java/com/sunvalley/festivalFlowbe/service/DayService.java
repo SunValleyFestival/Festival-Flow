@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class DayService {
@@ -29,7 +30,7 @@ public class DayService {
     }
 
     public void deleteById(final int id) {
-        dayRepository.deleteById(id);
+        dayRepository.delete(Objects.requireNonNull(dayRepository.findById(id).orElse(null)));
     }
 
     public DayEntity create(DayEntity day) {

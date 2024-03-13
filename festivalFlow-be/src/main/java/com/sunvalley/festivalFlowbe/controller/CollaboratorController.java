@@ -15,11 +15,11 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/festival-flow")
+@RequestMapping("/festival-flow/")
 public class CollaboratorController {
 
-    private static final String ADMIN = "/admin/collaborator/";
-    private static final String COLLABORATOR = "/user/collaborator/";
+    private static final String ADMIN = "admin/collaborator/";
+    private static final String COLLABORATOR = "user/collaborator/";
 
     private final CollaboratorService collaboratorService;
     private final JWTTokenProviderService jwtTokenProviderService;

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 
 @RestController
-@RequestMapping("/festival-flow/user/auth")
+@RequestMapping("/festival-flow/user/auth/")
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
@@ -27,7 +27,7 @@ public class AuthController {
 
 
     @CrossOrigin
-    @PostMapping("/login")
+    @PostMapping("login")
     public AuthEntity login(@RequestBody AuthEntity authEntity) {
         collaboratorService.createIfExistByEmail(authEntity.getEmail());
         int userId = collaboratorService.getIdByEmail(authEntity.getEmail());
@@ -45,7 +45,7 @@ public class AuthController {
     }
 
     @CrossOrigin
-    @PostMapping("/login/confirm")
+    @PostMapping("login/confirm")
     public AuthEntity loginConfirm(@RequestBody AuthEntity authEntity) {
         if (verificationCodeService.isvalid( authEntity.getUserId(), authEntity.getCode())) {
             authEntity.setToken(tokenProvider.generateToken(authEntity.getUserId()));
@@ -57,7 +57,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/validate")
+    @PostMapping("validate")
     public AuthEntity validateToken(@RequestBody AuthEntity authEntity) {
         try {
             authEntity.setValid(tokenProvider.validateToken(authEntity));

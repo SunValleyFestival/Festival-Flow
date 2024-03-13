@@ -17,4 +17,5 @@ public interface CollaboratorRepository extends JpaRepository<CollaboratorEntity
     //get collaborator by shift id join association
     @Query("select c from CollaboratorEntity c join AssociationEntity a on c.id = a.id.collaboratorId where a.id.shiftId = ?1")
     List<CollaboratorEntity> findByShiftId(int shiftId);
+
 }

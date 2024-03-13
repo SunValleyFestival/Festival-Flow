@@ -7,10 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/festival-flow")
+@RequestMapping("/festival-flow/")
 public class ShiftAvailabilityController {
 
-    private static final String SHIFT_AVAILABILITY = "/user/shift-availability/";
+    private static final String SHIFT_AVAILABILITY = "user/shift-availability/";
 
     private final AssociationService associationService;
 

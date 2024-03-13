@@ -53,4 +53,5 @@ public class CollaboratorService {
     public CollaboratorEntity update(CollaboratorEntity collaborator) {
         return collaboratorRepository.save(collaborator);
     }
+
 }

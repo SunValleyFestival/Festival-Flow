@@ -2,8 +2,8 @@ package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.DayEntity;
 import com.sunvalley.festivalFlowbe.service.DayService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,18 +12,14 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/festival-flow")
+@RequestMapping("/festival-flow/")
+@RequiredArgsConstructor
 public class DayController {
 
-    private static final String ADMIN = "/admin/day/";
-    private static final String DAY = "/user/day/";
+    private static final String ADMIN = "admin/day/";
+    private static final String DAY = "user/day/";
 
     private final DayService dayService;
-
-    @Autowired
-    public DayController(DayService dayService) {
-        this.dayService = dayService;
-    }
 
     @CrossOrigin
     @GetMapping(DAY)
@@ -40,9 +36,9 @@ public class DayController {
     }
 
     @CrossOrigin
-    @DeleteMapping(ADMIN)
-    public ResponseEntity<DayEntity> deleteById(@RequestBody DayEntity dayEntity) {
-        dayService.deleteById(dayEntity.getId());
+    @DeleteMapping(ADMIN + "{id}")
+    public ResponseEntity<DayEntity> deleteById(@PathVariable int id) {
+        dayService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
