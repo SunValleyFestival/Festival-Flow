@@ -86,6 +86,7 @@ public class JWTTokenProviderService {
     }
 
     public Integer getUserIdFromToken(String token) throws ParseException {
+        token = token.substring(7);
         SignedJWT parsedJWT = SignedJWT.parse(token);
         JWTClaimsSet claims = parsedJWT.getJWTClaimsSet();
         return Integer.parseInt(claims.getSubject());

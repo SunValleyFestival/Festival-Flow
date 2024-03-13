@@ -1,17 +1,12 @@
 package com.sunvalley.festivalFlowbe.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
-import lombok.NoArgsConstructor;
 
 @Builder
 @Data
@@ -21,27 +16,30 @@ import lombok.NoArgsConstructor;
 @Table(name = "collaborator", schema = "FestivalFlow")
 public class CollaboratorEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
-  @Column(name = "email")
-  private String email;
+    @Column(name = "email")
+    private String email;
 
-  @Column(name = "phone")
-  private String phone;
+    @Column(name = "phone")
+    private String phone;
 
-  @Column(name = "firstName")
-  private String firstName;
+    @Column(name = "firstName")
+    private String firstName;
 
-  @Column(name = "lastName")
-  private String lastName;
+    @Column(name = "lastName")
+    private String lastName;
 
-  @Column(name = "age")
-  private Date age;
+    @Column(name = "yearsExperience")
+    private int yearsExperience;
 
-  @Column(name = "size")
-  private String size;
+    @Column(name = "age")
+    private Date age;
+
+    @Column(name = "size")
+    private String size;
 
 }

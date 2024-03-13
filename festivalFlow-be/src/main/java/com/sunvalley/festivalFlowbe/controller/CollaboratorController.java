@@ -22,11 +22,12 @@ public class CollaboratorController {
     private static final String COLLABORATOR = "/user/collaborator/";
 
     private final CollaboratorService collaboratorService;
-    private JWTTokenProviderService jwtTokenProviderService;
+    private final JWTTokenProviderService jwtTokenProviderService;
 
     @Autowired
-    public CollaboratorController(CollaboratorService collaboratorService) {
+    public CollaboratorController(CollaboratorService collaboratorService, JWTTokenProviderService jwtTokenProviderService) {
         this.collaboratorService = collaboratorService;
+        this.jwtTokenProviderService = jwtTokenProviderService;
     }
 
     @CrossOrigin
