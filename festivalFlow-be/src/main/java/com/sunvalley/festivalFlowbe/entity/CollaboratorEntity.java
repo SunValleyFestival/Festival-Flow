@@ -1,12 +1,16 @@
 package com.sunvalley.festivalFlowbe.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.sql.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.sql.Date;
 
 @Builder
 @Data
@@ -34,7 +38,7 @@ public class CollaboratorEntity {
     private String lastName;
 
     @Column(name = "yearsExperience")
-    private int yearsExperience;
+    private Integer yearsExperience;
 
     @Column(name = "age")
     private Date age;

@@ -48,7 +48,9 @@
             <h2 class="card-title">{{ location.name }}</h2>
             <div role="alert" class="alert bg-gray-50 border-accent w-fit">
               <img src="../../../assets/icons/group.svg" alt="group">
-              <span>{{ locationAvailability[i].availableSlots }} Rimanenti</span>
+              <ng-container *ngFor="let availability of locationAvailability">
+                <span *ngIf="availability.locationId === location.id">{{ availability.availableSlots }} Rimanenti</span>
+              </ng-container>
             </div>
             <p>{{ location.description }}</p>
             <div class="card-actions justify-end">

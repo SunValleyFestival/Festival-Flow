@@ -59,12 +59,12 @@ create table association
 CREATE VIEW shift_availability AS
 SELECT
     s.id AS shift_id,
-    s.max_collaborator - COUNT(a.collaborator_id) AS available_slots,
-    s.location_id as location_id
+    s.location_id,
+    (s.max_collaborator - COALESCE(SUM(CASE WHEN a.status != 2 THEN 1 ELSE 0 END), 0)) AS available_slots
 FROM shift s
-         LEFT JOIN association a ON s.id = a.shift_id
+         LEFT JOIN
+     association a ON s.id = a.shift_id
 GROUP BY s.id;
-
 insert into day (name, description)
 values ('Friday', 'First day of the festival');
 insert into day (name, description)

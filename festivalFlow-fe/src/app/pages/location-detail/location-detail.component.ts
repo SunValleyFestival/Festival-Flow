@@ -69,10 +69,12 @@ export class LocationDetailComponent implements OnInit {
       });
     });
 
-    this.tokenService.getCollaboratorFromToken(this.cookiesService.getToken()).pipe().subscribe((collaborator: any) => {
+
+    this.collaboratorService.getCollaboratorFromToken().pipe().subscribe((collaborator: any) => {
       this.activeCollaborator = collaborator;
       this.resetFormData();
     });
+
   }
 
   showDialog(shiftId: number | undefined) {

@@ -1,17 +1,19 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Location} from "../../../interfaces/LocationEntity";
 import {Day} from "../../../interfaces/DayEntity";
 import {timer} from "rxjs";
 import {LocationService} from "../../../services/http/location.service";
 import {Router} from "@angular/router";
+import {DayService} from "../../../services/http/day.service";
 
 @Component({
   selector: 'app-create-location',
   templateUrl: './create-location.component.html',
   styleUrls: ['./create-location.component.css']
 })
-export class CreateLocationComponent {
+export class CreateLocationComponent implements OnInit {
   protected dataError: boolean = false;
+  protected days: Day[] = [];
   protected formData: Location = {
     name: '',
     description: '',
@@ -23,7 +25,14 @@ export class CreateLocationComponent {
   constructor(
     private locationService: LocationService,
     private router: Router,
+    private dayService: DayService,
   ) {
+  }
+
+  ngOnInit(): void {
+    this.dayService.getAllDays().pipe().subscribe(days => {
+      this.days = days;
+    });
   }
 
 

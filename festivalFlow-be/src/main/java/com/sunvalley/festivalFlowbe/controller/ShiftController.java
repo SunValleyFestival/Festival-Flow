@@ -2,14 +2,20 @@ package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.ShiftEntity;
 import com.sunvalley.festivalFlowbe.entity.ShiftEntityAdmin;
-import com.sunvalley.festivalFlowbe.service.CollaboratorService;
+import com.sunvalley.festivalFlowbe.service.LocationService;
 import com.sunvalley.festivalFlowbe.service.ShiftService;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -21,11 +27,11 @@ public class ShiftController {
 
     private final ShiftService shiftService;
 
-    private final CollaboratorService collaboratorService;
+    private final LocationService locationService;
 
-    public ShiftController(ShiftService shiftService, CollaboratorService collaboratorService) {
+    public ShiftController(ShiftService shiftService, LocationService locationService) {
         this.shiftService = shiftService;
-        this.collaboratorService = collaboratorService;
+        this.locationService = locationService;
     }
 
     @CrossOrigin
@@ -62,6 +68,7 @@ public class ShiftController {
     @PostMapping(ADMIN + "create")
     public ResponseEntity<ShiftEntity> create(@RequestBody ShiftEntity shift) {
         shift.setId(null);
+        shift.setLocation(locationService.getById(shift.getLocation().getId()));
         ShiftEntity newShift = shiftService.create(shift);
         return new ResponseEntity<>(newShift, HttpStatus.CREATED);
     }

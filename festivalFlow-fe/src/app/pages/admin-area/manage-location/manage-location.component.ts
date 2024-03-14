@@ -42,6 +42,8 @@ export class ManageLocationComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       if (params['location']) {
+        this.formData.location.id = params['location'];
+
         this.shiftService.getShiftsByLocationId(params['location']).subscribe((shifts: Shift[]) => {
           this.shifts = shifts;
 
@@ -65,7 +67,11 @@ export class ManageLocationComponent implements OnInit {
   }
 
   submitData() {
-    this.checkData();
+    if (this.checkData()) {
+      return;
+    }
+
+    this.shiftService.createShift(this.formData).pipe().subscribe();
   }
 
   checkData(): boolean {

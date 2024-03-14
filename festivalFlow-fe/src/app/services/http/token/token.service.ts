@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from "rxjs";
 import {environment} from "../../../../environments/environment";
 import {AuthEntity} from "../../../interfaces/utility/AuthEntity";
-import {Collaborator} from "../../../interfaces/CollaboratorEntity";
 import {CookiesService} from "../../token/cookies.service";
 
 const BASE_URL = environment.userBaseUrl + "/auth/";
@@ -40,14 +39,5 @@ export class TokenService {
         reject(error);
       });
     });
-  }
-
-  getCollaboratorFromToken(token: string): Observable<Collaborator> {
-    let headers = new HttpHeaders({'Authorization': 'Bearer ' + this.cookiesService.getToken()});
-    return this.http.get<Collaborator>(BASE_URL + "collaborator/" + token,
-      {
-        headers: headers
-      }
-    )
   }
 }

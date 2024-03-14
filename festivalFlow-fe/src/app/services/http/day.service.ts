@@ -20,6 +20,6 @@ export class DayService {
   }
 
   saveDay(day: Day) {
-    return this.http.post(ADMIN_BASE_URL, day);
+    return this.http.post(ADMIN_BASE_URL + 'create', day);
   }
 }

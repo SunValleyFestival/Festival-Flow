@@ -5,6 +5,7 @@ import {Shift} from "../../interfaces/ShiftEntity";
 import {HttpAuthClient} from "./token/http-auth-client";
 
 const BASE_URL = environment.userBaseUrl + "/shift/";
+const ADMIN_BASE_URL = environment.adminBaseUrl + "/shift/";
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,11 @@ export class ShiftService {
   }
 
   deleteShift(shift: Shift) {
-    return this.http.delete(BASE_URL, shift);
+    return this.http.delete(ADMIN_BASE_URL, shift);
+  }
+
+  createShift(shift: Shift) {
+    console.log('create shift', shift);
+    return this.http.post(ADMIN_BASE_URL + 'create', shift);
   }
 }

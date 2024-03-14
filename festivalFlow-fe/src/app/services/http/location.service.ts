@@ -28,6 +28,6 @@ export class LocationService {
   }
 
   createLocation(formData: Location) {
-    return this.http.post(ADMIN_BASE_URL, formData);
+    return this.http.post(ADMIN_BASE_URL + 'create', formData);
   }
 }

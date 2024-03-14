@@ -9,13 +9,13 @@ import lombok.Data;
 @Data
 public class ShiftAvailabilityView {
 
-    @Id
-    @Column(name = "shift_id")
-    private int shiftId;
+  @Id
+  @Column(name = "shift_id")
+  private int shiftId;
 
-    @Column(name = "available_slots")
-    private int availableSlots;
+  @Column(name = "available_slots")
+  private int availableSlots;
 
-    @Column(name = "location_id")
-    private int locationId;
+  @Column(name = "location_id")
+  private int locationId;
 }

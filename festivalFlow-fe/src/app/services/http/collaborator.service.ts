@@ -4,6 +4,8 @@ import {Collaborator} from "../../interfaces/CollaboratorEntity";
 import {HttpAuthClient} from "./token/http-auth-client";
 
 const BASE_URL = environment.userBaseUrl + "/collaborator/";
+const ADMIN_BASE_URL = environment.adminBaseUrl + "/collaborator/";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +15,7 @@ export class CollaboratorService {
   }
 
   getCollaborators() {
-    return this.http.get(BASE_URL);
+    return this.http.get(BASE_URL + "all");
   }
 
   updateCollaborator(collaborator: Collaborator) {
@@ -25,6 +27,10 @@ export class CollaboratorService {
   }
 
   deleteCollaborator(collaborator: Collaborator) {
-    return this.http.delete(BASE_URL + "delete/", collaborator);
+    return this.http.delete(ADMIN_BASE_URL, collaborator);
+  }
+
+  getCollaboratorFromToken() {
+    return this.http.get(BASE_URL);
   }
 }

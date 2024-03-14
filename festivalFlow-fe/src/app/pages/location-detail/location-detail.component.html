@@ -29,9 +29,13 @@
             <div class="text-lg font-black">{{ shift.name }}</div>
             <div class="flex flex-col gap-3">
               {{ shift.description }}
-              <p>{{ shiftAvailability[i].availableSlots }} posti rimanenti</p>
-              <progress class="progress progress-error w-1/2" value="{{shift.maxCollaborator - (shiftAvailability[i].availableSlots)}}"
+              <div *ngFor="let availability of shiftAvailability" class="h-0">
+                <p *ngIf="availability.shiftId === shift.id">{{ availability.availableSlots }} posti rimanenti</p>
+              </div>
+              <div *ngFor="let availability of shiftAvailability">
+                <progress *ngIf="availability.shiftId === shift.id" class="progress progress-error w-1/2" value="{{shift.maxCollaborator - (availability.availableSlots)}}"
                         max="{{shift.maxCollaborator}}"></progress>
+              </div>
               <button class="btn btn-outline btn-accent" (click)="showDialog(shift.id)">Iscriviti</button>
             </div>
           </div>

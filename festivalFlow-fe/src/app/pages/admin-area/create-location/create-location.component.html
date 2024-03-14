@@ -30,9 +30,7 @@
                 </div>
               <select [(ngModel)]="formData.day.id" class="select select-bordered" name="id" required>
                     <option disabled selected>Giorno</option>
-                    <option>Venerdì</option>
-                    <option>Sabato</option>
-                    <option>Domenica</option>
+                <option *ngFor="let day of days" [value]="day.id">{{ day.name }}</option>
                 </select>
             </label>
         </div>
