@@ -5,6 +5,7 @@ import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
 import com.sunvalley.festivalFlowbe.entity.Status;
 import com.sunvalley.festivalFlowbe.service.AssociationService;
 import com.sunvalley.festivalFlowbe.service.CollaboratorService;
+import com.sunvalley.festivalFlowbe.service.ShiftAvailabilityService;
 import com.sunvalley.festivalFlowbe.service.ShiftService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,22 +30,26 @@ public class AssociationController {
     private final ShiftService shiftService;
     private final CollaboratorService collaboratorService;
 
+    private final ShiftAvailabilityService shiftAvailabilityService;
+
+
     private final JWTTokenProviderService jwtTokenProviderService;
 
     @Autowired
-    public AssociationController(AssociationService associationService, ShiftService shiftService, CollaboratorService collaboratorService, JWTTokenProviderService jwtTokenProviderService) {
+    public AssociationController(AssociationService associationService, ShiftService shiftService, CollaboratorService collaboratorService, ShiftAvailabilityService shiftAvailabilityService, JWTTokenProviderService jwtTokenProviderService) {
         this.associationService = associationService;
         this.shiftService = shiftService;
         this.collaboratorService = collaboratorService;
+        this.shiftAvailabilityService = shiftAvailabilityService;
         this.jwtTokenProviderService = jwtTokenProviderService;
     }
 
-  @CrossOrigin
-  @GetMapping(ASSOCIATION)
-  public ResponseEntity<List<AssociationEntity>> getAll() {
-    List<AssociationEntity> associations = associationService.getAll();
-    return new ResponseEntity<>(associations, HttpStatus.OK);
-  }
+    @CrossOrigin
+    @GetMapping(ASSOCIATION)
+    public ResponseEntity<List<AssociationEntity>> getAll() {
+        List<AssociationEntity> associations = associationService.getAll();
+        return new ResponseEntity<>(associations, HttpStatus.OK);
+    }
 
     @CrossOrigin
     @GetMapping(ASSOCIATION + "collaboratorId/{id}")
@@ -58,19 +63,19 @@ public class AssociationController {
         }
     }
 
-  @CrossOrigin
-  @GetMapping(ASSOCIATION + "{shiftId}")
-  public ResponseEntity<List<AssociationEntity>> getByShiftId(@PathVariable int shiftId) {
-    List<AssociationEntity> associations = associationService.getByShiftId(shiftId);
-    return new ResponseEntity<>(associations, HttpStatus.OK);
-  }
+    @CrossOrigin
+    @GetMapping(ASSOCIATION + "{shiftId}")
+    public ResponseEntity<List<AssociationEntity>> getByShiftId(@PathVariable int shiftId) {
+        List<AssociationEntity> associations = associationService.getByShiftId(shiftId);
+        return new ResponseEntity<>(associations, HttpStatus.OK);
+    }
 
-  @CrossOrigin
-  @GetMapping(ADMIN + "shift/{shiftId}")
-  public ResponseEntity<List<CollaboratorEntity>> getCollaboratorsByShiftId(@PathVariable int shiftId) {
-     List<CollaboratorEntity> collaborators = associationService.getCollaboratorsByShiftId(shiftId);
-    return new ResponseEntity<>(collaborators, HttpStatus.OK);
-  }
+    @CrossOrigin
+    @GetMapping(ADMIN + "shift/{shiftId}")
+    public ResponseEntity<List<CollaboratorEntity>> getCollaboratorsByShiftId(@PathVariable int shiftId) {
+        List<CollaboratorEntity> collaborators = associationService.getCollaboratorsByShiftId(shiftId);
+        return new ResponseEntity<>(collaborators, HttpStatus.OK);
+    }
 
     @CrossOrigin
     @PostMapping(ASSOCIATION + "create")
@@ -78,20 +83,22 @@ public class AssociationController {
         if (!jwtTokenProviderService.getUserIdFromToken(token).equals(associationEntity.getId().getCollaboratorId())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else {
-            if (shiftService.getById(associationEntity.getId().getShiftId()).isAdultsOnly()) {
-                Date dataNascita = collaboratorService.getById(associationEntity.getId().getCollaboratorId()).getAge();
-                long differenzaMillisecondi = new Date().getTime() - dataNascita.getTime();
-                long anni = differenzaMillisecondi / (1000L * 60 * 60 * 24 * 365);
-                if (anni < 18) {
-                    return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            if (shiftAvailabilityService.getByShiftId(associationEntity.getId().getShiftId()).getAvailableSlots() <= 0) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            } else {
+                if (shiftService.getById(associationEntity.getId().getShiftId()).isAdultsOnly()) {
+                    Date dataNascita = collaboratorService.getById(associationEntity.getId().getCollaboratorId()).getAge();
+                    long differenzaMillisecondi = new Date().getTime() - dataNascita.getTime();
+                    long anni = differenzaMillisecondi / (1000L * 60 * 60 * 24 * 365);
+                    if (anni < 18) {
+                        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+                    }
                 }
+                associationEntity.setStatus(Status.PENDING);
+                associationService.save(associationEntity);
+                return new ResponseEntity<>(associationEntity, HttpStatus.OK);
             }
-            associationEntity.setStatus(Status.PENDING);
-            associationService.save(associationEntity);
-            return new ResponseEntity<>(associationEntity, HttpStatus.OK);
         }
-
-
     }
 
     @CrossOrigin
