@@ -27,8 +27,4 @@ export class ShiftService {
     console.log('create shift', shift);
     return this.http.post(ADMIN_BASE_URL + 'create', shift);
   }
-
-  getAdminShiftsByLocationId(locationId: number) {
-    return this.http.get(ADMIN_BASE_URL + "location/" + locationId);
-  }
 }

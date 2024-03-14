@@ -7,6 +7,7 @@ import {ActivatedRoute} from "@angular/router";
 import {CollaboratorService} from "../../../services/http/collaborator.service";
 import {Association} from "../../../interfaces/AssociationEntity";
 import {AssociationService} from "../../../services/http/association.service";
+import {AssociationAdmin} from "../../../interfaces/AssociationAdminEntity";
 
 @Component({
   selector: 'app-manage-location',
@@ -17,6 +18,8 @@ export class ManageLocationComponent implements OnInit {
   protected dataError: boolean = false;
   protected locationName: string = '';
   protected shifts: Shift[] = [];
+
+  protected adminAssociations: AssociationAdmin[] = [];
 
   formData: Shift = {
     name: '',
@@ -41,7 +44,7 @@ export class ManageLocationComponent implements OnInit {
       if (params['location']) {
         this.formData.location.id = params['location'];
 
-        this.shiftService.getAdminShiftsByLocationId(params['location']).subscribe((shifts: Shift[]) => {
+        this.shiftService.getShiftsByLocationId(params['location']).subscribe((shifts: Shift[]) => {
           this.shifts = shifts;
         });
       }
@@ -106,4 +109,14 @@ export class ManageLocationComponent implements OnInit {
       this.associationService.approveAssociation(association).pipe().subscribe();
     }
   }
+
+
+  getSelectedShiftAssociations(shiftId: number | undefined) {
+    if (shiftId !== undefined) {
+      this.associationService.getAdminAssociationByShiftId(shiftId).pipe().subscribe((associations: AssociationAdmin[]) => {
+        this.adminAssociations = associations;
+      });
+    }
+  }
+
 }

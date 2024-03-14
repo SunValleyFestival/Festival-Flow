@@ -1,5 +1,6 @@
 package com.sunvalley.festivalFlowbe.controller;
 
+import com.sunvalley.festivalFlowbe.entity.AssociationAdmin;
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
 import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
 import com.sunvalley.festivalFlowbe.entity.Status;
@@ -55,7 +56,7 @@ public class AssociationController {
 
   @CrossOrigin
   @GetMapping(ASSOCIATION + "collaboratorId/{id}")
-  public ResponseEntity<List<AssociationEntity>> getByTypeAndId(int id, @RequestHeader("Authorization") String token) throws ParseException {
+  public ResponseEntity<List<AssociationEntity>> getCollaboratorById(int id, @RequestHeader("Authorization") String token) throws ParseException {
     if (!jwtTokenProviderService.getUserIdFromToken(token).equals(id)) {
       return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     } else {
@@ -63,6 +64,13 @@ public class AssociationController {
       locationEntities = associationService.getByCollaboratorId(id);
       return new ResponseEntity<>(locationEntities, HttpStatus.OK);
     }
+  }
+
+  @CrossOrigin
+  @GetMapping(ADMIN + "collaborator/{shiftId}")
+  public ResponseEntity<List<AssociationAdmin>> get(@PathVariable int shiftId) {
+    var associations = associationService.getAssociationAdminByShiftId(shiftId);
+    return new ResponseEntity<>(associations, HttpStatus.OK);
   }
 
   @CrossOrigin

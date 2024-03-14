@@ -10,30 +10,30 @@
     <h1 class="ml-5 mt-5 text-4xl">{{ locationName }}</h1>
     <div class="flex gap-3 flex-col m-5">
       <div class="collapse collapse-arrow bg-base-200" *ngFor="let shift of shifts">
-        <input type="radio" name="my-accordion-2"/>
+        <input (click)="getSelectedShiftAssociations(shift.id)" name="my-accordion-2" type="radio"/>
         <div class="collapse-title text-xl justify-between flex font-medium">
           <div class="self-center">
             {{ shift.name }} - {{ shift.startTime }} - {{ shift.endTime }}
           </div>
         </div>
         <div class="collapse-content">
-          <div *ngFor="let collaborator of shift.collaboratorEntityList">
+          <div *ngFor="let association of adminAssociations">
             <div class="flex w-full justify-between ml-5 mr-5">
               <div class="self-center">
-                {{ collaborator.firstName }} {{ collaborator.lastName }}
+                {{ association.collaborator.firstName }} {{ association.collaborator.lastName }}
               </div>
               <div class="self-center">
-                {{ collaborator.phone }}
+                {{ association.collaborator.phone }}
               </div>
               <div class="self-center">
-                {{ collaborator.email }}
+                {{ association.collaborator.email }}
               </div>
               <div class="self-center">
                 note...
               </div>
               <div class="flex gap-2 mr-5">
-                <button (click)="rejectAssociation(collaborator.id, shift.id)" class="btn btn-error">Rifiuta</button>
-                <button class="btn btn-success" (click)="approveAssociation(collaborator.id, shift.id)">Conferma</button>
+                <button (click)="rejectAssociation(association.collaborator.id, shift.id)" class="btn btn-error">Rifiuta</button>
+                <button (click)="approveAssociation(association.collaborator.id, shift.id)" [disabled]="association.status === 'ACCEPTED'" class="btn btn-success">Conferma</button>
               </div>
             </div>
             <div class="flex flex-col w-full">

@@ -1,7 +1,6 @@
 package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.ShiftEntity;
-import com.sunvalley.festivalFlowbe.entity.ShiftEntityAdmin;
 import com.sunvalley.festivalFlowbe.service.LocationService;
 import com.sunvalley.festivalFlowbe.service.ShiftService;
 import java.util.List;
@@ -53,14 +52,6 @@ public class ShiftController {
     public ResponseEntity<List<ShiftEntity>> getByLocationId(@PathVariable int location) {
         List<ShiftEntity> shifts = shiftService.getShiftsByLocationId(location);
         return new ResponseEntity<>(shifts, HttpStatus.OK);
-    }
-
-    @CrossOrigin
-    @GetMapping(ADMIN + "location/{location}")
-    public ResponseEntity<List<ShiftEntityAdmin>> getAdminShiftByLocationId(@PathVariable int location) {
-        List<ShiftEntity> shifts = shiftService.getShiftsByLocationId(location);
-        List<ShiftEntityAdmin> shiftEntityAdminList = shiftService.getShiftAdmin(shifts);
-        return new ResponseEntity<>(shiftEntityAdminList, HttpStatus.OK);
     }
 
 

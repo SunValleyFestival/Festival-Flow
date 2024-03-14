@@ -1,8 +1,10 @@
 package com.sunvalley.festivalFlowbe.service;
 
+import com.sunvalley.festivalFlowbe.entity.AssociationAdmin;
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
 import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
 import com.sunvalley.festivalFlowbe.repository.AssociationRepository;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +13,12 @@ import org.springframework.stereotype.Service;
 public class AssociationService {
 
   private final AssociationRepository associationRepository;
+  private final CollaboratorService collaboratorService;
 
   @Autowired
-  public AssociationService(AssociationRepository associationRepository) {
+  public AssociationService(AssociationRepository associationRepository, CollaboratorService collaboratorService) {
     this.associationRepository = associationRepository;
+    this.collaboratorService = collaboratorService;
   }
 
   public List<AssociationEntity> getByCollaboratorId(int id) {
@@ -47,5 +51,18 @@ public class AssociationService {
 
   public List<CollaboratorEntity> getCollaboratorsByShiftId(final int shiftId) {
     return associationRepository.getCollaboratorsByShiftId(shiftId);
+  }
+
+  public List<AssociationAdmin> getAssociationAdminByShiftId(final int shiftId) {
+    var associationsAdmin = new ArrayList<AssociationAdmin>();
+    var associations = this.getByShiftId(shiftId);
+
+    for (AssociationEntity association : associations) {
+      var collaborator = collaboratorService.getById(association.getId().getCollaboratorId());
+      var associationAdmin = new AssociationAdmin(collaborator, association.getId().getShiftId(), association.getStatus());
+      associationsAdmin.add(associationAdmin);
+    }
+
+    return associationsAdmin;
   }
 }
