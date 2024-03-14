@@ -50,7 +50,7 @@ public class CollaboratorController {
 
     @CrossOrigin
     @GetMapping(ADMIN)
-    public ResponseEntity<List<CollaboratorEntity>> getAll() {
+    public ResponseEntity<List<CollaboratorEntity>> getAllAdmin() {
         List<CollaboratorEntity> collaborators = collaboratorService.getAll();
         return new ResponseEntity<>(collaborators, HttpStatus.OK);
     }
