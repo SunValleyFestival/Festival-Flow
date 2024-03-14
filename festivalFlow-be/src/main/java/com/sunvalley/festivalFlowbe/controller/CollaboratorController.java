@@ -70,6 +70,13 @@ public class CollaboratorController {
     }
 
     @CrossOrigin
+    @GetMapping(ADMIN)
+    public ResponseEntity<List<CollaboratorEntity>> getAll() {
+        List<CollaboratorEntity> collaborators = collaboratorService.getAll();
+        return new ResponseEntity<>(collaborators, HttpStatus.OK);
+    }
+
+    @CrossOrigin
     @GetMapping(ADMIN + "shift/{shiftId}")
     public ResponseEntity<List<CollaboratorEntity>> getByShiftId(@PathVariable int shiftId) {
         List<CollaboratorEntity> collaborators = collaboratorService.getByShiftId(shiftId);

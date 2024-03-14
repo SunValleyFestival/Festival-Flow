@@ -81,7 +81,7 @@ public class AssociationController {
   }
 
   @CrossOrigin
-  @GetMapping(ASSOCIATION + "shift/{shiftId}")
+  @GetMapping(ADMIN + "shift/{shiftId}")
   public ResponseEntity<List<CollaboratorEntity>> getCollaboratorsByShiftId(@PathVariable int shiftId) {
     List<CollaboratorEntity> collaborators = associationService.getCollaboratorsByShiftId(shiftId);
     return new ResponseEntity<>(collaborators, HttpStatus.OK);
