@@ -65,6 +65,7 @@ FROM shift s
          LEFT JOIN
      association a ON s.id = a.shift_id
 GROUP BY s.id;
+
 insert into day (name, description)
 values ('Friday', 'First day of the festival');
 insert into day (name, description)
@@ -110,5 +111,3 @@ insert into association (shift_id, collaborator_id, status)
 values (3, 3, "REJECTED");
 insert into association (shift_id, collaborator_id, status)
 values (2, 4, "PENDING");
-insert into association (shift_id, collaborator_id, status)
-values (2, 5, "PENDING");
