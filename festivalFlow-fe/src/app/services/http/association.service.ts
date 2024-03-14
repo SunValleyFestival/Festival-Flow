@@ -5,6 +5,7 @@ import {Association} from "../../interfaces/AssociationEntity";
 import {Observable} from "rxjs";
 
 const BASE_URL = environment.userBaseUrl + "/association/";
+const ADMIN_BASE_URL = environment.adminBaseUrl + "/association/";
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,6 @@ const BASE_URL = environment.userBaseUrl + "/association/";
 export class AssociationService {
 
   constructor(private http: HttpAuthClient) {
-  }
-
-  getAssociations() {
-    return this.http.get(BASE_URL) + "all";
   }
 
   saveAssociation(association: Association) {
@@ -27,10 +24,10 @@ export class AssociationService {
   }
 
   rejectAssociation(association: Association) {
-    return this.http.put(BASE_URL + "reject/", association);
+    return this.http.put(ADMIN_BASE_URL + "reject", association);
   }
 
   approveAssociation(association: Association) {
-    return this.http.put(BASE_URL + "approve/", association);
+    return this.http.put(ADMIN_BASE_URL + "approve", association);
   }
 }

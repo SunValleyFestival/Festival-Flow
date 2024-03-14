@@ -10,5 +10,5 @@ export interface Shift {
   endTime: string;
   maxCollaborator: number;
   collaboratorName?: string[],
-  collaborators?: Collaborator[]
+  collaboratorEntityList?: Collaborator[]
 }

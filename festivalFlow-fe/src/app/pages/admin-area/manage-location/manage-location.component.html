@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="collapse-content">
-          <div *ngFor="let collaborator of shift.collaborators">
+          <div *ngFor="let collaborator of shift.collaboratorEntityList">
             <div class="flex w-full justify-between ml-5 mr-5">
               <div class="self-center">
                 {{ collaborator.firstName }} {{ collaborator.lastName }}
@@ -31,8 +31,8 @@
               <div class="self-center">
                 note...
               </div>
-              <div class="flex gap-2">
-                <button class="btn btn-error" (click)="rejectAssociation(collaborator.id, shift.id)">Elimina</button>
+              <div class="flex gap-2 mr-5">
+                <button (click)="rejectAssociation(collaborator.id, shift.id)" class="btn btn-error">Rifiuta</button>
                 <button class="btn btn-success" (click)="approveAssociation(collaborator.id, shift.id)">Conferma</button>
               </div>
             </div>

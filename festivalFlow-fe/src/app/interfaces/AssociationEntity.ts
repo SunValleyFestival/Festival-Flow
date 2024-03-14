@@ -3,5 +3,5 @@ export interface Association {
     collaboratorId: number;
     shiftId: number;
   }
-  status: number;
+  status?: number;
 }
