@@ -5,6 +5,7 @@ import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
 import com.sunvalley.festivalFlowbe.entity.Status;
 import com.sunvalley.festivalFlowbe.service.AssociationService;
 import com.sunvalley.festivalFlowbe.service.CollaboratorService;
+import com.sunvalley.festivalFlowbe.service.ShiftAvailabilityService;
 import com.sunvalley.festivalFlowbe.service.ShiftService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.extern.slf4j.Slf4j;
@@ -105,46 +106,46 @@ public class AssociationController {
     public ResponseEntity<AssociationEntity> accept(@RequestBody AssociationEntity associationEntity) {
         AssociationEntity association = associationService.getByCollaboratorIdAndShiftId(associationEntity.getId().getCollaboratorId(), associationEntity.getId().getShiftId());
 
-    if (association == null) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-    if (association.getStatus() == Status.ACCEPTED) {
-      return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
-    }
-    if (association.getStatus() == Status.REJECTED) {
-      return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
-    }
-    if (association.getStatus() == Status.PENDING) {
-      association.setStatus(Status.ACCEPTED);
-      associationService.save(association);
-      return new ResponseEntity<>(association, HttpStatus.OK);
+        if (association == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (association.getStatus() == Status.ACCEPTED) {
+            return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
+        }
+        if (association.getStatus() == Status.REJECTED) {
+            return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
+        }
+        if (association.getStatus() == Status.PENDING) {
+            association.setStatus(Status.ACCEPTED);
+            associationService.save(association);
+            return new ResponseEntity<>(association, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-  }
+    @CrossOrigin
+    @PutMapping(ADMIN + "reject")
+    public ResponseEntity<AssociationEntity> reject(@RequestBody AssociationEntity associationEntity) {
+        AssociationEntity association = associationService.getByCollaboratorIdAndShiftId(associationEntity.getId().getCollaboratorId(), associationEntity.getId().getShiftId());
 
-  @CrossOrigin
-  @PutMapping(ADMIN + "reject")
-  public ResponseEntity<AssociationEntity> reject(@RequestBody AssociationEntity associationEntity) {
-    AssociationEntity association = associationService.getByCollaboratorIdAndShiftId(associationEntity.getId().getCollaboratorId(), associationEntity.getId().getShiftId());
+        if (association == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (association.getStatus() == Status.ACCEPTED) {
+            return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
+        }
+        if (association.getStatus() == Status.REJECTED) {
+            return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
+        }
+        if (association.getStatus() == Status.PENDING) {
+            association.setStatus(Status.REJECTED);
+            associationService.save(association);
+            return new ResponseEntity<>(association, HttpStatus.OK);
+        }
 
-    if (association == null) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-    if (association.getStatus() == Status.ACCEPTED) {
-      return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
-    }
-    if (association.getStatus() == Status.REJECTED) {
-      return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
-    }
-    if (association.getStatus() == Status.PENDING) {
-      association.setStatus(Status.REJECTED);
-      associationService.save(association);
-      return new ResponseEntity<>(association, HttpStatus.OK);
-    }
-
-    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-  }
 
 
 }
