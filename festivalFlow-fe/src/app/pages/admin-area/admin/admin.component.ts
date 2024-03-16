@@ -14,11 +14,14 @@ import {timer} from "rxjs";
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-  protected days: Day[] = [{id: 0, name: "Venerdì"}];
+  protected days: Day[] = [];
   protected locations: Location[] = [];
+  protected filteredLocations: Location[] = [];
   protected currentDayId: number = 0;
   protected locationAvailability: ShiftAvailability[] = [];
   protected dataError: boolean = false;
+  protected nameToFilter: string = '';
+
   protected formData: Day = {
     name: '',
     description: ''
@@ -64,6 +67,7 @@ export class AdminComponent implements OnInit {
 
     this.locationService.getLocationsByDayId(Number(dayId)).pipe().subscribe((locations: any) => {
       this.locations = locations;
+      this.filteredLocations = locations;
 
       this.locationAvailability = [];
 
@@ -116,5 +120,12 @@ export class AdminComponent implements OnInit {
       name: '',
       description: ''
     };
+  }
+
+  filterLocation() {
+    console.log(this.nameToFilter);
+    this.filteredLocations = this.locations.filter(location => {
+      return location.name.toLowerCase().includes(this.nameToFilter.toLowerCase());
+    });
   }
 }
