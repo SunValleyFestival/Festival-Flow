@@ -29,10 +29,7 @@ public class AssociationController {
     private final AssociationService associationService;
     private final ShiftService shiftService;
     private final CollaboratorService collaboratorService;
-
     private final ShiftAvailabilityService shiftAvailabilityService;
-
-
     private final JWTTokenProviderService jwtTokenProviderService;
 
     @Autowired
@@ -116,9 +113,13 @@ public class AssociationController {
             return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
         }
         if (association.getStatus() == Status.PENDING) {
-            association.setStatus(Status.ACCEPTED);
-            associationService.save(association);
-            return new ResponseEntity<>(association, HttpStatus.OK);
+            if (shiftAvailabilityService.getByShiftId(associationEntity.getId().getShiftId()).getAvailableSlots() <= 0) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            } else {
+                association.setStatus(Status.ACCEPTED);
+                associationService.save(association);
+                return new ResponseEntity<>(association, HttpStatus.OK);
+            }
         }
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
