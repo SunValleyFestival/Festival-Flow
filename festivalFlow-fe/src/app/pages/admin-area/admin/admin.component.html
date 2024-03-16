@@ -20,8 +20,12 @@
             <div class="label">
               <span class="label-text">Postazione</span>
             </div>
-            <input type="text" placeholder="Inserisci postazione..." class="input input-bordered w-full max-w-xs"/>
+            <input (change)="filterLocation()" [(ngModel)]="nameToFilter" class="input input-bordered w-full max-w-xs" placeholder="Inserisci postazione..." type="text"/>
           </label>
+
+          <button (click)="filterLocation()" class="btn btn-primary">
+            Cerca
+          </button>
 
           <br>
 
@@ -42,7 +46,7 @@
     </div>
     <div class="flex-grow lg:order-1">
       <div class="flex flex-col items-center max-h-screen overflow-scroll">
-        <div class="card lg:card-side bg-white text-black shadow w-2/3 mt-5" *ngFor="let location of locations; index as i">
+        <div *ngFor="let location of filteredLocations; index as i" class="card lg:card-side bg-white text-black shadow w-2/3 mt-5">
           <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album"/></figure>
           <div class="card-body">
             <h2 class="card-title">{{ location.name }}</h2>

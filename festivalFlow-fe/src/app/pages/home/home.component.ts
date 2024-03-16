@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Day} from "../../interfaces/DayEntity";
 import {DayService} from "../../services/http/day.service";
-import {Observable} from "rxjs";
 import {LocationService} from "../../services/http/location.service";
 import {Location} from "../../interfaces/LocationEntity";
 import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
@@ -17,8 +16,10 @@ import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
 export class HomeComponent implements OnInit {
   protected days: Day[] = [];
   protected locations: Location[] = [];
+  protected filteredLocations: Location[] = [];
   protected currentDayId: number = 0;
   protected locationAvailability: ShiftAvailability[] = [];
+  protected nameToFilter: string = '';
 
   constructor(
     private router: Router,
@@ -54,12 +55,12 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['location/' + locationId]);
   }
 
-
   getLocationsByDayId(dayId: string): void {
     this.currentDayId = Number(dayId);
 
     this.locationService.getLocationsByDayId(Number(dayId)).pipe().subscribe((locations: any) => {
       this.locations = locations;
+      this.filteredLocations = locations;
 
       this.locationAvailability = [];
 
@@ -68,6 +69,13 @@ export class HomeComponent implements OnInit {
           this.locationAvailability.push(shiftAvailability);
         });
       }
+    });
+  }
+
+  filterLocation() {
+    console.log(this.nameToFilter);
+    this.filteredLocations = this.locations.filter(location => {
+      return location.name.toLowerCase().includes(this.nameToFilter.toLowerCase());
     });
   }
 }
