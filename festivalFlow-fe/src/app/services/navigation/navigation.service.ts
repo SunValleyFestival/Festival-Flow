@@ -16,4 +16,8 @@ export class NavigationService {
   logout() {
     this.router.navigate(['/login']);
   }
+
+  goToLogin() {
+    this.router.navigate(['/login']);
+  }
 }
