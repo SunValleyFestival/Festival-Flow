@@ -9,7 +9,7 @@ spring:
     password: Admin123
 
   mail:
-    host: wnbgpr5.thunderhosting.cloud
+    host: fotoember.ch
     username: festivalflowsvf@thunderhosting.cloud
     password: Z2g5vg5~1
     port: 465
