@@ -90,7 +90,6 @@ export class LocationDetailComponent implements OnInit {
 
       let collaborator: Collaborator = this.formData;
       collaborator.id = this.activeCollaborator.id;
-      collaborator.email = '';
       this.collaboratorService.updateCollaborator(collaborator).pipe().subscribe();
       let association: Association = {
         id: {
@@ -103,7 +102,7 @@ export class LocationDetailComponent implements OnInit {
       this.associationService.saveAssociation(association).pipe().subscribe();
       this.resetFormData();
 
-      window.location.reload();
+      //window.location.reload();
     }
   }
 
