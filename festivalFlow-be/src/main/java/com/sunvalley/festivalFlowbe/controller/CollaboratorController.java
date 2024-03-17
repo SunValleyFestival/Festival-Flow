@@ -58,6 +58,9 @@ public class CollaboratorController {
         return new ResponseEntity<>(collaborators, HttpStatus.OK);
     }
 
+
+    //cambiare e prendere email
+
     @CrossOrigin
     @PutMapping(COLLABORATOR + "update")
     public ResponseEntity<CollaboratorEntity> update(@RequestBody CollaboratorEntity collaborator, @RequestHeader("Authorization") String token) throws ParseException {

@@ -13,6 +13,7 @@ import {CookiesService} from "../../services/token/cookies.service";
 import {timer} from 'rxjs';
 import {Association} from "../../interfaces/AssociationEntity";
 import {TokenService} from "../../services/http/token/token.service";
+import {NavigationService} from "../../services/navigation/navigation.service";
 
 @Component({
   selector: 'app-location-detail',
@@ -35,10 +36,15 @@ export class LocationDetailComponent implements OnInit {
   }
   protected activeCollaborator: Collaborator | undefined;
 
-  constructor(private shiftService: ShiftService, private route: ActivatedRoute, private associationService: AssociationService,
-              private collaboratorService: CollaboratorService, private locationService: LocationService,
-              protected shiftAvailabilityService: ShiftAvailabilityService, private cookiesService: CookiesService,
-              private tokenService: TokenService) {
+  constructor(
+    private shiftService: ShiftService,
+    private route: ActivatedRoute,
+    private associationService: AssociationService,
+    private collaboratorService: CollaboratorService,
+    private locationService: LocationService,
+    protected shiftAvailabilityService: ShiftAvailabilityService,
+    private navigationService: NavigationService
+  ) {
   }
 
   ngOnInit() {
@@ -90,7 +96,6 @@ export class LocationDetailComponent implements OnInit {
 
       let collaborator: Collaborator = this.formData;
       collaborator.id = this.activeCollaborator.id;
-      this.collaboratorService.updateCollaborator(collaborator).pipe().subscribe();
       let association: Association = {
         id: {
           collaboratorId: this.activeCollaborator.id,
@@ -99,10 +104,12 @@ export class LocationDetailComponent implements OnInit {
         status: 0
       }
 
-      this.associationService.saveAssociation(association).pipe().subscribe();
+      this.collaboratorService.updateCollaborator(collaborator).pipe().subscribe(
+        () => this.associationService.saveAssociation(association));
+
       this.resetFormData();
 
-      //window.location.reload();
+      this.navigationService.goToHome();
     }
   }
 

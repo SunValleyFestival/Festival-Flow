@@ -84,13 +84,14 @@ public class AssociationController {
         return new ResponseEntity<>(associations, HttpStatus.OK);
     }
 
+
     @CrossOrigin
     @PostMapping(ASSOCIATION + "create")
     public ResponseEntity<AssociationEntity> create(@RequestBody AssociationEntity associationEntity, @RequestHeader("Authorization") String token) throws ParseException {
         if (!jwtTokenProviderService.getUserIdFromToken(token).equals(associationEntity.getId().getCollaboratorId())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else {
-            if (shiftAvailabilityService.getByShiftId(associationEntity.getId().getShiftId()).getAvailableSlots() <= 0) {
+            if (shiftAvailabilityService.getAvailableSlotsByLocationId(associationEntity.getId().getShiftId()).getAvailableSlots() <= 0) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } else {
                 if (shiftService.getById(associationEntity.getId().getShiftId()).isAdultsOnly()) {
