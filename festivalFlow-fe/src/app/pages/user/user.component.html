@@ -1,1 +1,10 @@
-<p>user works!</p>
+<div class="max-h-screen overflow-y-hidden">
+  <app-header></app-header>
+  <div class="max-h-screen overflow-y-scroll max-w-screen m-5 flex flex-col gap-y-5">
+    <div *ngFor="let association of associations">
+      <div>
+        {{ association }}
+      </div>
+    </div>
+  </div>
+</div>

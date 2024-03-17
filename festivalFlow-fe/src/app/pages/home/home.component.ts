@@ -47,12 +47,12 @@ export class HomeComponent implements OnInit {
   }
 
   changeDay(value: string) {
-    this.router.navigate([value]);
+    this.router.navigate(['user/' + value]);
   }
 
 
   openDetail(locationId: number | undefined) {
-    this.router.navigate(['location/' + locationId]);
+    this.router.navigate(['user/location/' + locationId]);
   }
 
   getLocationsByDayId(dayId: string): void {

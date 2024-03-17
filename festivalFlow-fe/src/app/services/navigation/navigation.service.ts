@@ -10,7 +10,7 @@ export class NavigationService {
 
   goToHome() {
     console.log("goToHome");
-    this.router.navigate(['/']);
+    this.router.navigate(['/user']);
   }
 
   logout() {

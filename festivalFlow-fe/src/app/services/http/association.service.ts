@@ -31,4 +31,8 @@ export class AssociationService {
   approveAssociation(association: Association) {
     return this.http.put(ADMIN_BASE_URL + "approve", association);
   }
+
+  getAssociationByCollaboratorId(collaboratorId: number) {
+    return this.http.get(BASE_URL + "collaborator-id/" + collaboratorId);
+  }
 }
