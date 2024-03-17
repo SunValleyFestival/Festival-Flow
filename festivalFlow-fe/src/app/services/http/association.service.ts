@@ -21,7 +21,7 @@ export class AssociationService {
   }
 
   getAdminAssociationByShiftId(shiftId: number) {
-    return this.http.get(ADMIN_BASE_URL + "collaborator/" + shiftId);
+    return this.http.get(ADMIN_BASE_URL + "shift/" + shiftId);
   }
 
   rejectAssociation(association: Association) {
