@@ -14,10 +14,10 @@ export class NavigationService {
   }
 
   logout() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/user/login']);
   }
 
   goToLogin() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/user/login']);
   }
 }

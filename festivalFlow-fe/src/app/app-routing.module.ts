@@ -12,8 +12,8 @@ import {CreateLocationComponent} from "./pages/admin-area/create-location/create
 import {UserDetailComponent} from "./pages/admin-area/user-detail/user-detail.component";
 import {UserComponent} from "./pages/user/user.component";
 
-const routes: Routes = [
-  {path: 'login', component: LoginComponent},
+const route: Routes = [
+  {path: 'user/login', component: LoginComponent},
   {path: 'admin/location/:name/:location', component: ManageLocationComponent, canActivate: [authGuard]},
   {path: 'admin/user', component: ManageUserComponent, canActivate: [authGuard]},
   {path: 'admin/user/:id', component: UserDetailComponent, canActivate: [authGuard]},
@@ -25,8 +25,38 @@ const routes: Routes = [
   {path: 'user', component: HomeComponent, canActivate: [authGuard]},
   {path: 'user/:day', component: HomeComponent, canActivate: [authGuard]},
   {path: 'not-found', component: NotFoundComponent},
-  {path: '**', redirectTo: '/not-found'}
+  {path: '**', redirectTo: 'user'}
 ];
+
+const routes: Routes = [
+  {
+    path: 'user',
+    component: HomeComponent,
+    canActivate: [authGuard],
+    children: [
+      {path: '', component: HomeComponent}, // Default path under 'user'
+      {path: ':day', component: HomeComponent}, // Dynamic path for 'user/:day'
+      {path: 'location/:location', component: LocationDetailComponent},
+      {path: 'user', component: UserComponent}, // 'user/user' for clarity
+    ]
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [authGuard],
+    children: [
+      {path: '', component: AdminComponent}, // Default path under 'admin'
+      {path: ':day', component: AdminComponent}, // Dynamic path for 'admin/:day'
+      {path: 'create', component: CreateLocationComponent},
+      {path: 'location/:name/:location', component: ManageLocationComponent},
+      {path: 'user', component: ManageUserComponent},
+      {path: 'user/:id', component: UserDetailComponent},
+    ]
+  },
+  {path: 'not-found', component: NotFoundComponent},
+  {path: '**', redirectTo: 'user'},
+];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
