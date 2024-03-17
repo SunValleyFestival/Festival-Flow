@@ -4,9 +4,9 @@ spring:
       ddl-auto: update
 
   datasource:
-    url: jdbc:mysql://localhost:3306/FestivalFlow
-    username: root
-    password: Eragon05
+    url: jdbc:mysql://157.90.97.105:3306/admin_festivalflowv1beta
+    username: admin_festivalflowv1beta
+    password: M89kd8t2
 
   mail:
     host: fotoember.ch
