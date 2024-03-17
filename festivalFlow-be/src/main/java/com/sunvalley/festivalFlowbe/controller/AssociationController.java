@@ -130,7 +130,7 @@ public class AssociationController {
             } else {
                 association.setStatus(Status.ACCEPTED);
                 associationService.save(association);
-                emailService.sendNotificationViaEmail(associationEntity.getId().getCollaboratorId(), Status.PENDING, associationEntity.getId().getShiftId());
+                emailService.sendNotificationViaEmail(associationEntity.getId().getCollaboratorId(), Status.ACCEPTED, associationEntity.getId().getShiftId());
                 return new ResponseEntity<>(association, HttpStatus.OK);
             }
         }
@@ -155,7 +155,7 @@ public class AssociationController {
         if (association.getStatus() == Status.PENDING) {
             association.setStatus(Status.REJECTED);
             associationService.save(association);
-            emailService.sendNotificationViaEmail(associationEntity.getId().getCollaboratorId(), Status.PENDING, associationEntity.getId().getShiftId());
+            emailService.sendNotificationViaEmail(associationEntity.getId().getCollaboratorId(), Status.REJECTED, associationEntity.getId().getShiftId());
             return new ResponseEntity<>(association, HttpStatus.OK);
         }
 
