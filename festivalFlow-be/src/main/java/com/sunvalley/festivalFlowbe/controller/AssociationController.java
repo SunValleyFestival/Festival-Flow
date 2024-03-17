@@ -91,7 +91,7 @@ public class AssociationController {
         if (!jwtTokenProviderService.getUserIdFromToken(token).equals(associationEntity.getId().getCollaboratorId())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else {
-            if (shiftAvailabilityService.getAvailableSlotsByLocationId(associationEntity.getId().getShiftId()).getAvailableSlots() <= 0) {
+            if (shiftAvailabilityService.getByShiftId(associationEntity.getId().getShiftId()).getAvailableSlots() <= 0) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } else {
                 if (shiftService.getById(associationEntity.getId().getShiftId()).isAdultsOnly()) {

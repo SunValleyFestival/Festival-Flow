@@ -9,10 +9,8 @@ import {Location} from "../../interfaces/LocationEntity";
 import {LocationService} from "../../services/http/location.service";
 import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
 import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
-import {CookiesService} from "../../services/token/cookies.service";
 import {timer} from 'rxjs';
 import {Association} from "../../interfaces/AssociationEntity";
-import {TokenService} from "../../services/http/token/token.service";
 import {NavigationService} from "../../services/navigation/navigation.service";
 
 @Component({
@@ -104,12 +102,12 @@ export class LocationDetailComponent implements OnInit {
         status: 0
       }
 
-      this.collaboratorService.updateCollaborator(collaborator).pipe().subscribe(
-        () => this.associationService.saveAssociation(association));
+      this.collaboratorService.updateCollaborator(collaborator).pipe().subscribe(() => {
+        this.associationService.saveAssociation(association).pipe().subscribe();
+        this.resetFormData();
+      });
 
-      this.resetFormData();
 
-      this.navigationService.goToHome();
     }
   }
 

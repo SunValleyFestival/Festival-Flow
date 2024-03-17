@@ -38,13 +38,12 @@ create table shift
 create table collaborator
 (
     id        int auto_increment not null,
-    phone     varchar(11)        ,
+    phone varchar(11),
     first_name varchar(20),
     last_name  varchar(20),
     age       date,
-    years_experience int,
     size      varchar(3),
-    email     varchar(100) not null,
+    email varchar(100) not null,
     primary key (id)
 
 );
@@ -93,20 +92,16 @@ values ('Primo turno del giorno', 'Primo turno', 1, '12:00', '2024-03-09 14:00:0
        ('Primo turno del giorno', 'Primo turno', 4, '12:00', '2024-03-09 14:00:00', 5, true);
 
 
-insert into collaborator (phone, first_name, last_name, age, years_experience, size, email)
-values ('0606060606', 'Il', 'Pirla', '1990-01-01', FLOOR(RAND() * 10) + 1, 'M', '');
-
-insert into collaborator (phone, first_name, last_name, age, years_experience, size, email)
-values ('0606060607', 'Jane', 'Doe', '1990-01-01', FLOOR(RAND() * 10) + 1, 'S', 'jane.doe@gmail.com');
-
-insert into collaborator (phone, first_name, last_name, age, years_experience, size, email)
-values ('0606060608', 'Bob', 'Smith', '1990-01-01', FLOOR(RAND() * 10) + 1, 'M', 'bob.smith@gmail.com');
-
-insert into collaborator (phone, first_name, last_name, age, years_experience, size, email)
-values ('0606060609', 'Alice', 'Johnson', '1990-01-01', FLOOR(RAND() * 10) + 1, 'L', 'alice.johnson@gmail.com');
-
-insert into collaborator (phone, first_name, last_name, age, years_experience, size, email)
-values ('0606060610', 'Charlie', 'Brown', '1990-01-01', FLOOR(RAND() * 10) + 1, 'XL', 'charlie.brown@gmail.com');
+insert into collaborator (phone, first_name, last_name, age, size, email)
+values ('0606060606', 'Il', 'Pirla', '1990-01-01', 'M', '');
+insert into collaborator (phone, first_name, last_name, age, size, email)
+values ('0606060607', 'Jane', 'Doe', '1990-01-01', 'S', 'jane.doe@gmail.com');
+insert into collaborator (phone, first_name, last_name, age, size, email)
+values ('0606060608', 'Bob', 'Smith', '1990-01-01', 'M', 'bob.smith@gmail.com');
+insert into collaborator (phone, first_name, last_name, age, size, email)
+values ('0606060609', 'Alice', 'Johnson', '1990-01-01', 'L', 'alice.johnson@gmail.com');
+insert into collaborator (phone, first_name, last_name, age, size, email)
+values ('0606060610', 'Charlie', 'Brown', '1990-01-01', 'XL', 'charlie.brown@gmail.com');
 
 insert into association (shift_id, collaborator_id, status)
 values (1, 1, "PENDING");
