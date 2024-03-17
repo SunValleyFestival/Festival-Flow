@@ -7,6 +7,7 @@ import com.sunvalley.festivalFlowbe.service.AssociationService;
 import com.sunvalley.festivalFlowbe.service.CollaboratorService;
 import com.sunvalley.festivalFlowbe.service.ShiftAvailabilityService;
 import com.sunvalley.festivalFlowbe.service.ShiftService;
+import com.sunvalley.festivalFlowbe.service.utility.EmailService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +31,16 @@ public class AssociationController {
     private final ShiftService shiftService;
     private final CollaboratorService collaboratorService;
     private final ShiftAvailabilityService shiftAvailabilityService;
+    private final EmailService emailService;
     private final JWTTokenProviderService jwtTokenProviderService;
 
     @Autowired
-    public AssociationController(AssociationService associationService, ShiftService shiftService, CollaboratorService collaboratorService, ShiftAvailabilityService shiftAvailabilityService, JWTTokenProviderService jwtTokenProviderService) {
+    public AssociationController(AssociationService associationService, ShiftService shiftService, CollaboratorService collaboratorService, ShiftAvailabilityService shiftAvailabilityService, EmailService emailService, JWTTokenProviderService jwtTokenProviderService) {
         this.associationService = associationService;
         this.shiftService = shiftService;
         this.collaboratorService = collaboratorService;
         this.shiftAvailabilityService = shiftAvailabilityService;
+        this.emailService = emailService;
         this.jwtTokenProviderService = jwtTokenProviderService;
     }
 
@@ -93,6 +96,7 @@ public class AssociationController {
                 }
                 associationEntity.setStatus(Status.PENDING);
                 associationService.save(associationEntity);
+                emailService.sendNotificationViaEmail(associationEntity.getId().getCollaboratorId(), Status.PENDING, associationEntity.getId().getShiftId());
                 return new ResponseEntity<>(associationEntity, HttpStatus.OK);
             }
         }
@@ -118,6 +122,7 @@ public class AssociationController {
             } else {
                 association.setStatus(Status.ACCEPTED);
                 associationService.save(association);
+                emailService.sendNotificationViaEmail(associationEntity.getId().getCollaboratorId(), Status.PENDING, associationEntity.getId().getShiftId());
                 return new ResponseEntity<>(association, HttpStatus.OK);
             }
         }
@@ -142,6 +147,7 @@ public class AssociationController {
         if (association.getStatus() == Status.PENDING) {
             association.setStatus(Status.REJECTED);
             associationService.save(association);
+            emailService.sendNotificationViaEmail(associationEntity.getId().getCollaboratorId(), Status.PENDING, associationEntity.getId().getShiftId());
             return new ResponseEntity<>(association, HttpStatus.OK);
         }
 
