@@ -9,9 +9,11 @@ import com.sunvalley.festivalFlowbe.service.ShiftAvailabilityService;
 import com.sunvalley.festivalFlowbe.service.ShiftService;
 import com.sunvalley.festivalFlowbe.service.utility.EmailService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
+
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -117,14 +119,9 @@ public class AssociationController {
 
         if (association == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        if (association.getStatus() == Status.ACCEPTED) {
+        } else if (association.getStatus() == Status.ACCEPTED) {
             return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
-        }
-        if (association.getStatus() == Status.REJECTED) {
-            return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
-        }
-        if (association.getStatus() == Status.PENDING) {
+        } else if (association.getStatus() == Status.PENDING || association.getStatus() == Status.REJECTED) {
             if (shiftAvailabilityService.getByShiftId(associationEntity.getId().getShiftId()).getAvailableSlots() <= 0) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } else {
@@ -145,14 +142,9 @@ public class AssociationController {
 
         if (association == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        if (association.getStatus() == Status.ACCEPTED) {
+        } else if (association.getStatus() == Status.REJECTED) {
             return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
-        }
-        if (association.getStatus() == Status.REJECTED) {
-            return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
-        }
-        if (association.getStatus() == Status.PENDING) {
+        } else if (association.getStatus() == Status.PENDING || association.getStatus() == Status.ACCEPTED) {
             association.setStatus(Status.REJECTED);
             associationService.save(association);
             emailService.sendNotificationViaEmail(associationEntity.getId().getCollaboratorId(), Status.REJECTED, associationEntity.getId().getShiftId());
