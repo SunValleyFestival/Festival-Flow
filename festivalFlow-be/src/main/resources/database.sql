@@ -27,8 +27,8 @@ create table shift
     description     varchar(1000),
     name            varchar(20)        not null,
     location_id     int,
-    start_time       date               not null,
-    end_time         date               not null,
+    start_time time not null,
+    end_time   time not null,
     max_collaborator int                not null,
     adults_only boolean not null,
     primary key (id),
@@ -84,13 +84,13 @@ insert into location (name, description, day_id)
 values ('Fourth Stage', 'Fourth stage of the festival', 3);
 
 insert into shift (description, name, location_id, start_time, end_time, max_collaborator, adults_only)
-values ('Primo turno del giorno', 'Primo turno', 1, '2024-03-09 12:00:00', '2024-03-09 14:00:00', 5, true),
-       ('Secondo turno del giorno', 'Secondo turno', 1, '2024-03-09 14:00:00', '2024-03-09 16:00:00', 5, false),
-       ('Terzo turno del giorno', 'Terzo turno', 1, '2024-03-09 16:00:00', '2024-03-09 18:00:00', 5, true),
-       ('Primo turno del giorno', 'Primo turno', 2, '2024-03-09 12:00:00', '2024-03-09 14:00:00', 5, true),
-       ('Secondo turno del giorno', 'Secondo turno', 2, '2024-03-09 14:00:00', '2024-03-09 16:00:00', 5, false),
-       ('Terzo turno del giorno', 'Terzo turno', 3, '2024-03-09 16:00:00', '2024-03-09 18:00:00', 5, false),
-       ('Primo turno del giorno', 'Primo turno', 4, '2024-03-09 12:00:00', '2024-03-09 14:00:00', 5, true);
+values ('Primo turno del giorno', 'Primo turno', 1, '12:00', '2024-03-09 14:00:00', 5, true),
+       ('Secondo turno del giorno', 'Secondo turno', 1, '14:00', '2024-03-09 16:00:00', 5, false),
+       ('Terzo turno del giorno', 'Terzo turno', 1, '16:00', '2024-03-09 18:00:00', 5, true),
+       ('Primo turno del giorno', 'Primo turno', 2, '12:00', '2024-03-09 14:00:00', 5, true),
+       ('Secondo turno del giorno', 'Secondo turno', 2, '14:00', '2024-03-09 16:00:00', 5, false),
+       ('Terzo turno del giorno', 'Terzo turno', 3, '16:00', '2024-03-09 18:00:00', 5, false),
+       ('Primo turno del giorno', 'Primo turno', 4, '12:00', '2024-03-09 14:00:00', 5, true);
 
 
 insert into collaborator (phone, first_name, last_name, age, years_experience, size, email)

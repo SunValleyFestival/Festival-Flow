@@ -10,10 +10,14 @@ export class NavigationService {
 
   goToHome() {
     console.log("goToHome");
-    this.router.navigate(['/']);
+    this.router.navigate(['/user']);
   }
 
   logout() {
+    this.router.navigate(['/login']);
+  }
+
+  goToLogin() {
     this.router.navigate(['/login']);
   }
 }
