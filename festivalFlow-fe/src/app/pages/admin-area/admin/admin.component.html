@@ -1,4 +1,4 @@
-<div class="max-h-screen overflow-y-hidden">
+<div>
   <app-header></app-header>
   <div *ngIf="dataError" class="alert alert-error" role="alert">
     <svg class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -6,7 +6,7 @@
     </svg>
     <span>Errore! Dati inseriti incompleti!</span>
   </div>
-  <div class="wrapper flex flex-col lg:flex-row-reverse">
+  <div class="wrapper flex flex-col lg:flex-row-reverse sm:overflow-scroll">
     <div class="lg:order-2 h-full mt-5">
       <div class="card bg-white ml-5 shadow filter text-black">
         <div class="card-body">
@@ -45,8 +45,8 @@
       </div>
     </div>
     <div class="flex-grow lg:order-1">
-      <div class="flex flex-col items-center max-h-screen overflow-scroll">
-        <div *ngFor="let location of filteredLocations; index as i" class="card lg:card-side bg-white text-black shadow w-2/3 mt-5">
+      <div class="flex flex-col items-center md:overflow-scroll h-mobile" style="">
+        <div *ngFor="let location of filteredLocations; index as i" class="card lg:card-side bg-white text-black shadow md:w-2/3 my-5 mx-5">
           <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album"/></figure>
           <div class="card-body">
             <h2 class="card-title">{{ location.name }}</h2>
@@ -63,10 +63,6 @@
             </div>
           </div>
         </div>
-        <br>
-        <br>
-        <br>
-        <br>
       </div>
     </div>
   </div>
