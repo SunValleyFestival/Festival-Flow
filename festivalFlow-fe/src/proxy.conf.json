@@ -1,6 +1,6 @@
 {
   "/festival-flow/*": {
-    "target": "https://flowbk.sunvalleyfestival.com",
+    "target": "http://localhost:8080",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
