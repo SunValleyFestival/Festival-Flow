@@ -1,6 +1,8 @@
 package com.sunvalley.festivalFlowbe.service.utility;
 
 import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
+import com.sunvalley.festivalFlowbe.entity.DayEntity;
+import com.sunvalley.festivalFlowbe.entity.LocationEntity;
 import com.sunvalley.festivalFlowbe.entity.ShiftEntity;
 import com.sunvalley.festivalFlowbe.repository.CollaboratorRepository;
 import com.sunvalley.festivalFlowbe.repository.DayRepository;
@@ -8,20 +10,15 @@ import com.sunvalley.festivalFlowbe.repository.LocationRepository;
 import com.sunvalley.festivalFlowbe.repository.ShiftRepository;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -60,11 +57,8 @@ public class ExportService {
             town.setCellValue(collaboratorEntities.get(i).getTown());
             Cell age = row.createCell(5);
             int ageNum = getAge(collaboratorEntities.get(i).getAge());
-            if (ageNum < 18) {
-                Cell ageUnder = row.createCell(14);
-                ageUnder.setCellValue("X");
-            }
-            age.setCellValue(getAge(collaboratorEntities.get(i).getAge()));
+
+            age.setCellValue(ageNum);
             Cell phone = row.createCell(6);
             phone.setCellValue(collaboratorEntities.get(i).getPhone());
             Cell email = row.createCell(7);
@@ -72,23 +66,56 @@ public class ExportService {
             Cell size = row.createCell(8);
             size.setCellValue(collaboratorEntities.get(i).getSize());
             Cell yearsExperience = row.createCell(9);
-
             int yearsExperienceNum = collaboratorEntities.get(i).getYearsExperience();
+            yearsExperience.setCellValue(yearsExperienceNum);
+
             if (yearsExperienceNum < 1) {
-                Cell yearsExperienceUnder = row.createCell(13);
+                Cell yearsExperienceUnder = row.createCell(12);
                 yearsExperienceUnder.setCellValue("X");
             }
-            yearsExperience.setCellValue(yearsExperienceNum);
+
+            if (ageNum < 18) {
+                Cell ageUnder = row.createCell(13);
+                ageUnder.setCellValue("X");
+            }
+
+
             String firstNameLastName = collaboratorEntities.get(i).getFirstName() + " " + collaboratorEntities.get(i).getLastName();
-            Cell nameSurname = row.createCell(12);
+            Cell nameSurname = row.createCell(11);
             nameSurname.setCellValue(firstNameLastName);
 
         }
 
-        List<ShiftEntity> shiftEntities = shiftRepository.findAll();
-        for (int i = 0; i < shiftEntities.size(); i++) {
+        int dayCount = dayRepository.findAll().size();
+        int locationCount = locationRepository.findAll().size();
+        int shiftCount = shiftRepository.findAll().size();
 
+        Row row = sheet.getRow(0);
+
+        List<DayEntity> dayEntities = dayRepository.findAll();
+
+
+        Map<Integer, List<ShiftEntity>> shiftsByDay = new HashMap<>();
+
+        for (int i = 0; i < dayCount; i++) {
+            List<LocationEntity> locationEntities = locationRepository.findByDay(dayEntities.get(i));
+            for (LocationEntity locationEntity : locationEntities) {
+                List<ShiftEntity> shiftEntities = shiftRepository.findByLocationId(locationEntity.getId());
+                for (ShiftEntity shiftEntity : shiftEntities) {
+                    int day = shiftEntity.getLocation().getDay().getId();
+                    shiftsByDay.computeIfAbsent(day, k -> new ArrayList<>()).add(shiftEntity);
+                }
+            }
         }
+        int index = 0;
+        for (DayEntity dayEntity : dayEntities) {
+            for (int j = 0; j < shiftsByDay.get(dayEntity.getId()).size(); j++) {
+                index++;
+                row.createCell(14+index).setCellValue(shiftsByDay.get(dayEntity.getId()).get(j).getName()+"day: " + dayEntity.getId()+"location: "+shiftsByDay.get(dayEntity.getId()).get(j).getLocation().getName());
+
+            }
+        }
+
 
 //
 //        Row header = sheet.createRow(0);
