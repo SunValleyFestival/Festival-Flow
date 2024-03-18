@@ -1,7 +1,11 @@
 package com.sunvalley.festivalFlowbe.service.utility;
 
 import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
+import com.sunvalley.festivalFlowbe.entity.ShiftEntity;
 import com.sunvalley.festivalFlowbe.repository.CollaboratorRepository;
+import com.sunvalley.festivalFlowbe.repository.DayRepository;
+import com.sunvalley.festivalFlowbe.repository.LocationRepository;
+import com.sunvalley.festivalFlowbe.repository.ShiftRepository;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -24,10 +28,16 @@ import java.util.List;
 public class ExportService {
 
     private final CollaboratorRepository collaboratorRepository;
+    private final ShiftRepository shiftRepository;
+    private final LocationRepository locationRepository;
+    private final DayRepository dayRepository;
 
     @Autowired
-    public ExportService(CollaboratorRepository collaboratorRepository) {
+    public ExportService(CollaboratorRepository collaboratorRepository, ShiftRepository shiftRepository, LocationRepository locationRepository, DayRepository dayRepository) {
         this.collaboratorRepository = collaboratorRepository;
+        this.shiftRepository = shiftRepository;
+        this.locationRepository = locationRepository;
+        this.dayRepository = dayRepository;
     }
 
 
@@ -37,7 +47,7 @@ public class ExportService {
         List<CollaboratorEntity> collaboratorEntities = collaboratorRepository.findAll();
 
         for (int i = 0; i < collaboratorEntities.size(); i++) {
-            Row row = sheet.getRow(i + 2);
+            Row row = sheet.getRow(i + 1);
             Cell indice = row.createCell(0);
             indice.setCellValue(i + 1);
             Cell id = row.createCell(1);
@@ -49,6 +59,11 @@ public class ExportService {
             Cell town = row.createCell(4);
             town.setCellValue(collaboratorEntities.get(i).getTown());
             Cell age = row.createCell(5);
+            int ageNum = getAge(collaboratorEntities.get(i).getAge());
+            if (ageNum < 18) {
+                Cell ageUnder = row.createCell(14);
+                ageUnder.setCellValue("X");
+            }
             age.setCellValue(getAge(collaboratorEntities.get(i).getAge()));
             Cell phone = row.createCell(6);
             phone.setCellValue(collaboratorEntities.get(i).getPhone());
@@ -57,7 +72,22 @@ public class ExportService {
             Cell size = row.createCell(8);
             size.setCellValue(collaboratorEntities.get(i).getSize());
             Cell yearsExperience = row.createCell(9);
-            yearsExperience.setCellValue(collaboratorEntities.get(i).getYearsExperience());
+
+            int yearsExperienceNum = collaboratorEntities.get(i).getYearsExperience();
+            if (yearsExperienceNum < 1) {
+                Cell yearsExperienceUnder = row.createCell(13);
+                yearsExperienceUnder.setCellValue("X");
+            }
+            yearsExperience.setCellValue(yearsExperienceNum);
+            String firstNameLastName = collaboratorEntities.get(i).getFirstName() + " " + collaboratorEntities.get(i).getLastName();
+            Cell nameSurname = row.createCell(12);
+            nameSurname.setCellValue(firstNameLastName);
+
+        }
+
+        List<ShiftEntity> shiftEntities = shiftRepository.findAll();
+        for (int i = 0; i < shiftEntities.size(); i++) {
+
         }
 
 //
@@ -94,8 +124,6 @@ public class ExportService {
 //        cell.setCellStyle(style);
 
 
-
-
         File exportDir = new File("export"); // Create a File object for the "export" directory
 
 // Check if the directory exists (optional, but recommended for robustness)
@@ -105,7 +133,7 @@ public class ExportService {
         Calendar calendar = Calendar.getInstance();
         calendar.get(Calendar.HOUR_OF_DAY);
 
-        String day = exportDir.getAbsolutePath() + "/Export_" +calendar.get(Calendar.MONTH)+ "-"+calendar.get(Calendar.DAY_OF_MONTH) + "_" + calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE) + ".xlsx";
+        String day = exportDir.getAbsolutePath() + "/Export_" + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + "_" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + ".xlsx";
 
         FileOutputStream outputStream = new FileOutputStream(day);
         workbook.write(outputStream);
