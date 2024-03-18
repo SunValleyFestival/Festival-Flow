@@ -21,7 +21,7 @@ export class AssociationService {
   }
 
   getAdminAssociationByShiftId(shiftId: number) {
-    return this.http.get(ADMIN_BASE_URL + "collaborator/" + shiftId);
+    return this.http.get(ADMIN_BASE_URL + "shift/" + shiftId);
   }
 
   rejectAssociation(association: Association) {
@@ -29,6 +29,10 @@ export class AssociationService {
   }
 
   approveAssociation(association: Association) {
-    return this.http.put(ADMIN_BASE_URL + "approve", association);
+    return this.http.put(ADMIN_BASE_URL + "accept", association);
+  }
+
+  getAssociationByCollaboratorId(collaboratorId: number) {
+    return this.http.get(BASE_URL + "collaborator-id/" + collaboratorId);
   }
 }

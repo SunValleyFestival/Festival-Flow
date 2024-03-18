@@ -20,6 +20,9 @@ export class AuthService {
     let token = this.cookieService.getToken();
     let userId: number = Number(this.cookieService.getUserId());
     let isValid = await this.tokenService.isValidToken(userId, token);
+    if (!isValid) {
+      this.navigationService.goToLogin();
+    }
 
     console.log("isValid qui", isValid);
     return isValid;

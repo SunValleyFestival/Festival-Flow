@@ -1,13 +1,14 @@
 package com.sunvalley.festivalFlowbe.service.utility;
 
+import com.sunvalley.festivalFlowbe.entity.Status;
 import com.sunvalley.festivalFlowbe.entity.utility.Attachment;
 import com.sunvalley.festivalFlowbe.entity.utility.EmailRequest;
 import com.sunvalley.festivalFlowbe.service.CollaboratorService;
+import com.sunvalley.festivalFlowbe.service.ShiftService;
 import io.micrometer.common.util.StringUtils;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,11 +21,9 @@ import java.util.List;
 @Slf4j
 public class EmailService {
 
-    @Autowired
     private final JavaMailSender mailSender;
-
-    @Autowired
     private final CollaboratorService collaboratorService;
+    private final ShiftService shiftService;
 
     @Value("${spring.mail.properties.mail.smtp.from}")
     private String senderAddress;
@@ -33,9 +32,10 @@ public class EmailService {
     @Value("${spring.mail.properties.test-receiver}")
     private String testReceiver;
 
-    public EmailService(JavaMailSender mailSender, CollaboratorService collaboratorService) {
+    public EmailService(JavaMailSender mailSender, CollaboratorService collaboratorService, ShiftService shiftService) {
         this.mailSender = mailSender;
         this.collaboratorService = collaboratorService;
+        this.shiftService = shiftService;
     }
 
     public boolean sendEmail(EmailRequest emailRequest) {
@@ -64,6 +64,31 @@ public class EmailService {
         emailRequest.setMessage("Your verification code is: " + code);
         return sendEmail(emailRequest);
 
+    }
+
+    public void sendNotificationViaEmail(int userId, Status status, int shiftId) {
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setTo(collaboratorService.getEmailById(userId));
+        // add switch for Status
+        switch (status) {
+            case ACCEPTED:
+                emailRequest.setSubject("Turno accettato!");
+                emailRequest.setMessage("Il tuo turno: "+shiftService.getById(shiftId).getName() + " è stato accettato \n Il tuo turno inizia alle: "+shiftService.getById(shiftId).getStartTime()+" e finisce alle: "+shiftService.getById(shiftId).getEndTime()+"\n localhost:4200/collaborator \n\n Grazie per la tua collaborazione \n Il team di SVF");
+                break;
+            case REJECTED:
+                emailRequest.setSubject("Turno rifiutato!");
+                emailRequest.setMessage("Il tuo turno: "+shiftService.getById(shiftId).getName() + " è stato rifiutato \n Il tuo turno sarebbe iniziato alle: "+shiftService.getById(shiftId).getStartTime()+" e finito alle: "+shiftService.getById(shiftId).getEndTime()+"\n localhost:4200/collaborator \n\n Grazie per la tua collaborazione \n Il team di SVF");
+                break;
+            case PENDING:
+                emailRequest.setSubject("Turno in attesa!");
+                emailRequest.setMessage("Il tuo turno: "+shiftService.getById(shiftId).getName() + " è in attesa di approvazione \n Il tuo turno inizia alle: "+shiftService.getById(shiftId).getStartTime()+" e finisce alle: "+shiftService.getById(shiftId).getEndTime()+"\n localhost:4200/collaborator \n\n Grazie per la tua collaborazione \n Il team di SVF");
+                break;
+            default:
+                log.error("Invalid status");
+                return;
+        }
+        log.info("Sending notification to <{}> with subject<{}>...", emailRequest.getTo(), emailRequest.getSubject());
+        sendEmail(emailRequest);
     }
 
     private boolean sendMimeMessage(EmailRequest emailRequest) {
