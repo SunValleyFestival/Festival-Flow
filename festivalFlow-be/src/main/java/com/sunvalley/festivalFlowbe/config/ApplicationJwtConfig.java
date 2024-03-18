@@ -11,15 +11,9 @@ import java.time.Duration;
 @Data
 @ConfigurationProperties(prefix = "spring.security.jwt")
 public class ApplicationJwtConfig {
-
-
     private RSAPublicKey publicKey;
-
     private RSAPrivateKey privateKey;
-
     private JWSAlgorithm algorithm;
     private String issuer;
-
     private Duration expirationTime;
-
 }

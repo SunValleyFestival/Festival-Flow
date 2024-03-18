@@ -7,13 +7,18 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
 
 @Service
 public class ExportService {
@@ -29,9 +34,31 @@ public class ExportService {
     public void export() throws IOException, InvalidFormatException {
         Workbook workbook = new XSSFWorkbook(readFile());
         Sheet sheet = workbook.getSheetAt(1);
-        Row row = sheet.getRow(2);
-        Cell cell = row.createCell(0);
-        cell.setCellValue(1);
+        List<CollaboratorEntity> collaboratorEntities = collaboratorRepository.findAll();
+
+        for (int i = 0; i < collaboratorEntities.size(); i++) {
+            Row row = sheet.getRow(i + 2);
+            Cell indice = row.createCell(0);
+            indice.setCellValue(i + 1);
+            Cell id = row.createCell(1);
+            id.setCellValue(collaboratorEntities.get(i).getId());
+            Cell name = row.createCell(2);
+            name.setCellValue(collaboratorEntities.get(i).getFirstName());
+            Cell lastname = row.createCell(3);
+            lastname.setCellValue(collaboratorEntities.get(i).getLastName());
+            Cell town = row.createCell(4);
+            town.setCellValue(collaboratorEntities.get(i).getTown());
+            Cell age = row.createCell(5);
+            age.setCellValue(getAge(collaboratorEntities.get(i).getAge()));
+            Cell phone = row.createCell(6);
+            phone.setCellValue(collaboratorEntities.get(i).getPhone());
+            Cell email = row.createCell(7);
+            email.setCellValue(collaboratorEntities.get(i).getEmail());
+            Cell size = row.createCell(8);
+            size.setCellValue(collaboratorEntities.get(i).getSize());
+            Cell yearsExperience = row.createCell(9);
+            yearsExperience.setCellValue(collaboratorEntities.get(i).getYearsExperience());
+        }
 
 //
 //        Row header = sheet.createRow(0);
@@ -66,18 +93,35 @@ public class ExportService {
 //        cell.setCellValue(20);
 //        cell.setCellStyle(style);
 
-        File currDir = new File(".");
-        String path = currDir.getAbsolutePath();
-        String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
 
-        FileOutputStream outputStream = new FileOutputStream(fileLocation);
+
+
+        File exportDir = new File("export"); // Create a File object for the "export" directory
+
+// Check if the directory exists (optional, but recommended for robustness)
+        if (!exportDir.exists()) {
+            exportDir.mkdirs(); // Create the directory if it doesn't exist
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.get(Calendar.HOUR_OF_DAY);
+
+        String day = exportDir.getAbsolutePath() + "/Export_" +calendar.get(Calendar.MONTH)+ "-"+calendar.get(Calendar.DAY_OF_MONTH) + "_" + calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE) + ".xlsx";
+
+        FileOutputStream outputStream = new FileOutputStream(day);
         workbook.write(outputStream);
         workbook.close();
+
     }
 
 
-    private File readFile(){
+    private File readFile() {
         return new File("Pianif-turni-svf_vuoto.xlsx");
+    }
+
+    private int getAge(Date date) {
+        long differenzaMillisecondi = new Date().getTime() - date.getTime();
+        long anni = differenzaMillisecondi / (1000L * 60 * 60 * 24 * 365);
+        return (int) anni;
     }
 
 }

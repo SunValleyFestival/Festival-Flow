@@ -41,9 +41,10 @@ create table collaborator
     phone varchar(11),
     first_name varchar(20),
     last_name  varchar(20),
-    age       date,
+    age       date not null,
     size      varchar(3),
     town     varchar(20),
+    years_experience int,
     email varchar(100) not null,
     primary key (id)
 
@@ -93,10 +94,10 @@ values ('Primo turno del giorno', 'Primo turno', 1, '12:00', '2024-03-09 14:00:0
        ('Primo turno del giorno', 'Primo turno', 4, '12:00', '2024-03-09 14:00:00', 5, true);
 
 
-insert into collaborator (phone, first_name, last_name, age, size,town, email) values ('1234567890', 'Mario', 'Rossi', '1990-01-01', 'M', 'Roma', 'mario.rosssssssi@gmail.com'),
-('1234567890', 'Luca', 'Bianchi', '1990-01-01', 'M', 'Roma', 'mario.rosssssssi@gmail.com'),
-('1234567890', 'Giuseppe', 'Verdi', '1990-01-01', 'M', 'Roma', 'mario.rosssssssi@gmail.com'),
-('1234567890', 'Giovanni', 'Battista', '1990-01-01', 'M', 'Roma', 'mario.rosssssssi@gmail.com');
+insert into collaborator (phone, first_name, last_name, age, size,town,years_experience, email) values ('1234567890', 'Mario', 'Rossi', '1990-01-01', 'M', 'Roma',2, 'mario.rosssssssi@gmail.com'),
+('1234567890', 'Luca', 'Bianchi', '1990-01-01', 'M', 'Roma',2, 'mario.rosssssssi@gmail.com'),
+('1234567890', 'Giuseppe', 'Verdi', '1990-01-01', 'M', 'Roma',1, 'mario.rosssssssi@gmail.com'),
+('1234567890', 'Giovanni', 'Battista', '1990-01-01', 'M', 'Roma',0, 'mario.rosssssssi@gmail.com');
 
 insert into association (shift_id, collaborator_id, status)
 values (1, 1, "PENDING");
