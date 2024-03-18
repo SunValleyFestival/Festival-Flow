@@ -46,4 +46,7 @@ public class CollaboratorEntity {
     @Column(name = "size")
     private String size;
 
+    @Column(name= "town")
+    private String town;
+
 }
