@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:mysql://157.90.97.105:3306/admin_festivalflowv1beta
     username: admin_festivalflowv1beta
-    password: M89kd8t2
+    password: A93u5?nm8
 
   mail:
     host: fotoember.ch
