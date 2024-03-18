@@ -12,7 +12,9 @@ import {AuthEntity} from "../../interfaces/utility/AuthEntity";
 export class LoginComponent implements OnInit {
   protected mail: any;
   protected code: any;
+  protected date: any;
   protected isEmailInserted: boolean = false;
+  protected isDateInserted: boolean = false;
 
   constructor(private navigationService: NavigationService,
               private cookiesService: CookiesService,
@@ -23,7 +25,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     console.log("userId", this.cookiesService.getUserId());
     console.log("token", this.cookiesService.getToken());
-    if(this.cookiesService.getUserId() && this.cookiesService.getToken()){
+    if (this.cookiesService.getUserId() && this.cookiesService.getToken()) {
       this.navigationService.goToHome();
     }
   }
@@ -33,7 +35,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.mail !== undefined && this.code === undefined) {
+    if (!this.isEmailInserted) {
       if (this.checkCredentials(this.mail)) {
         let authEntity: AuthEntity;
         this.tokenService.login(this.mail).subscribe(
@@ -46,9 +48,10 @@ export class LoginComponent implements OnInit {
             }
           }
         );
-
       }
-    } else if (this.mail !== undefined && this.code !== undefined) {
+    } else if (this.isEmailInserted && !this.isDateInserted) {
+      this.isDateInserted = true;
+    } else if (this.isEmailInserted && this.isDateInserted) {
       this.tokenService.loginConfirm(this.cookiesService.getUserId(), this.code).subscribe(response => {
         if (response !== undefined && response.valid) {
           this.cookiesService.setToken(String(response.token));
