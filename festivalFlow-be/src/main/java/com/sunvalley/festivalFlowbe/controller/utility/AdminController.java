@@ -5,6 +5,7 @@ import com.sunvalley.festivalFlowbe.service.utility.ExportService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class AdminController {
 
     @CrossOrigin
     @GetMapping("export")
-    public String loginConfirm() throws IOException {
+    public String loginConfirm() throws IOException, InvalidFormatException {
         exportService.export();
         return null;
     }
