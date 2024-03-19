@@ -59,7 +59,7 @@ public class AssociationService {
 
     for (AssociationEntity association : associations) {
       var collaborator = collaboratorService.getById(association.getId().getCollaboratorId());
-      var associationAdmin = new AssociationAdmin(collaborator, association.getId().getShiftId(), association.getStatus());
+      var associationAdmin = new AssociationAdmin(collaborator, association.getId().getShiftId(), association.getStatus(), association.getComment());
       associationsAdmin.add(associationAdmin);
     }
 
