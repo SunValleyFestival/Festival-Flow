@@ -52,46 +52,46 @@
 
             <label class="input input-bordered flex items-center mt-2 gap-2">
               Email:
-              <input [(ngModel)]="formData.email" [attr.disabled]="formData.email == ''" class="grow bg-base-100" name="email" placeholder="max.carota@gmail.com"
+              <input [(ngModel)]="formData.email" class="grow bg-base-100" name="email" placeholder="max.carota@gmail.com"
                      type="email"/>
             </label>
 
             <label class="input input-bordered flex items-center mt-2 gap-2">
               Telefono:
-              <input [(ngModel)]="formData.phone" [attr.disabled]="formData.phone == ''" class="grow bg-base-100" name="phone" placeholder="123456789" required
+              <input [(ngModel)]="formData.phone" class="grow bg-base-100" name="phone" placeholder="123456789" required
                      type="tel"/>
             </label>
             <label class="input input-bordered flex items-center mt-2 gap-2">
               Nome:
-              <input [(ngModel)]="formData.firstName" [attr.disabled]="formData.firstName == ''" class="grow bg-base-100" name="firstName" placeholder="Max" required
+              <input [(ngModel)]="formData.firstName" class="grow bg-base-100" name="firstName" placeholder="Max" required
                      type="text"/>
             </label>
 
             <label class="input input-bordered flex items-center mt-2 gap-2">
               Cognome:
-              <input [(ngModel)]="formData.lastName" [attr.disabled]="formData.lastName == ''" class="grow bg-base-100" name="lastName" placeholder="Carota" required
+              <input [(ngModel)]="formData.lastName" class="grow bg-base-100" name="lastName" placeholder="Carota" required
                      type="text"/>
             </label>
 
             <label class="input input-bordered flex items-center mt-2 gap-2">
               Età:
-              <input [(ngModel)]="formData.age" [attr.disabled]="formData.age == ''" class="grow bg-base-100" name="age" placeholder="22" required
+              <input [(ngModel)]="formData.age" class="grow bg-base-100" name="age" placeholder="22" required
                      type="date"/>
             </label>
 
             <label class="input input-bordered flex items-center mt-2 gap-2">
               Anni di esperienza:
-              <input [(ngModel)]="formData.yearsExperience" [attr.disabled]="formData.yearsExperience == undefined" class="grow bg-base-100" name="yearsExperience" placeholder="0" required
+              <input [(ngModel)]="formData.yearsExperience" class="grow bg-base-100" name="yearsExperience" placeholder="0" required
                      type="number"/>
             </label>
 
             <div class="mt-2">
               <select [(ngModel)]="formData.size" class="select select-bordered w-full" name="size" required>
                 <option disabled>Taglia Maglietta</option>
-                <option [attr.disabled]="formData.size == ''">S</option>
-                <option [attr.disabled]="formData.size == ''">M</option>
-                <option [attr.disabled]="formData.size == ''">L</option>
-                <option [attr.disabled]="formData.size == ''">XL</option>
+                <option>S</option>
+                <option>M</option>
+                <option>L</option>
+                <option>XL</option>
               </select>
             </div>
 

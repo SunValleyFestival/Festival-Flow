@@ -61,6 +61,29 @@
       </label>
     </div>
 
+    <div class="flex w-full">
+      <label class="form-control w-1/3 mr-10">
+        <div class="label">
+          <span class="label-text">Anni di esperienza</span>
+        </div>
+        <input [(ngModel)]="collaborator.yearsExperience" class="input input-bordered" name="yearsExperience" placeholder="0" required type="number"/>
+      </label>
+
+      <label class="form-control w-1/3 mr-10">
+        <div class="label">
+          <span class="label-text"></span>
+        </div>
+      </label>
+
+      <label class="form-control w-1/3 mr-10">
+        <div class="label">
+          <span class="label-text"></span>
+        </div>
+      </label>
+
+
+    </div>
+
     <div class="w-full flex justify-end mr-10">
       <button (click)="deleteCollaborator()" class="btn btn-error mr-2">Elimina</button>
       <button (click)="submitData()" class="btn btn-success w-1/12 mr-10">Salva</button>
