@@ -85,6 +85,11 @@
                      type="number"/>
             </label>
 
+            <label class="input input-bordered flex items-center mt-2 gap-2">
+              Comune:
+              <input [(ngModel)]="formData.town" class="grow bg-base-100" name="town" placeholder="Serravalle" required type="date"/>
+            </label>
+
             <div class="mt-2">
               <select [(ngModel)]="formData.size" class="select select-bordered w-full" name="size" required>
                 <option disabled>Taglia Maglietta</option>

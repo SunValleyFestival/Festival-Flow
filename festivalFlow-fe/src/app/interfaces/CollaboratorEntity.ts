@@ -7,4 +7,5 @@ export interface Collaborator {
   age?: string | null;
   size?: string | null;
   yearsExperience?: number | null;
+  town?: string | null;
 }
