@@ -135,6 +135,7 @@ export class LocationDetailComponent implements OnInit {
         age: this.activeCollaborator.age || '',
         size: this.activeCollaborator.size || 'Taglia Maglietta',
         yearsExperience: this.activeCollaborator.yearsExperience || undefined,
+        town: this.activeCollaborator.town || '',
       }
     }
   }
