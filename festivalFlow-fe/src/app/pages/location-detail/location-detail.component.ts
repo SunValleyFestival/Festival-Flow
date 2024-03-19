@@ -22,6 +22,7 @@ export class LocationDetailComponent implements OnInit {
   protected signedIn: boolean = false;
   protected dataError: boolean = false;
   protected shifts: ShiftClient[] | undefined;
+
   formData: Collaborator = {
     email: '',
     phone: '',
@@ -30,6 +31,8 @@ export class LocationDetailComponent implements OnInit {
     age: '',
     size: 'Taglia Maglietta'
   }
+  protected associationComment: string = '';
+
   protected activeCollaborator: Collaborator | undefined;
 
   constructor(
@@ -97,7 +100,8 @@ export class LocationDetailComponent implements OnInit {
           collaboratorId: this.activeCollaborator.id,
           shiftId: shiftId
         },
-        status: 0
+        status: 0,
+        comment: this.associationComment
       }
 
       this.collaboratorService.updateCollaborator(collaborator).pipe().subscribe(() => {
@@ -138,6 +142,7 @@ export class LocationDetailComponent implements OnInit {
         town: this.activeCollaborator.town || '',
       }
     }
+    this.associationComment = '';
   }
 
   parseTime(timeString: string): number {

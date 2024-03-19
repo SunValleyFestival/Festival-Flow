@@ -100,6 +100,13 @@
               </select>
             </div>
 
+            <label class="form-control">
+              <div class="label">
+                <span class="label-text">Note:</span>
+              </div>
+              <textarea [(ngModel)]="associationComment" class="textarea textarea-bordered h-24" name="comment" placeholder="comment"></textarea>
+            </label>
+
             <div class="mt-2 w-full flex justify-end">
               <button type="submit" class="btn" (click)="submitData(shift.id)">Conferma</button>
             </div>
