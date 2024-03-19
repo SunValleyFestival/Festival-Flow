@@ -12,7 +12,9 @@
     </div>
 
     <div role="alert" class="alert alert-error" *ngIf="dataError">
-      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+      <svg class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </svg>
       <span>Errore! Dati inseriti incompleti!</span>
     </div>
 
@@ -21,7 +23,7 @@
       <h1 class="mb-10 text-3xl">{{ selectedLocation?.name }}</h1>
 
       <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical">
-        <li *ngFor="let shift of shifts; index as i">
+        <li *ngFor="let shift of shifts">
           <div class="timeline-middle">
           </div>
           <div class="timeline-start mb-10">
@@ -29,13 +31,9 @@
             <div class="text-lg font-black">{{ shift.name }}</div>
             <div class="flex flex-col gap-3">
               {{ shift.description }}
-              <div *ngFor="let availability of shiftAvailability" class="h-0">
-                <p *ngIf="availability.shiftId === shift.id">{{ availability.availableSlots }} posti rimanenti</p>
-              </div>
-              <div *ngFor="let availability of shiftAvailability">
-                <progress *ngIf="availability.shiftId === shift.id" class="progress progress-error w-1/2" value="{{shift.maxCollaborator - (availability.availableSlots)}}"
+              <p>{{ shift.shiftAvailability }} posti rimanenti</p>
+              <progress class="progress progress-error w-1/2" value="{{shift.maxCollaborator - (shift.shiftAvailability)}}"
                         max="{{shift.maxCollaborator}}"></progress>
-              </div>
               <button class="btn btn-outline btn-accent" (click)="showDialog(shift.id)">Iscriviti</button>
             </div>
           </div>
@@ -54,37 +52,49 @@
 
             <label class="input input-bordered flex items-center mt-2 gap-2">
               Email:
-              <input [(ngModel)]="formData.email" class="grow bg-base-100" disabled name="email" placeholder="max.carota@gmail.com" type="email"/>
+              <input [(ngModel)]="formData.email" [attr.disabled]="formData.email == ''" class="grow bg-base-100" name="email" placeholder="max.carota@gmail.com"
+                     type="email"/>
             </label>
 
             <label class="input input-bordered flex items-center mt-2 gap-2">
               Telefono:
-              <input type="tel" class="grow bg-base-100" [(ngModel)]="formData.phone" name="phone" placeholder="123456789" required/>
+              <input [(ngModel)]="formData.phone" [attr.disabled]="formData.phone == ''" class="grow bg-base-100" name="phone" placeholder="123456789" required
+                     type="tel"/>
             </label>
             <label class="input input-bordered flex items-center mt-2 gap-2">
               Nome:
-              <input type="text" class="grow bg-base-100" [(ngModel)]="formData.firstName" name="firstName" placeholder="Max" required/>
+              <input [(ngModel)]="formData.firstName" [attr.disabled]="formData.firstName == ''" class="grow bg-base-100" name="firstName" placeholder="Max" required
+                     type="text"/>
             </label>
 
             <label class="input input-bordered flex items-center mt-2 gap-2">
               Cognome:
-              <input type="text" class="grow bg-base-100" [(ngModel)]="formData.lastName" name="lastName" placeholder="Carota" required/>
+              <input [(ngModel)]="formData.lastName" [attr.disabled]="formData.lastName == ''" class="grow bg-base-100" name="lastName" placeholder="Carota" required
+                     type="text"/>
             </label>
 
             <label class="input input-bordered flex items-center mt-2 gap-2">
               Età:
-              <input type="date" class="grow bg-base-100" [(ngModel)]="formData.age" name="age" placeholder="22" required/>
+              <input [(ngModel)]="formData.age" [attr.disabled]="formData.age == ''" class="grow bg-base-100" name="age" placeholder="22" required
+                     type="date"/>
+            </label>
+
+            <label class="input input-bordered flex items-center mt-2 gap-2">
+              Anni di esperienza:
+              <input [(ngModel)]="formData.yearsExperience" [attr.disabled]="formData.yearsExperience == undefined" class="grow bg-base-100" name="yearsExperience" placeholder="0" required
+                     type="number"/>
             </label>
 
             <div class="mt-2">
-              <select class="select select-bordered w-full max-w-xs" [(ngModel)]="formData.size" name="size" required>
+              <select [(ngModel)]="formData.size" class="select select-bordered w-full" name="size" required>
                 <option disabled>Taglia Maglietta</option>
-                <option>S</option>
-                <option>M</option>
-                <option>L</option>
-                <option>XL</option>
+                <option [attr.disabled]="formData.size == ''">S</option>
+                <option [attr.disabled]="formData.size == ''">M</option>
+                <option [attr.disabled]="formData.size == ''">L</option>
+                <option [attr.disabled]="formData.size == ''">XL</option>
               </select>
             </div>
+
             <div class="mt-2 w-full flex justify-end">
               <button type="submit" class="btn" (click)="submitData(shift.id)">Conferma</button>
             </div>
