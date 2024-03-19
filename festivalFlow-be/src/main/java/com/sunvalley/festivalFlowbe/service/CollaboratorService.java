@@ -54,4 +54,16 @@ public class CollaboratorService {
         return collaboratorRepository.save(collaborator);
     }
 
+    public List<CollaboratorEntity> findCollaboratorEntitiesWhereIsPopulated() {
+        return collaboratorRepository.findCollaboratorEntitiesWhereIsPopulated();
+    }
+
+    public List<CollaboratorEntity> findCollaboratorEntitiesWhereIsPopulatedAndAssociationAccepted() {
+        return collaboratorRepository.findCollaboratorEntitiesWhereIsPopulatedAndAssociationAccepted();
+    }
+
+    public List<CollaboratorEntity> findCollaboratorEntitiesWhereIsPopulatedAndAssociationAcceptedByShiftId(int shiftId) {
+        return collaboratorRepository.findCollaboratorEntitiesWhereIsPopulatedAndAssociationAcceptedByShiftId(shiftId);
+    }
+
 }

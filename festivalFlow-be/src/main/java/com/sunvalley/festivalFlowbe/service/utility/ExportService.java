@@ -8,8 +8,13 @@ import com.sunvalley.festivalFlowbe.repository.CollaboratorRepository;
 import com.sunvalley.festivalFlowbe.repository.DayRepository;
 import com.sunvalley.festivalFlowbe.repository.LocationRepository;
 import com.sunvalley.festivalFlowbe.repository.ShiftRepository;
+import com.sunvalley.festivalFlowbe.service.CollaboratorService;
+import com.sunvalley.festivalFlowbe.service.DayService;
+import com.sunvalley.festivalFlowbe.service.LocationService;
+import com.sunvalley.festivalFlowbe.service.ShiftService;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,27 +29,30 @@ import java.util.*;
 @Service
 public class ExportService {
 
-    private final CollaboratorRepository collaboratorRepository;
-    private final ShiftRepository shiftRepository;
-    private final LocationRepository locationRepository;
-    private final DayRepository dayRepository;
+
+   private final CollaboratorService collaboratorService;
+   private final DayService dayService;
+    private final LocationService locationService;
+    private final ShiftService shiftService;
+
 
     @Autowired
-    public ExportService(CollaboratorRepository collaboratorRepository, ShiftRepository shiftRepository, LocationRepository locationRepository, DayRepository dayRepository) {
-        this.collaboratorRepository = collaboratorRepository;
-        this.shiftRepository = shiftRepository;
-        this.locationRepository = locationRepository;
-        this.dayRepository = dayRepository;
+    public ExportService(CollaboratorService collaboratorService, DayService dayService, LocationService locationService, ShiftService shiftService){
+
+        this.collaboratorService = collaboratorService;
+        this.dayService = dayService;
+        this.locationService = locationService;
+        this.shiftService = shiftService;
     }
 
 
     public void export() throws IOException, InvalidFormatException {
-        Workbook workbook = new XSSFWorkbook(readFile());
-        Sheet sheet = workbook.getSheetAt(1);
-        List<CollaboratorEntity> collaboratorEntities = collaboratorRepository.findAll();
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("collaborator");
+        List<CollaboratorEntity> collaboratorEntities = collaboratorService.findCollaboratorEntitiesWhereIsPopulatedAndAssociationAccepted();
 
         for (int i = 0; i < collaboratorEntities.size(); i++) {
-            Row row = sheet.getRow(i + 1);
+            Row row = sheet.createRow(i + 1);
             Cell indice = row.createCell(0);
             indice.setCellValue(i + 1);
             Cell id = row.createCell(1);
@@ -86,21 +94,18 @@ public class ExportService {
 
         }
 
-        int dayCount = dayRepository.findAll().size();
-        int locationCount = locationRepository.findAll().size();
-        int shiftCount = shiftRepository.findAll().size();
+        Row row = sheet.createRow(0);
 
-        Row row = sheet.getRow(0);
-
-        List<DayEntity> dayEntities = dayRepository.findAll();
+        List<DayEntity> dayEntities = dayService.getAll();
+        int dayCount= dayEntities.size();
 
 
         Map<Integer, List<ShiftEntity>> shiftsByDay = new HashMap<>();
 
         for (int i = 0; i < dayCount; i++) {
-            List<LocationEntity> locationEntities = locationRepository.findByDay(dayEntities.get(i));
+            List<LocationEntity> locationEntities = locationService.getLocationsByDayId(dayEntities.get(i).getId());
             for (LocationEntity locationEntity : locationEntities) {
-                List<ShiftEntity> shiftEntities = shiftRepository.findByLocationId(locationEntity.getId());
+                List<ShiftEntity> shiftEntities = shiftService.getShiftsByLocationId(locationEntity.getId());
                 for (ShiftEntity shiftEntity : shiftEntities) {
                     int day = shiftEntity.getLocation().getDay().getId();
                     shiftsByDay.computeIfAbsent(day, k -> new ArrayList<>()).add(shiftEntity);
@@ -111,44 +116,64 @@ public class ExportService {
         for (DayEntity dayEntity : dayEntities) {
             for (int j = 0; j < shiftsByDay.get(dayEntity.getId()).size(); j++) {
                 index++;
-                row.createCell(14+index).setCellValue(shiftsByDay.get(dayEntity.getId()).get(j).getName()+"day: " + dayEntity.getId()+"location: "+shiftsByDay.get(dayEntity.getId()).get(j).getLocation().getName());
+                row.createCell(14 + index).setCellValue(shiftsByDay.get(dayEntity.getId()).get(j).getName() + "day: " + dayEntity.getId() + "location: " + shiftsByDay.get(dayEntity.getId()).get(j).getLocation().getName());
 
             }
         }
 
 
-//
-//        Row header = sheet.createRow(0);
-//
-//        CellStyle headerStyle = workbook.createCellStyle();
-//        headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
-//        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-//
-//        XSSFFont font = ((XSSFWorkbook) workbook).createFont();
-//        font.setFontName("Arial");
-//        font.setFontHeightInPoints((short) 16);
-//        font.setBold(true);
-//        headerStyle.setFont(font);
-//
-//        Cell headerCell = header.createCell(0);
-//        headerCell.setCellValue("Name");
-//        headerCell.setCellStyle(headerStyle);
-//
-//        headerCell = header.createCell(1);
-//        headerCell.setCellValue("Age");
-//        headerCell.setCellStyle(headerStyle);
-//
-//        CellStyle style = workbook.createCellStyle();
-//        style.setWrapText(true);
-//
-//        Row row = sheet.createRow(2);
-//        Cell cell = row.createCell(0);
-//        cell.setCellValue("John Smith");
-//        cell.setCellStyle(style);
-//
-//        cell = row.createCell(1);
-//        cell.setCellValue(20);
-//        cell.setCellStyle(style);
+        Sheet bylocationSheet = workbook.createSheet("CollaboratoriPerTurno");
+
+        CellStyle shiftNameStyle = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setBold(true);
+        shiftNameStyle.setFont(font);
+
+        // Creazione dell'indice
+        for (int i = 0; i < 100; i++) {
+            Row row1 = bylocationSheet.createRow(i);
+            Cell cell = row1.createCell(0); // L'indice viene posizionato nella colonna 0
+            cell.setCellValue(i);
+        }
+
+        Row rowDay= bylocationSheet.getRow(0);
+        Row rowLocation= bylocationSheet.getRow(1);
+        Row rowShift = bylocationSheet.getRow(2);
+
+
+        int h=1;
+
+        //sheet.addMergedRegion(new CellRangeAddress(firstRow, lastRow, firstCol, lastCol));
+
+        for (DayEntity dayEntity: dayService.getAll()) {
+            Cell cellDay = rowDay.createCell(h);
+            cellDay.setCellValue(dayEntity.getName());
+            cellDay.setCellStyle(shiftNameStyle);
+            int firstCol = h;
+            for (LocationEntity locationEntity: locationService.getLocationsByDayId(dayEntity.getId())){
+                Cell cellLocation = rowLocation.createCell(h);
+                cellLocation.setCellValue(locationEntity.getName());
+                cellLocation.setCellStyle(shiftNameStyle);
+                int firstColLocation= h;
+                for (ShiftEntity shiftEntity: shiftService.getShiftsByLocationId(locationEntity.getId())){
+                    Cell cell = rowShift.createCell(h);
+                    cell.setCellValue(shiftEntity.getName());
+                    cell.setCellStyle(shiftNameStyle);
+                    int k=3;
+                    for (CollaboratorEntity collaboratorEntity: collaboratorService.findCollaboratorEntitiesWhereIsPopulatedAndAssociationAcceptedByShiftId(shiftEntity.getId())) {
+                        Row rowCollaborator= bylocationSheet.getRow(k);
+                        Cell cellCollaborator= rowCollaborator.createCell(h);
+                        cellCollaborator.setCellValue(collaboratorEntity.getFirstName() + " " + collaboratorEntity.getLastName());
+                        k++;
+                    }
+                    h++;
+                }
+                bylocationSheet.addMergedRegion(new CellRangeAddress(1, 1, firstColLocation, h-1));
+
+            }
+            bylocationSheet.addMergedRegion(new CellRangeAddress(0, 0, firstCol, h-1));
+        }
+
 
 
         File exportDir = new File("export"); // Create a File object for the "export" directory
