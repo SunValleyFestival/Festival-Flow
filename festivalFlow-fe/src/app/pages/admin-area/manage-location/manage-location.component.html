@@ -29,7 +29,7 @@
                 {{ association.collaborator.email }}
               </div>
               <div class="self-center">
-                note...
+                {{ association.comment }}
               </div>
               <div class="flex gap-2 mr-5">
                 <button (click)="rejectAssociation(association.collaborator.id, shift.id)" class="btn btn-error">Rifiuta</button>
