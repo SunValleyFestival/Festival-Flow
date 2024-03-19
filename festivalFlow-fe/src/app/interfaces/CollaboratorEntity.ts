@@ -6,4 +6,5 @@ export interface Collaborator {
   lastName?: string | null;
   age?: string | null;
   size?: string | null;
+  town?: string | null;
 }
