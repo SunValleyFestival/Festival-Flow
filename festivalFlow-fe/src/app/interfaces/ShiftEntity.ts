@@ -9,6 +9,19 @@ export interface Shift {
   startTime: string;
   endTime: string;
   maxCollaborator: number;
-  collaboratorName?: string[],
-  collaboratorEntityList?: Collaborator[]
+  collaboratorName?: string[];
+  collaboratorEntityList?: Collaborator[];
+}
+
+export interface ShiftClient {
+  id?: number;
+  description?: string | null;
+  name: string;
+  location: Location;
+  startTime: string;
+  endTime: string;
+  maxCollaborator: number;
+  collaboratorName?: string[];
+  collaboratorEntityList?: Collaborator[];
+  shiftAvailability: number;
 }

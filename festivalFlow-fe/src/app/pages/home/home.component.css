@@ -1,0 +1,11 @@
+@media screen and (max-width: 640px) {
+  .h-mobile {
+    height: fit-content;
+  }
+}
+
+@media screen and (min-width: 641px) {
+  .h-mobile {
+    height: calc(100dvh - 64px);
+  }
+}

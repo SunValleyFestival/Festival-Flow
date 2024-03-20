@@ -54,6 +54,7 @@ create table association
 (
     shift_id        int not null,
     collaborator_id int not null,
+    comment varchar(1000),
     status ENUM ('PENDING', 'ACCEPTED', 'REJECTED') not null,
     primary key (shift_id, collaborator_id)
 );

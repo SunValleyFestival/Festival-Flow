@@ -10,5 +10,6 @@ public class AssociationAdmin {
   private CollaboratorEntity collaborator;
   private Integer shiftId;
   private Status status;
+  private String comment;
 
 }
