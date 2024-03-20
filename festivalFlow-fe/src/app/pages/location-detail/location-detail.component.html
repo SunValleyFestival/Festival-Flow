@@ -58,8 +58,12 @@
 
             <label class="input input-bordered flex items-center mt-2 gap-2">
               Telefono:
+              <select [(ngModel)]="formData.countryCode" class="grow bg-base-100" name="countryCode" required>
+                <option value="+41">+41</option>
+                <option value="+39">+39</option>
+              </select>
               <input [(ngModel)]="formData.phone" class="grow bg-base-100" name="phone" placeholder="123456789" required
-                     type="tel"/>
+              type="text" maxlength="9"/>
             </label>
             <label class="input input-bordered flex items-center mt-2 gap-2">
               Nome:
@@ -87,7 +91,7 @@
 
             <label class="input input-bordered flex items-center mt-2 gap-2">
               Comune:
-              <input [(ngModel)]="formData.town" class="grow bg-base-100" name="town" placeholder="Serravalle" required type="date"/>
+              <input [(ngModel)]="formData.town" class="grow bg-base-100" name="town" placeholder="Serravalle" required type="text"/>
             </label>
 
             <div class="mt-2">

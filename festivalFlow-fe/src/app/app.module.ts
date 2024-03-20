@@ -35,13 +35,13 @@ import {UserComponent} from './pages/user/user.component';
     UserDetailComponent,
     UserComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ReactiveFormsModule,
-    FormsModule,
-    HttpClientModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        ReactiveFormsModule,
+        FormsModule,
+        HttpClientModule
+    ],
   providers: [HttpAuthClient],
   bootstrap: [AppComponent]
 })

@@ -11,11 +11,12 @@ import {ShiftAvailabilityService} from "../../services/http/shift-availability.s
 import {timer} from 'rxjs';
 import {Association} from "../../interfaces/AssociationEntity";
 import {NavigationService} from "../../services/navigation/navigation.service";
+//import { MaskedTextBoxModule } from '@syncfusion/ej2-angular-inputs';
 
 @Component({
   selector: 'app-location-detail',
   templateUrl: './location-detail.component.html',
-  styleUrls: ['./location-detail.component.css']
+  styleUrls: ['./location-detail.component.css'],
 })
 export class LocationDetailComponent implements OnInit {
   protected selectedLocation: Location | undefined;
@@ -26,6 +27,7 @@ export class LocationDetailComponent implements OnInit {
   formData: Collaborator = {
     email: '',
     phone: '',
+    countryCode: '+41',
     firstName: '',
     lastName: '',
     age: '',
@@ -95,6 +97,7 @@ export class LocationDetailComponent implements OnInit {
 
       let collaborator: Collaborator = this.formData;
       collaborator.id = this.activeCollaborator.id;
+      collaborator.phone = this.formData.countryCode ? this.formData.phone ? this.formData.countryCode + this.formData.phone : '' : '';
       let association: Association = {
         id: {
           collaboratorId: this.activeCollaborator.id,
@@ -133,13 +136,14 @@ export class LocationDetailComponent implements OnInit {
     if (this.activeCollaborator) {
       this.formData = {
         email: this.activeCollaborator.email,
-        phone: this.activeCollaborator.phone || '',
+        phone: this.activeCollaborator.phone?.substring(3) || '',
         firstName: this.activeCollaborator.firstName || '',
         lastName: this.activeCollaborator.lastName || '',
         age: this.activeCollaborator.age || '',
         size: this.activeCollaborator.size || 'Taglia Maglietta',
         yearsExperience: this.activeCollaborator.yearsExperience || undefined,
         town: this.activeCollaborator.town || '',
+        countryCode: this.activeCollaborator.phone?.substring(0,3) || '+41',
       }
     }
     this.associationComment = '';
