@@ -4,6 +4,7 @@ import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
 import com.sunvalley.festivalFlowbe.entity.DayEntity;
 import com.sunvalley.festivalFlowbe.entity.LocationEntity;
 import com.sunvalley.festivalFlowbe.entity.ShiftEntity;
+import com.sunvalley.festivalFlowbe.entity.utility.Attachment;
 import com.sunvalley.festivalFlowbe.service.*;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 
 
@@ -38,8 +40,7 @@ public class ExportService {
     }
 
 
-    public void export() throws IOException {
-
+    public Attachment export() throws IOException {
         Workbook workbook = new XSSFWorkbook();
 
         //collaboratori
@@ -258,19 +259,35 @@ public class ExportService {
         }
 
 
-        File exportDir = new File("export");
-
-        if (!exportDir.exists()) {
-            exportDir.mkdirs();
-        }
+//        File exportDir = new File("export");
+//
+//        if (!exportDir.exists()) {
+//            exportDir.mkdirs();
+//        }
         Calendar calendar = Calendar.getInstance();
         calendar.get(Calendar.HOUR_OF_DAY);
 
-        String day = exportDir.getAbsolutePath() + "/Export_" + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + "_" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + ".xlsx";
+        String day = "Export_" + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + "_" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE);
 
-        FileOutputStream outputStream = new FileOutputStream(day);
-        workbook.write(outputStream);
-        workbook.close();
+        File outputFile = File.createTempFile(day, ".xlsx");
+        Attachment attachment = new Attachment();
+        attachment.setFilename(outputFile.getName());
+
+        try (FileOutputStream fos = new FileOutputStream(outputFile)) {
+            workbook.write(fos);
+        }
+
+        byte[] bytes = Files.readAllBytes(outputFile.toPath());
+
+        attachment.setContent(bytes);
+        return attachment;
+
+//        FileOutputStream outputStream = new FileOutputStream(day);
+//        workbook.write(outputStream);
+//        workbook.close();
+//        File
+
+
     }
 
     private File readFile() {

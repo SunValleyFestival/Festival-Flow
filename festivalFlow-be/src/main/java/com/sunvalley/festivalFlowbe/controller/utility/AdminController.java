@@ -1,6 +1,8 @@
 package com.sunvalley.festivalFlowbe.controller.utility;
 
 import com.sunvalley.festivalFlowbe.entity.utility.AuthEntity;
+import com.sunvalley.festivalFlowbe.entity.utility.EmailRequest;
+import com.sunvalley.festivalFlowbe.service.utility.EmailService;
 import com.sunvalley.festivalFlowbe.service.utility.ExportService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ public class AdminController {
 
     private final JWTTokenProviderService tokenProvider;
     private final ExportService exportService;
+    private final EmailService emailService;
 
     @CrossOrigin
     @GetMapping("token")
@@ -28,9 +31,9 @@ public class AdminController {
     }
 
     @CrossOrigin
-    @GetMapping("export")
-    public String loginConfirm() throws IOException, InvalidFormatException {
-        exportService.export();
+    @PostMapping("export")
+    public String loginConfirm(EmailRequest emailRequest) throws IOException, InvalidFormatException {
+        emailService.sendExport(emailRequest.getTo(), exportService.export());
         return null;
     }
 
