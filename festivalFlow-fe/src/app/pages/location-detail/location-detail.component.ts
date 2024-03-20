@@ -22,7 +22,17 @@ export class LocationDetailComponent implements OnInit {
   protected shifts: ShiftClient[] | undefined;
   protected activeCollaborator: Collaborator | undefined;
 
-  protected formData!: FormGroup;
+  protected formData: FormGroup = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    phone: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    age: ['', Validators.required],
+    yearsExperience: ['', Validators.required],
+    town: ['', Validators.required],
+    size: ['', Validators.required],
+    comment: ['']
+  });
 
   constructor(
     private shiftService: ShiftService,
@@ -36,19 +46,6 @@ export class LocationDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.formData = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      phone: [0, [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      age: ['', Validators.required],
-      yearsExperience: ['', Validators.required],
-      town: ['', Validators.required],
-      size: ['', Validators.required],
-      comment: ['']
-    })
-
     this.route.params.subscribe(params => {
       this.locationService.getLocationById(params['location']).pipe().subscribe((location: any) => {
         this.selectedLocation = location

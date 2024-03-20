@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {DayService} from "../../../services/http/day.service";
 import {LocationService} from "../../../services/http/location.service";
 import {ShiftAvailabilityService} from "../../../services/http/shift-availability.service";
-import {timer} from "rxjs";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-admin',
@@ -20,10 +20,10 @@ export class AdminComponent implements OnInit {
   protected dataError: boolean = false;
   protected nameToFilter: string = '';
 
-  protected formData: Day = {
-    name: '',
-    description: ''
-  };
+  protected dayForm: FormGroup = this.fb.group({
+    name: ['', Validators.required],
+    description: ['', Validators.required]
+  });
 
   constructor(
     private router: Router,
@@ -31,6 +31,7 @@ export class AdminComponent implements OnInit {
     private locationService: LocationService,
     private shiftAvailabilityService: ShiftAvailabilityService,
     private route: ActivatedRoute,
+    private fb: FormBuilder
   ) {
   }
 
@@ -91,31 +92,18 @@ export class AdminComponent implements OnInit {
   }
 
   submitData() {
-    if (this.checkData()) return;
 
-    this.dayService.saveDay(this.formData).pipe().subscribe();
-    this.resetFormData();
+    this.dayService.saveDay(this.getDayFromForm()).pipe().subscribe();
+    this.dayForm.reset();
 
     window.location.reload();
   }
 
-  checkData(): boolean {
-    let error = this.formData.name === '' || this.formData.description === '';
-    this.dataError = error;
-    if (error) {
-      timer(5000).subscribe(() => {
-        this.dataError = false;
-      });
+  getDayFromForm(): Day {
+    return {
+      name: this.dayForm.get('name')?.value,
+      description: this.dayForm.get('description')?.value
     }
-
-    return error;
-  }
-
-  resetFormData() {
-    this.formData = {
-      name: '',
-      description: ''
-    };
   }
 
   filterLocation() {
