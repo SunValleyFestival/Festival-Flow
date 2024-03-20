@@ -8,9 +8,8 @@ import {Collaborator} from "../../interfaces/CollaboratorEntity";
 import {Location} from "../../interfaces/LocationEntity";
 import {LocationService} from "../../services/http/location.service";
 import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
-import {timer} from 'rxjs';
 import {Association} from "../../interfaces/AssociationEntity";
-import {NavigationService} from "../../services/navigation/navigation.service";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-location-detail',
@@ -19,21 +18,11 @@ import {NavigationService} from "../../services/navigation/navigation.service";
 })
 export class LocationDetailComponent implements OnInit {
   protected selectedLocation: Location | undefined;
-  protected signedIn: boolean = false;
   protected dataError: boolean = false;
   protected shifts: ShiftClient[] | undefined;
-
-  formData: Collaborator = {
-    email: '',
-    phone: '',
-    firstName: '',
-    lastName: '',
-    age: '',
-    size: 'Taglia Maglietta'
-  }
-  protected associationComment: string = '';
-
   protected activeCollaborator: Collaborator | undefined;
+
+  protected formData!: FormGroup;
 
   constructor(
     private shiftService: ShiftService,
@@ -41,12 +30,24 @@ export class LocationDetailComponent implements OnInit {
     private associationService: AssociationService,
     private collaboratorService: CollaboratorService,
     private locationService: LocationService,
-    protected shiftAvailabilityService: ShiftAvailabilityService,
-    private navigationService: NavigationService
+    private shiftAvailabilityService: ShiftAvailabilityService,
+    private fb: FormBuilder
   ) {
   }
 
   ngOnInit() {
+
+    this.formData = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      phone: [0, [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      age: ['', Validators.required],
+      yearsExperience: ['', Validators.required],
+      town: ['', Validators.required],
+      size: ['', Validators.required],
+      comment: ['']
+    })
 
     this.route.params.subscribe(params => {
       this.locationService.getLocationById(params['location']).pipe().subscribe((location: any) => {
@@ -77,7 +78,7 @@ export class LocationDetailComponent implements OnInit {
 
     this.collaboratorService.getCollaboratorFromToken().pipe().subscribe((collaborator: any) => {
       this.activeCollaborator = collaborator;
-      this.resetFormData();
+      this.initFormData();
     });
 
   }
@@ -91,9 +92,8 @@ export class LocationDetailComponent implements OnInit {
 
   submitData(shiftId: number | undefined) {
     if (shiftId !== undefined && this.activeCollaborator?.id) {
-      if (this.checkData()) return;
 
-      let collaborator: Collaborator = this.formData;
+      let collaborator: Collaborator = this.getCollaboratorFromFormData();
       collaborator.id = this.activeCollaborator.id;
       let association: Association = {
         id: {
@@ -101,48 +101,42 @@ export class LocationDetailComponent implements OnInit {
           shiftId: shiftId
         },
         status: 0,
-        comment: this.associationComment
+        comment: this.formData.get('comment')?.value
       }
 
       this.collaboratorService.updateCollaborator(collaborator).pipe().subscribe(() => {
         this.associationService.saveAssociation(association).pipe().subscribe();
-        this.resetFormData();
       });
 
 
     }
   }
 
-  checkData(): boolean {
-    let error = this.formData.firstName === '' || this.formData.lastName === '' ||
-      this.formData.phone === '' || this.formData.age === '' || this.formData.size === 'Taglia Maglietta' ||
-      this.formData.yearsExperience === undefined;
-
-    this.dataError = error;
-
-    if (error) {
-      timer(5000).subscribe(() => {
-        this.dataError = false;
-      });
-    }
-
-    return error;
+  initFormData() {
+    this.formData = this.fb.group({
+      email: [this.activeCollaborator?.email, [Validators.required, Validators.email]],
+      phone: [this.activeCollaborator?.phone, [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
+      firstName: [this.activeCollaborator?.firstName, [Validators.required]],
+      lastName: [this.activeCollaborator?.lastName, [Validators.required]],
+      age: [this.activeCollaborator?.age, [Validators.required]],
+      yearsExperience: [this.activeCollaborator?.yearsExperience, [Validators.required]],
+      town: [this.activeCollaborator?.town, [Validators.required]],
+      size: [this.activeCollaborator?.size, [Validators.required]],
+      comment: ''
+    });
   }
 
-  resetFormData() {
-    if (this.activeCollaborator) {
-      this.formData = {
-        email: this.activeCollaborator.email,
-        phone: this.activeCollaborator.phone || '',
-        firstName: this.activeCollaborator.firstName || '',
-        lastName: this.activeCollaborator.lastName || '',
-        age: this.activeCollaborator.age || '',
-        size: this.activeCollaborator.size || 'Taglia Maglietta',
-        yearsExperience: this.activeCollaborator.yearsExperience || undefined,
-        town: this.activeCollaborator.town || '',
-      }
-    }
-    this.associationComment = '';
+  getCollaboratorFromFormData(): Collaborator {
+    return {
+      email: this.formData.get('email')?.value,
+      phone: this.formData.get('phone')?.value,
+      firstName: this.formData.get('firstName')?.value,
+      lastName: this.formData.get('lastName')?.value,
+      age: this.formData.get('age')?.value,
+      yearsExperience: this.formData.get('yearsExperience')?.value,
+      town: this.formData.get('town')?.value,
+      size: this.formData.get('size')?.value,
+    };
   }
 
   parseTime(timeString: string): number {
