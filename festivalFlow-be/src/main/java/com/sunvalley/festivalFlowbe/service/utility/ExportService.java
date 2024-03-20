@@ -39,7 +39,10 @@ public class ExportService {
 
 
     public void export() throws IOException {
+
         Workbook workbook = new XSSFWorkbook();
+
+        //collaboratori
         Sheet sheetCollaboratori = workbook.createSheet("Collaboratori");
 
         List<CollaboratorEntity> collaboratorEntities = collaboratorService.findCollaboratorEntitiesWhereIsPopulatedAndAssociationAccepted();
@@ -111,6 +114,8 @@ public class ExportService {
         Row rowShiftCollaboratori = sheetCollaboratori.createRow(2);
         int h = 15;
         for (DayEntity dayEntity : dayService.getAll()) {
+
+
             Cell cellDay = rowDayCollaboratori.createCell(h);
             cellDay.setCellValue(dayEntity.getName());
             cellDay.setCellStyle(shiftNameStyle);
@@ -139,18 +144,20 @@ public class ExportService {
         }
 
 
+        //collaboratori per turno
         Sheet bylocationSheet = workbook.createSheet("CollaboratoriPerTurno");
 
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 3; i < 100; i++) {
             Row row1 = bylocationSheet.createRow(i);
             Cell cell = row1.createCell(0);
-            cell.setCellValue(i);
+            cell.setCellValue(i - 2);
         }
 
-        Row rowDay = bylocationSheet.getRow(0);
-        Row rowLocation = bylocationSheet.getRow(1);
-        Row rowShift = bylocationSheet.getRow(2);
+
+        Row rowDay = bylocationSheet.createRow(0);
+        Row rowLocation = bylocationSheet.createRow(1);
+        Row rowShift = bylocationSheet.createRow(2);
         h = 1;
         for (DayEntity dayEntity : dayService.getAll()) {
             Cell cellDay = rowDay.createCell(h);
