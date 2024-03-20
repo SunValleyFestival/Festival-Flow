@@ -4,10 +4,11 @@ import com.sunvalley.festivalFlowbe.entity.AssociationAdmin;
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
 import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
 import com.sunvalley.festivalFlowbe.repository.AssociationRepository;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AssociationService {
@@ -45,24 +46,30 @@ public class AssociationService {
         return associationRepository.findByUserId(userId);
     }
 
-  public List<AssociationEntity> getByShiftId(final int locationId) {
-    return associationRepository.findByShiftId(locationId);
-  }
-
-  public List<CollaboratorEntity> getCollaboratorsByShiftId(final int shiftId) {
-    return associationRepository.getCollaboratorsByShiftId(shiftId);
-  }
-
-  public List<AssociationAdmin> getAssociationAdminByShiftId(final int shiftId) {
-    var associationsAdmin = new ArrayList<AssociationAdmin>();
-    var associations = this.getByShiftId(shiftId);
-
-    for (AssociationEntity association : associations) {
-      var collaborator = collaboratorService.getById(association.getId().getCollaboratorId());
-      var associationAdmin = new AssociationAdmin(collaborator, association.getId().getShiftId(), association.getStatus());
-      associationsAdmin.add(associationAdmin);
+    public List<AssociationEntity> getByShiftId(final int locationId) {
+        return associationRepository.findByShiftId(locationId);
     }
 
-    return associationsAdmin;
-  }
+    public List<CollaboratorEntity> getCollaboratorsByShiftId(final int shiftId) {
+        return associationRepository.getCollaboratorsByShiftId(shiftId);
+    }
+
+    public List<AssociationAdmin> getAssociationAdminByShiftId(final int shiftId) {
+        var associationsAdmin = new ArrayList<AssociationAdmin>();
+        var associations = this.getByShiftId(shiftId);
+
+        for (AssociationEntity association : associations) {
+            var collaborator = collaboratorService.getById(association.getId().getCollaboratorId());
+            var associationAdmin = new AssociationAdmin(collaborator, association.getId().getShiftId(), association.getStatus(), association.getComment());
+            associationsAdmin.add(associationAdmin);
+        }
+
+        return associationsAdmin;
+    }
+
+    public boolean existsByCollaboratorIdAndShiftIdAndAccepted(int collaboratorId, int shiftId) {
+        if (associationRepository.existsByCollaboratorIdAndShiftIdAndAccepted(collaboratorId, shiftId).isEmpty()) {
+            return false;
+        } else return true;
+    }
 }
