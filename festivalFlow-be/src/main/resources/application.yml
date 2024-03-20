@@ -19,7 +19,6 @@ spring:
         health:
           mail:
             enabled: false # health check at startup
-      test-receiver: joekueng05@gmail.com
       mail:
         smtp:
           auth: true

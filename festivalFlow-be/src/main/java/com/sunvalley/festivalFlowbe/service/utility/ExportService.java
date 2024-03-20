@@ -112,6 +112,59 @@ public class ExportService {
         Row rowDayCollaboratori = sheetCollaboratori.createRow(0);
         Row rowLocationCollaboratori = sheetCollaboratori.createRow(1);
         Row rowShiftCollaboratori = sheetCollaboratori.createRow(2);
+
+        Cell indice = rowShiftCollaboratori.createCell(0);
+        indice.setCellValue("Indice");
+        indice.setCellStyle(shiftNameStyle);
+
+        Cell id = rowShiftCollaboratori.createCell(1);
+        id.setCellValue("Id");
+        id.setCellStyle(shiftNameStyle);
+
+        Cell name = rowShiftCollaboratori.createCell(2);
+        name.setCellValue("Nome");
+        name.setCellStyle(shiftNameStyle);
+
+        Cell lastname = rowShiftCollaboratori.createCell(3);
+        lastname.setCellValue("Cognome");
+        lastname.setCellStyle(shiftNameStyle);
+
+        Cell town = rowShiftCollaboratori.createCell(4);
+        town.setCellValue("Città");
+        town.setCellStyle(shiftNameStyle);
+
+        Cell eta = rowShiftCollaboratori.createCell(5);
+        eta.setCellValue("Età");
+        eta.setCellStyle(shiftNameStyle);
+
+        Cell phone = rowShiftCollaboratori.createCell(6);
+        phone.setCellValue("Telefono");
+        phone.setCellStyle(shiftNameStyle);
+
+        Cell email = rowShiftCollaboratori.createCell(7);
+        email.setCellValue("Email");
+        email.setCellStyle(shiftNameStyle);
+
+        Cell size = rowShiftCollaboratori.createCell(8);
+        size.setCellValue("Taglia");
+        size.setCellStyle(shiftNameStyle);
+
+        Cell yearsExperience = rowShiftCollaboratori.createCell(9);
+        yearsExperience.setCellValue("Anni di esperienza");
+        yearsExperience.setCellStyle(shiftNameStyle);
+
+        Cell nomeCognome = rowShiftCollaboratori.createCell(11);
+        nomeCognome.setCellValue("Nome Cognome");
+        nomeCognome.setCellStyle(shiftNameStyle);
+
+        Cell ageUnder = rowShiftCollaboratori.createCell(13);
+        ageUnder.setCellValue("Età < 18");
+        ageUnder.setCellStyle(shiftNameStyle);
+
+        Cell yearsExperienceUnder = rowShiftCollaboratori.createCell(12);
+        yearsExperienceUnder.setCellValue("Nuovo");
+        yearsExperienceUnder.setCellStyle(shiftNameStyle);
+
         int h = 15;
         for (DayEntity dayEntity : dayService.getAll()) {
 
@@ -129,18 +182,30 @@ public class ExportService {
                     Cell cell = rowShiftCollaboratori.createCell(h);
                     cell.setCellValue(shiftEntity.getName());
                     cell.setCellStyle(shiftNameStyle);
-                    for (int o = 0; o < collaboratorEntities.size(); o++) {
+                    int o;
+                    for (o = 0; o < collaboratorEntities.size(); o++) {
                         if (associationService.existsByCollaboratorIdAndShiftIdAndAccepted(collaboratorEntities.get(o).getId(), shiftEntity.getId())) {
                             Row rowCollaborator = sheetCollaboratori.getRow(o + 3);
                             Cell cellCollaborator = rowCollaborator.createCell(h);
                             cellCollaborator.setCellValue("X");
                         }
                     }
+                    Row rowFormula = sheetCollaboratori.createRow(o + 4);
+                    Cell countfourmla = rowFormula.createCell(h);
+                    countfourmla.getAddress();
+                    String formula = "COUNTIF(" + countfourmla.getAddress().toString().charAt(0) + 4 + ":" + countfourmla.getAddress().toString().charAt(0) + (collaboratorEntities.size() + 4) + ",\"X\")";
+                    countfourmla.setCellFormula(formula);
+//                    countfourmla.setCellValue("forula");
                     h++;
                 }
-                sheetCollaboratori.addMergedRegion(new CellRangeAddress(1, 1, firstColLocation, h - 1));
+                if (firstColLocation != h) {
+                    sheetCollaboratori.addMergedRegion(new CellRangeAddress(1, 1, firstColLocation, h - 1));
+                }
+
             }
-            sheetCollaboratori.addMergedRegion(new CellRangeAddress(0, 0, firstCol, h - 1));
+            if (firstCol != h) {
+                sheetCollaboratori.addMergedRegion(new CellRangeAddress(0, 0, firstCol, h - 1));
+            }
         }
 
 
@@ -182,9 +247,14 @@ public class ExportService {
                     }
                     h++;
                 }
-                bylocationSheet.addMergedRegion(new CellRangeAddress(1, 1, firstColLocation, h - 1));
+                if (firstColLocation != h) {
+                    bylocationSheet.addMergedRegion(new CellRangeAddress(1, 1, firstColLocation, h - 1));
+                }
+
             }
-            bylocationSheet.addMergedRegion(new CellRangeAddress(0, 0, firstCol, h - 1));
+            if (firstCol != h) {
+                bylocationSheet.addMergedRegion(new CellRangeAddress(0, 0, firstCol, h - 1));
+            }
         }
 
 
