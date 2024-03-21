@@ -1,16 +1,6 @@
 <div class="max-h-screen overflow-y-hidden">
   <app-header></app-header>
   <div class="max-h-screen overflow-scroll">
-    <div role="alert" class="alert shadow-lg alert-success" *ngIf="signedIn">
-      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-      </svg>
-      <div>
-        <h3 class="font-bold">Ti sei iscritto!</h3>
-        <div class="text-xs">Iscrizione eseguita con successo</div>
-      </div>
-    </div>
-
     <div role="alert" class="alert alert-error" *ngIf="dataError">
       <svg class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
@@ -46,52 +36,59 @@
       <div class="modal-box">
         <h3 class="font-bold text-lg">Iscriviti ( {{ shift.startTime }} - {{ shift.endTime }} )</h3>
         <div class="flex justify-center">
-          <form method="dialog" #myForm="ngForm" class="mt-2">
+          <form [formGroup]="formData" class="mt-2" method="dialog">
 
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 
-            <label class="input input-bordered flex items-center mt-2 gap-2">
+            <label [ngClass]="{'input-error': formData.get('email')?.invalid && formData.get('email')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
               Email:
-              <input [(ngModel)]="formData.email" class="grow bg-base-100" name="email" placeholder="max.carota@gmail.com"
-                     type="email"/>
+              <input class="grow bg-base-100" formControlName="email" name="email"
+                     placeholder="max.carota@gmail.com" type="email"/>
             </label>
 
-            <label class="input input-bordered flex items-center mt-2 gap-2">
+            <label [ngClass]="{'input-error': formData.get('phone')?.invalid && formData.get('phone')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
               Telefono:
-              <input [(ngModel)]="formData.phone" class="grow bg-base-100" name="phone" placeholder="123456789" required
-                     type="tel"/>
+              <select class="grow bg-base-100" formControlName="countryCode" name="countryCode" required>
+                <option value="+41">+41</option>
+                <option value="+39">+39</option>
+              </select>
+              <input class="grow bg-base-100" formControlName="phone" name="phone" placeholder="123456789" required
+              type="text" maxlength="9"/>
             </label>
-            <label class="input input-bordered flex items-center mt-2 gap-2">
+            <label [ngClass]="{'input-error': formData.get('firstName')?.invalid && formData.get('firstName')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
               Nome:
-              <input [(ngModel)]="formData.firstName" class="grow bg-base-100" name="firstName" placeholder="Max" required
-                     type="text"/>
+              <input class="grow bg-base-100" formControlName="firstName" name="firstName" placeholder="Max"
+                     required type="text"/>
             </label>
 
-            <label class="input input-bordered flex items-center mt-2 gap-2">
+            <label [ngClass]="{'input-error': formData.get('lastName')?.invalid && formData.get('lastName')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
               Cognome:
-              <input [(ngModel)]="formData.lastName" class="grow bg-base-100" name="lastName" placeholder="Carota" required
-                     type="text"/>
+              <input class="grow bg-base-100" formControlName="lastName" name="lastName" placeholder="Carota"
+                     required type="text"/>
             </label>
 
-            <label class="input input-bordered flex items-center mt-2 gap-2">
+            <label [ngClass]="{'input-error': formData.get('age')?.invalid && formData.get('age')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
               Età:
-              <input [(ngModel)]="formData.age" class="grow bg-base-100" name="age" placeholder="22" required
-                     type="date"/>
+              <input class="grow bg-base-100" formControlName="age" name="age" placeholder="22"
+                     required type="date"/>
             </label>
 
-            <label class="input input-bordered flex items-center mt-2 gap-2">
+            <label [ngClass]="{'input-error': formData.get('yearsExperience')?.invalid && formData.get('yearsExperience')?.touched}"
+                   class="input input-bordered flex items-center mt-2 gap-2">
               Anni di esperienza:
-              <input [(ngModel)]="formData.yearsExperience" class="grow bg-base-100" name="yearsExperience" placeholder="0" required
-                     type="number"/>
+              <input class="grow bg-base-100" formControlName="yearsExperience" name="yearsExperience" placeholder="0"
+                     required type="number"/>
             </label>
 
-            <label class="input input-bordered flex items-center mt-2 gap-2">
+            <label [ngClass]="{'input-error': formData.get('town')?.invalid && formData.get('town')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
               Comune:
-              <input [(ngModel)]="formData.town" class="grow bg-base-100" name="town" placeholder="Serravalle" required type="date"/>
+              <input class="grow bg-base-100" formControlName="town" name="town" placeholder="Serravalle" required
+                     type="text"/>
             </label>
 
             <div class="mt-2">
-              <select [(ngModel)]="formData.size" class="select select-bordered w-full" name="size" required>
+              <select [ngClass]="{'select-error': formData.get('size')?.invalid && formData.get('size')?.touched}"
+                      class="select select-bordered w-full" formControlName="size" name="size" required>
                 <option disabled>Taglia Maglietta</option>
                 <option>S</option>
                 <option>M</option>
@@ -104,11 +101,11 @@
               <div class="label">
                 <span class="label-text">Note:</span>
               </div>
-              <textarea [(ngModel)]="associationComment" class="textarea textarea-bordered h-24" name="comment" placeholder="comment"></textarea>
+              <textarea class="textarea textarea-bordered h-24" formControlName="comment" name="comment" placeholder="comment"></textarea>
             </label>
 
             <div class="mt-2 w-full flex justify-end">
-              <button type="submit" class="btn" (click)="submitData(shift.id)">Conferma</button>
+              <button (click)="submitData(shift.id)" [disabled]="formData.invalid" class="btn" type="submit">Conferma</button>
             </div>
           </form>
         </div>

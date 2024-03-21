@@ -70,7 +70,6 @@ export class HomeComponent implements OnInit {
   }
 
   filterLocation() {
-    console.log(this.nameToFilter);
     this.filteredLocations = this.locations.filter(location => {
       return location.name.toLowerCase().includes(this.nameToFilter.toLowerCase());
     });

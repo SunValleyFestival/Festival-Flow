@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Location} from "../../../interfaces/LocationEntity";
 import {Day} from "../../../interfaces/DayEntity";
-import {timer} from "rxjs";
 import {LocationService} from "../../../services/http/location.service";
 import {Router} from "@angular/router";
 import {DayService} from "../../../services/http/day.service";
+import {FormBuilder, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-create-location',
@@ -14,18 +14,18 @@ import {DayService} from "../../../services/http/day.service";
 export class CreateLocationComponent implements OnInit {
   protected dataError: boolean = false;
   protected days: Day[] = [];
-  protected formData: Location = {
-    name: '',
-    description: '',
-    day: {
-      id: 0,
-    } as Day,
-  }
+
+  protected locationForm = this.fb.group({
+    name: ['', Validators.required],
+    description: ['', Validators.required],
+    day: ['', Validators.required]
+  });
 
   constructor(
     private locationService: LocationService,
     private router: Router,
     private dayService: DayService,
+    private fb: FormBuilder
   ) {
   }
 
@@ -37,27 +37,26 @@ export class CreateLocationComponent implements OnInit {
 
 
   submitData() {
-    if (this.checkData()) {
-      return;
-    }
-
-    this.locationService.createLocation(this.formData).pipe().subscribe();
+    this.locationService.createLocation(this.getLocationFromForm()).pipe().subscribe();
     this.router.navigate(['/admin']);
   }
 
-  checkData(): boolean {
-    let error = this.formData.name === '' || this.formData.description === '' || this.formData.day.id === -1;
+  getLocationFromForm(): Location {
+    let name = this.locationForm.get('name')?.value;
+    let description = this.locationForm.get('description')?.value;
+    let id = this.locationForm.get('day')?.value;
 
-    console.log(this.formData)
-
-    this.dataError = error;
-
-    if (error) {
-      timer(5000).subscribe(() => {
-        this.dataError = false;
-      });
+    if (name && description && id) {
+      return {
+        name: name,
+        description: description,
+        day: {
+          id: Number(id)
+        }
+      };
+    } else {
+      return {} as Location;
     }
-
-    return error;
   }
+
 }

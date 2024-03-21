@@ -1,13 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Shift} from "../../../interfaces/ShiftEntity";
-import {Location} from "../../../interfaces/LocationEntity";
-import {timer} from "rxjs";
 import {ShiftService} from "../../../services/http/shift.service";
 import {ActivatedRoute} from "@angular/router";
-import {CollaboratorService} from "../../../services/http/collaborator.service";
 import {Association} from "../../../interfaces/AssociationEntity";
 import {AssociationService} from "../../../services/http/association.service";
 import {AssociationAdmin} from "../../../interfaces/AssociationAdminEntity";
+import {FormBuilder, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-manage-location',
@@ -19,22 +17,22 @@ export class ManageLocationComponent implements OnInit {
   protected locationName: string = '';
   protected shifts: Shift[] = [];
 
+  protected locationId!: number;
   protected adminAssociations: AssociationAdmin[] = [];
 
-  formData: Shift = {
-    name: '',
-    description: '',
-    location: {} as Location,
-    startTime: '',
-    endTime: '',
-    maxCollaborator: 0
-  }
+  protected shiftForm = this.fb.group({
+    name: ['', [Validators.required]],
+    description: ['', Validators.required],
+    startTime: ['', Validators.required],
+    endTime: ['', Validators.required],
+    maxCollaborator: ['', Validators.required]
+  });
 
   constructor(
     private shiftService: ShiftService,
     protected associationService: AssociationService,
     private route: ActivatedRoute,
-    protected collaboratorService: CollaboratorService
+    private fb: FormBuilder
   ) {
 
   }
@@ -42,9 +40,9 @@ export class ManageLocationComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       if (params['location']) {
-        this.formData.location.id = params['location'];
+        this.locationId = params['location'];
 
-        this.shiftService.getShiftsByLocationId(params['location']).subscribe((shifts: Shift[]) => {
+        this.shiftService.getShiftsByLocationId(this.locationId).subscribe((shifts: Shift[]) => {
           this.shifts = shifts;
         });
       }
@@ -56,25 +54,10 @@ export class ManageLocationComponent implements OnInit {
   }
 
   submitData() {
-    if (this.checkData()) {
-      return;
-    }
+    this.shiftService.createShift(this.getShiftFromFormData()).pipe().subscribe(() => {
+      window.location.reload();
+    });
 
-    this.shiftService.createShift(this.formData).pipe().subscribe();
-  }
-
-  checkData(): boolean {
-    let error = this.formData.name === '' || this.formData.description === '' || this.formData.startTime === '' || this.formData.endTime === '' || this.formData.maxCollaborator === 0;
-
-    this.dataError = error;
-
-    if (error) {
-      timer(5000).subscribe(() => {
-        this.dataError = false;
-      });
-    }
-
-    return error;
   }
 
   deleteShift(shift: Shift | undefined) {
@@ -119,4 +102,29 @@ export class ManageLocationComponent implements OnInit {
     }
   }
 
+  getShiftFromFormData(): Shift {
+    let name = this.shiftForm.get('name')?.value;
+    let description = this.shiftForm.get('description')?.value;
+    let startTime = this.shiftForm.get('startTime')?.value;
+    let endTime = this.shiftForm.get('endTime')?.value;
+    let maxCollaborator = this.shiftForm.get('maxCollaborator')?.value;
+
+    if (name && description && startTime && endTime && maxCollaborator && this.locationId) {
+      return {
+        name: name,
+        description: description,
+        startTime: startTime,
+        endTime: endTime,
+        maxCollaborator: Number(maxCollaborator),
+        location: {
+          id: this.locationId
+        },
+      } as Shift;
+    }
+    return {} as Shift;
+  }
+
+  formShow() {
+    console.log(this.shiftForm)
+  }
 }

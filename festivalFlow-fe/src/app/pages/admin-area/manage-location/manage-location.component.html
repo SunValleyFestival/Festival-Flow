@@ -56,35 +56,39 @@
   <div class="modal-box">
     <h3 class="font-bold text-lg">Crea Turno</h3>
     <div class="flex justify-center">
-      <form method="dialog" #myForm="ngForm" class="mt-2">
+      <form [formGroup]="shiftForm" class="mt-2" method="dialog">
 
-        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        <button (click)="formShow()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 
-        <label class="input input-bordered flex items-center mt-2 gap-2">
+        <label [ngClass]="{'input-error': shiftForm.get('name')?.invalid && shiftForm.get('name')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
           Nome:
-          <input type="text" class="grow bg-base-100" [(ngModel)]="formData.name" name="name" placeholder="Turno 1" required/>
+          <input class="grow bg-base-100" formControlName="name" name="name" placeholder="Turno 1" required type="text"/>
         </label>
 
-        <label class="input input-bordered flex items-center mt-2 gap-2">
+        <label [ngClass]="{'input-error': shiftForm.get('description')?.invalid && shiftForm.get('description')?.touched}"
+               class="input input-bordered flex items-center mt-2 gap-2">
           Descrizione:
-          <input type="text" class="grow bg-base-100" [(ngModel)]="formData.description" name="description" placeholder="Descrizione di Turno 1" required/>
+          <input class="grow bg-base-100" formControlName="description" name="description" placeholder="Descrizione di Turno 1" required type="text"/>
         </label>
-        <label class="input input-bordered flex items-center mt-2 gap-2">
+
+        <label [ngClass]="{'input-error': shiftForm.get('startTime')?.invalid && shiftForm.get('startTime')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
           Inizio:
-          <input type="time" class="grow bg-base-100" [(ngModel)]="formData.startTime" name="startTime" required/>
+          <input class="grow bg-base-100" formControlName="startTime" name="startTime" required type="time"/>
         </label>
 
-        <label class="input input-bordered flex items-center mt-2 gap-2">
+        <label [ngClass]="{'input-error': shiftForm.get('endTime')?.invalid && shiftForm.get('endTime')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
           Fine:
-          <input type="time" class="grow bg-base-100" [(ngModel)]="formData.endTime" name="endTime" required/>
+          <input class="grow bg-base-100" formControlName="endTime" name="endTime" required type="time"/>
         </label>
 
-        <label class="input input-bordered flex items-center mt-2 gap-2">
+        <label [ngClass]="{'input-error': shiftForm.get('maxCollaborator')?.invalid && shiftForm.get('maxCollaborator')?.touched}"
+               class="input input-bordered flex items-center mt-2 gap-2">
           Numero di collaboratori:
-          <input type="number" class="grow bg-base-100" [(ngModel)]="formData.maxCollaborator" name="maxCollaborator" placeholder="1" required/>
+          <input class="grow bg-base-100" formControlName="maxCollaborator" name="maxCollaborator" placeholder="1" required type="number"/>
         </label>
+
         <div class="mt-2 w-full flex justify-end">
-          <button class="btn" (click)="submitData()">Conferma</button>
+          <button (click)="submitData()" [disabled]="shiftForm.invalid" class="btn">Conferma</button>
         </div>
       </form>
     </div>

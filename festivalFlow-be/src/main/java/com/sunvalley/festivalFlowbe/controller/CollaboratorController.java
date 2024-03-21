@@ -59,10 +59,21 @@ public class CollaboratorController {
         if (!jwtTokenProviderService.getUserIdFromToken(token).equals(collaborator.getId())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else {
-            CollaboratorEntity newCollaborator = collaboratorService.update(collaborator);
-            return new ResponseEntity<>(newCollaborator, HttpStatus.OK);
+            if (collaboratorService.phoneIsValid(collaborator.getPhone())) {
+                CollaboratorEntity newCollaborator = collaboratorService.update(collaborator);
+                return new ResponseEntity<>(newCollaborator, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
         }
     }
+
+  @CrossOrigin
+  @PutMapping(ADMIN + "update")
+  public ResponseEntity<CollaboratorEntity> updateAdmin(@RequestBody CollaboratorEntity collaborator) {
+    CollaboratorEntity newCollaborator = collaboratorService.update(collaborator);
+    return new ResponseEntity<>(newCollaborator, HttpStatus.OK);
+  }
 
     @CrossOrigin
     @GetMapping(ADMIN)

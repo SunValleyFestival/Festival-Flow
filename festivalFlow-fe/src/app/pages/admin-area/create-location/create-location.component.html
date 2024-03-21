@@ -1,50 +1,56 @@
 <div class="max-h-screen overflow-y-hidden">
-    <app-header></app-header>
+  <app-header></app-header>
   <div *ngIf="dataError" class="alert alert-error" role="alert">
     <svg class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
     </svg>
     <span>Errore! Dati inseriti incompleti!</span>
   </div>
-    <div class="max-h-screen overflow-y-scroll max-w-screen m-5 flex flex-col gap-y-5">
-        <h1 class="text-2xl">Nuova Location</h1>
-        <div class="flex w-full">
+  <div class="max-h-screen overflow-y-scroll max-w-screen m-5 flex flex-col gap-y-5">
+    <h1 class="text-2xl">Nuova Location</h1>
+    <form [formGroup]="locationForm">
+      <div class="flex w-full">
 
-            <label class="form-control w-1/3 mr-10">
-                <div class="label">
-                    <span class="label-text">Nome</span>
-                </div>
-              <input [(ngModel)]="formData.name" class="input input-bordered" name="name" placeholder="Nome" required type="text"/>
-            </label>
+        <label class="form-control w-1/3 mr-10">
+          <div class="label">
+            <span class="label-text">Nome</span>
+          </div>
+          <input [ngClass]="{'input-error': locationForm.get('name')?.invalid && locationForm.get('name')?.touched}" class="input input-bordered" formControlName="name" name="name" placeholder="Nome" required
+                 type="text"/>
+        </label>
 
-            <label class="form-control w-1/3 mr-10">
-                <div class="label">
-                    <span class="label-text">Immagine</span>
-                </div>
-                <input type="file" class="file-input file-input-bordered" required/>
-            </label>
+        <label class="form-control w-1/3 mr-10">
+          <div class="label">
+            <span class="label-text">Immagine</span>
+          </div>
+          <input class="file-input file-input-bordered" required type="file"/>
+        </label>
 
-            <label class="form-control w-1/3">
-                <div class="label">
-                    <span class="label-text">Giorno</span>
-                </div>
-              <select [(ngModel)]="formData.day.id" class="select select-bordered" name="id" required>
-                    <option disabled selected>Giorno</option>
-                <option *ngFor="let day of days" [value]="day.id">{{ day.name }}</option>
-                </select>
-            </label>
-        </div>
-        <div>
-            <label class="form-control">
-                <div class="label">
-                    <span class="label-text">Descrizione</span>
-                </div>
-              <textarea [(ngModel)]="formData.description" class="textarea textarea-bordered h-24" name="description" placeholder="Descrizione" required></textarea>
-            </label>
-        </div>
+        <label class="form-control w-1/3">
+          <div class="label">
+            <span class="label-text">Giorno</span>
+          </div>
+          <select [ngClass]="{'select-error': locationForm.get('day')?.invalid && locationForm.get('day')?.touched}" class="select select-bordered" formControlName="day"
+                  name="id" required>
+            <option disabled selected>Giorno</option>
+            <option *ngFor="let day of days" [value]="day.id">{{ day.name }}</option>
+          </select>
+        </label>
+      </div>
+      <div>
+        <label class="form-control">
+          <div class="label">
+            <span class="label-text">Descrizione</span>
+          </div>
+          <textarea [ngClass]="{'textarea-error': locationForm.get('description')?.invalid && locationForm.get('description')?.touched}" class="textarea textarea-bordered h-24"
+                    formControlName="description"
+                    name="description" placeholder="Descrizione" required></textarea>
+        </label>
+      </div>
 
-        <div class="w-full flex justify-end">
-          <button (click)="submitData()" class="btn btn-success w-1/12">Crea</button>
-        </div>
-    </div>
+      <div class="w-full flex justify-end mt-5">
+        <button (click)="submitData()" [disabled]="locationForm.invalid" class="btn btn-success w-1/12">Crea</button>
+      </div>
+    </form>
+  </div>
 </div>
