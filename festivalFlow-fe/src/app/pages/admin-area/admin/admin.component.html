@@ -73,12 +73,12 @@
       <form [formGroup]="dayForm" class="mt-2" method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 
-        <label [ngClass]="{'input-error': dayForm.get('name')?.invalid}" class="input input-bordered flex items-center mt-2 gap-2">
+        <label [ngClass]="{'input-error': dayForm.get('name')?.invalid && dayForm.get('name')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
           Nome:
           <input class="grow bg-base-100" formControlName="name" name="name" placeholder="Lunedì" required type="text"/>
         </label>
 
-        <label [ngClass]="{'input-error': dayForm.get('description')?.invalid}" class="input input-bordered flex items-center mt-2 gap-2">
+        <label [ngClass]="{'input-error': dayForm.get('description')?.invalid && dayForm.get('description')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
           Descrizione:
           <input class="grow bg-base-100" formControlName="description" name="description" placeholder="Descrizione del giorno" required type="text"/>
         </label>
