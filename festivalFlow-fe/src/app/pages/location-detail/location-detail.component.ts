@@ -10,6 +10,7 @@ import {LocationService} from "../../services/http/location.service";
 import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
 import {Association} from "../../interfaces/AssociationEntity";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {NavigationService} from "../../services/navigation/navigation.service";
 
 @Component({
   selector: 'app-location-detail',
@@ -92,6 +93,7 @@ export class LocationDetailComponent implements OnInit {
 
       let collaborator: Collaborator = this.getCollaboratorFromFormData();
       collaborator.id = this.activeCollaborator.id;
+      collaborator.phone = this.formData.countryCode ? this.formData.phone ? this.formData.countryCode + this.formData.phone : '' : '';
       let association: Association = {
         id: {
           collaboratorId: this.activeCollaborator.id,

@@ -1,5 +1,6 @@
 package com.sunvalley.festivalFlowbe.service;
 
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
 import com.sunvalley.festivalFlowbe.repository.CollaboratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,9 @@ import java.util.List;
 public class CollaboratorService {
 
     private final CollaboratorRepository collaboratorRepository;
+
+    PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+
 
     @Autowired
     public CollaboratorService(CollaboratorRepository collaboratorRepository) {
@@ -64,6 +68,11 @@ public class CollaboratorService {
 
     public List<CollaboratorEntity> findCollaboratorEntitiesWhereIsPopulatedAndAssociationAcceptedByShiftId(int shiftId) {
         return collaboratorRepository.findCollaboratorEntitiesWhereIsPopulatedAndAssociationAcceptedByShiftId(shiftId);
+    }
+
+    public boolean phoneIsValid(String phone) {
+        return phoneNumberUtil.isPossibleNumber(phone, "CH") || phoneNumberUtil.isPossibleNumber(phone, "IT");
+
     }
 
 }

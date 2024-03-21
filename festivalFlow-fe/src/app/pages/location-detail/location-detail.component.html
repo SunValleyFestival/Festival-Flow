@@ -48,8 +48,12 @@
 
             <label [ngClass]="{'input-error': formData.get('phone')?.invalid && formData.get('phone')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
               Telefono:
-              <input [value]="activeCollaborator?.phone" class="grow bg-base-100" formControlName="phone" name="phone" placeholder="123456789"
-                     required type="tel"/>
+              <select class="grow bg-base-100" name="countryCode" required>
+                <option value="+41">+41</option>
+                <option value="+39">+39</option>
+              </select>
+              <input [value]="activeCollaborator?.phone" formControlName="phone" class="grow bg-base-100" name="phone" placeholder="123456789" required
+              type="text" maxlength="9"/>
             </label>
             <label [ngClass]="{'input-error': formData.get('firstName')?.invalid && formData.get('firstName')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
               Nome:
