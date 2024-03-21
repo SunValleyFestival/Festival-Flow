@@ -10,7 +10,6 @@ import {LocationService} from "../../services/http/location.service";
 import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
 import {Association} from "../../interfaces/AssociationEntity";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {NavigationService} from "../../services/navigation/navigation.service";
 
 @Component({
   selector: 'app-location-detail',
@@ -25,6 +24,7 @@ export class LocationDetailComponent implements OnInit {
 
   protected formData: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
+    countryCode: ['+41'],
     phone: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
@@ -93,7 +93,7 @@ export class LocationDetailComponent implements OnInit {
 
       let collaborator: Collaborator = this.getCollaboratorFromFormData();
       collaborator.id = this.activeCollaborator.id;
-      collaborator.phone = this.formData.countryCode ? this.formData.phone ? this.formData.countryCode + this.formData.phone : '' : '';
+
       let association: Association = {
         id: {
           collaboratorId: this.activeCollaborator.id,
@@ -113,23 +113,26 @@ export class LocationDetailComponent implements OnInit {
   }
 
   initFormData() {
-    this.formData = this.fb.group({
-      email: [this.activeCollaborator?.email, [Validators.required, Validators.email]],
-      phone: [this.activeCollaborator?.phone, [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
-      firstName: [this.activeCollaborator?.firstName, [Validators.required]],
-      lastName: [this.activeCollaborator?.lastName, [Validators.required]],
-      age: [this.activeCollaborator?.age, [Validators.required]],
-      yearsExperience: [this.activeCollaborator?.yearsExperience, [Validators.required]],
-      town: [this.activeCollaborator?.town, [Validators.required]],
-      size: [this.activeCollaborator?.size, [Validators.required]],
-      comment: ''
-    });
+    this.formData.get('email')?.setValue(this.activeCollaborator?.email);
+    if (this.activeCollaborator?.phone) {
+      this.formData.get('countryCode')?.setValue(this.activeCollaborator?.phone.substring(0, 3));
+      this.formData.get('phone')?.setValue(this.activeCollaborator?.phone.substring(3));
+    } else {
+      this.formData.get('countryCode')?.setValue('+41');
+      this.formData.get('phone')?.setValue('');
+    }
+    this.formData.get('firstName')?.setValue(this.activeCollaborator?.firstName);
+    this.formData.get('lastName')?.setValue(this.activeCollaborator?.lastName);
+    this.formData.get('age')?.setValue(this.activeCollaborator?.age);
+    this.formData.get('yearsExperience')?.setValue(this.activeCollaborator?.yearsExperience);
+    this.formData.get('town')?.setValue(this.activeCollaborator?.town);
+    this.formData.get('size')?.setValue(this.activeCollaborator?.size);
   }
 
   getCollaboratorFromFormData(): Collaborator {
     return {
       email: this.formData.get('email')?.value,
-      phone: this.formData.get('phone')?.value,
+      phone: this.formData.get('countryCode')?.value + this.formData.get('phone')?.value,
       firstName: this.formData.get('firstName')?.value,
       lastName: this.formData.get('lastName')?.value,
       age: this.formData.get('age')?.value,

@@ -17,6 +17,7 @@ export class UserDetailComponent implements OnInit {
     email: ['', [Validators.required, Validators.email]],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
+    countryCode: ['+41'],
     phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
     age: ['', Validators.required],
     size: ['', Validators.required],
@@ -83,9 +84,10 @@ export class UserDetailComponent implements OnInit {
   private initForm() {
     if (this.collaborator.firstName && this.collaborator.lastName && this.collaborator.email && this.collaborator.phone && this.collaborator.age && this.collaborator.size && this.collaborator.yearsExperience && this.collaborator.town) {
       this.collaboratorForm.get('email')?.setValue(this.collaborator.email);
+      this.collaboratorForm.get('countryCode')?.setValue(this.collaborator.phone.substring(0, 3));
+      this.collaboratorForm.get('phone')?.setValue(this.collaborator.phone.substring(3));
       this.collaboratorForm.get('firstName')?.setValue(this.collaborator.firstName);
       this.collaboratorForm.get('lastName')?.setValue(this.collaborator.lastName);
-      this.collaboratorForm.get('phone')?.setValue(this.collaborator.phone);
       this.collaboratorForm.get('age')?.setValue(this.collaborator.age);
       this.collaboratorForm.get('size')?.setValue(this.collaborator.size);
       this.collaboratorForm.get('yearsExperience')?.setValue(String(this.collaborator.yearsExperience));
