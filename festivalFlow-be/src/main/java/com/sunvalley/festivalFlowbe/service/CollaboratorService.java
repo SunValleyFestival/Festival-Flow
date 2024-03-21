@@ -1,11 +1,11 @@
 package com.sunvalley.festivalFlowbe.service;
 
 import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
+import com.sunvalley.festivalFlowbe.entity.utility.AuthEntity;
 import com.sunvalley.festivalFlowbe.repository.CollaboratorRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CollaboratorService {
@@ -21,10 +21,15 @@ public class CollaboratorService {
         return collaboratorRepository.findAll();
     }
 
-    public void createIfExistByEmail(String email) {
-        if (null == collaboratorRepository.getIdByEmail(email)) {
+    public void createIfExistByEmail(AuthEntity authEntity) {
+        if (null == collaboratorRepository.getIdByEmail(authEntity.getEmail())) {
             CollaboratorEntity collaborator = new CollaboratorEntity();
-            collaborator.setEmail(email);
+            collaborator.setEmail(authEntity.getEmail());
+
+            if (authEntity.getDate() != null) {
+                collaborator.setAge(authEntity.getDate());
+            }
+
             collaboratorRepository.save(collaborator);
         }
     }
@@ -66,4 +71,7 @@ public class CollaboratorService {
         return collaboratorRepository.findCollaboratorEntitiesWhereIsPopulatedAndAssociationAcceptedByShiftId(shiftId);
     }
 
+    public boolean existsByEmail(final String email) {
+        return collaboratorRepository.existsByEmail(email);
+    }
 }
