@@ -12,7 +12,6 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-//When Testing Non-Reactive Flow Comment the @ReactiveWebSecurityConfig class defined for Reactive Approach
 @Configuration
 @RequiredArgsConstructor
 public class WebSecurityConfig {
@@ -31,6 +30,7 @@ public class WebSecurityConfig {
                 .sessionManagement(configure -> configure.sessionCreationPolicy(SessionCreationPolicy.NEVER))
                 .oauth2ResourceServer((configure) -> configure
                         .jwt(Customizer.withDefaults())
+                ).cors(AbstractHttpConfigurer::disable
                 ).build();
     }
 
