@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   protected mail: any;
   protected code: any;
   protected isEmailInserted: boolean = false;
+  protected isButtonDisabled: boolean = false;
 
   constructor(private navigationService: NavigationService,
               private cookiesService: CookiesService,
@@ -33,6 +34,8 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isButtonDisabled = true;
+
     if (this.mail !== undefined && this.code === undefined) {
       if (this.checkCredentials(this.mail)) {
         let authEntity: AuthEntity;
@@ -42,6 +45,7 @@ export class LoginComponent implements OnInit {
             if (response !== undefined) {
               authEntity = response;
               this.isEmailInserted = true;
+              this.isButtonDisabled = false;
               this.cookiesService.setUserId(String(authEntity.userId));
             }
           }
