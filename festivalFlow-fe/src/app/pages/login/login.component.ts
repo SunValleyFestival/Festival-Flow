@@ -12,7 +12,10 @@ import {AuthEntity} from "../../interfaces/utility/AuthEntity";
 export class LoginComponent implements OnInit {
   protected mail: any;
   protected code: any;
+  protected date: any;
   protected isEmailInserted: boolean = false;
+  protected isDateInserted: boolean = false;
+  protected buttonDisabled: boolean = false;
 
   constructor(private navigationService: NavigationService,
               private cookiesService: CookiesService,
@@ -23,7 +26,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     console.log("userId", this.cookiesService.getUserId());
     console.log("token", this.cookiesService.getToken());
-    if(this.cookiesService.getUserId() && this.cookiesService.getToken()){
+    if (this.cookiesService.getUserId() && this.cookiesService.getToken()) {
       this.navigationService.goToHome();
     }
   }
@@ -32,29 +35,69 @@ export class LoginComponent implements OnInit {
     return RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$').test(mail);
   }
 
-  onSubmit() {
-    if (this.mail !== undefined && this.code === undefined) {
-      if (this.checkCredentials(this.mail)) {
-        let authEntity: AuthEntity;
-        this.tokenService.login(this.mail).subscribe(
-          response => {
-            console.log(response)
-            if (response !== undefined) {
-              authEntity = response;
+  setMail() {
+    if (this.checkCredentials(this.mail)) {
+      this.buttonDisabled = true;
+
+      let authEntity: AuthEntity = {
+        email: this.mail
+      };
+
+      this.tokenService.loginMail(authEntity).pipe().subscribe(
+        response => {
+          if (response !== undefined) {
+            if (response.valid) {
+              this.tokenService.login(authEntity).pipe().subscribe(
+                response => {
+                  if (response !== undefined) {
+                    authEntity = response;
+                    this.cookiesService.setUserId(String(authEntity.userId));
+                    this.isDateInserted = true;
+                    this.isEmailInserted = true;
+                    this.buttonDisabled = false;
+                  }
+                }
+              );
+            } else {
+              this.buttonDisabled = false;
               this.isEmailInserted = true;
-              this.cookiesService.setUserId(String(authEntity.userId));
             }
           }
-        );
-
-      }
-    } else if (this.mail !== undefined && this.code !== undefined) {
-      this.tokenService.loginConfirm(this.cookiesService.getUserId(), this.code).subscribe(response => {
-        if (response !== undefined && response.valid) {
-          this.cookiesService.setToken(String(response.token));
-          this.navigationService.goToHome()
         }
-      });
+      );
     }
+  }
+
+  setDate() {
+    this.buttonDisabled = true;
+    let authEntity: AuthEntity = {
+      email: this.mail,
+      date: this.date
+    };
+
+    this.tokenService.login(authEntity).pipe().subscribe(
+      response => {
+        if (response !== undefined) {
+          authEntity = response;
+          this.cookiesService.setUserId(String(authEntity.userId));
+          this.isDateInserted = true;
+          this.buttonDisabled = false;
+        }
+      }
+    );
+
+  }
+
+  login() {
+    this.buttonDisabled = true;
+    this.tokenService.loginConfirm(this.cookiesService.getUserId(), this.code).subscribe(response => {
+      if (response !== undefined && response.valid) {
+        this.cookiesService.setToken(String(response.token));
+        this.buttonDisabled = false;
+        this.navigationService.goToHome();
+      } else {
+        this.buttonDisabled = false;
+      }
+    });
   }
 }
