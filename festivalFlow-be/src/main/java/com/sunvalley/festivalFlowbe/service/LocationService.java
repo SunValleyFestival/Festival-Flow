@@ -26,6 +26,10 @@ public class LocationService {
         return locationRepository.findAll();
     }
 
+    public List<LocationEntity> getOnlyForMinor() {
+        return locationRepository.
+    }
+
     public LocationEntity create(LocationEntity location) {
         return locationRepository.save(location);
     }

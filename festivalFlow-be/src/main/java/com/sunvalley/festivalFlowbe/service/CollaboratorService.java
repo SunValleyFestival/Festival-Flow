@@ -5,6 +5,7 @@ import com.sunvalley.festivalFlowbe.repository.CollaboratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -64,6 +65,21 @@ public class CollaboratorService {
 
     public List<CollaboratorEntity> findCollaboratorEntitiesWhereIsPopulatedAndAssociationAcceptedByShiftId(int shiftId) {
         return collaboratorRepository.findCollaboratorEntitiesWhereIsPopulatedAndAssociationAcceptedByShiftId(shiftId);
+    }
+
+    public boolean isMinor(int id) {
+        try {
+            Date dataNascita = collaboratorRepository.findById(id).get().getAge();
+            long differenzaMillisecondi = new Date().getTime() - dataNascita.getTime();
+            long anni = differenzaMillisecondi / (1000L * 60 * 60 * 24 * 365);
+            if (anni < 18) {
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+
     }
 
 }

@@ -17,6 +17,7 @@ create table location
     description varchar(1000),
     image  blob,
     day_id int,
+    adults_only boolean not null,
     primary key (id),
     foreign key (day_id) references day (id)
 );
@@ -30,7 +31,6 @@ create table shift
     start_time       time               not null,
     end_time         time               not null,
     max_collaborator int                not null,
-    adults_only boolean not null,
     primary key (id),
     foreign key (location_id) references location (id)
 );

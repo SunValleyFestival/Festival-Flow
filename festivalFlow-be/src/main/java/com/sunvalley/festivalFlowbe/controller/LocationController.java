@@ -1,13 +1,16 @@
 package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.LocationEntity;
+import com.sunvalley.festivalFlowbe.service.CollaboratorService;
 import com.sunvalley.festivalFlowbe.service.LocationService;
+import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @Slf4j
@@ -20,17 +23,27 @@ public class LocationController {
 
 
     private final LocationService locationService;
+    private final CollaboratorService collaboratorService;
+    private final JWTTokenProviderService jwtTokenProviderService;
 
     @Autowired
-    public LocationController(LocationService locationService) {
+    public LocationController(LocationService locationService, CollaboratorService collaboratorService, JWTTokenProviderService jwtTokenProviderService) {
         this.locationService = locationService;
+        this.collaboratorService = collaboratorService;
+        this.jwtTokenProviderService = jwtTokenProviderService;
     }
 
     @CrossOrigin
     @GetMapping(LOCATION)
-    public ResponseEntity<List<LocationEntity>> getAll() {
-        List<LocationEntity> Locations = locationService.getAll();
-        return new ResponseEntity<>(Locations, HttpStatus.OK);
+    public ResponseEntity<List<LocationEntity>> getAll(@RequestHeader("Authorization") String token) throws ParseException {
+        if (collaboratorService.isMinor(jwtTokenProviderService.getUserIdFromToken(token))) {
+            List<LocationEntity> Locations = locationService.getAll();
+            return new ResponseEntity<>(Locations, HttpStatus.OK);
+
+        } else {
+            List<LocationEntity> Locations = locationService.getAll();
+            return new ResponseEntity<>(Locations, HttpStatus.OK);
+        }
     }
 
     @GetMapping(LOCATION + "{id}")
