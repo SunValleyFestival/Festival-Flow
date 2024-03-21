@@ -36,7 +36,13 @@
         <div class="label">
           <span class="label-text">Telefono</span>
         </div>
-        <input [(ngModel)]="collaborator.phone" class="input input-bordered" name="phone" placeholder="0791234567" required type="tel"/>
+        <div class="join">
+          <select class="bg-base-100 select select-bordered" name="countryCode" required>
+            <option value="+41">+41</option>
+            <option value="+39">+39</option>
+          </select>
+          <input [(ngModel)]="collaborator.phone" class="input input-bordered w-full" name="phone" placeholder="0791234567" required type="tel"/>
+        </div>
       </label>
 
       <label class="form-control w-1/3 mr-10">
