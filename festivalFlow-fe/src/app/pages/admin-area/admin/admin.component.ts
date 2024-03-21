@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Day} from "../../../interfaces/DayEntity";
-import {Location} from "../../../interfaces/LocationEntity";
-import {ShiftAvailability} from "../../../interfaces/ShiftAvailabilityView";
+import {Location, LocationClient} from "../../../interfaces/LocationEntity";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DayService} from "../../../services/http/day.service";
 import {LocationService} from "../../../services/http/location.service";
@@ -15,10 +14,9 @@ import {timer} from "rxjs";
 })
 export class AdminComponent implements OnInit {
   protected days: Day[] = [];
-  protected locations: Location[] = [];
-  protected filteredLocations: Location[] = [];
+  protected locations: LocationClient[] = [];
+  protected filteredLocations: LocationClient[] = [];
   protected currentDayId: number = 0;
-  protected locationAvailability: ShiftAvailability[] = [];
   protected dataError: boolean = false;
   protected nameToFilter: string = '';
 
@@ -69,11 +67,9 @@ export class AdminComponent implements OnInit {
       this.locations = locations;
       this.filteredLocations = locations;
 
-      this.locationAvailability = [];
-
-      for (let location of this.locations){
+      for (let location of locations) {
         this.shiftAvailabilityService.getAvailableSlotsByLocationId(location.id).pipe().subscribe((shiftAvailability: any) => {
-          this.locationAvailability.push(shiftAvailability);
+          location.shiftAvailability = shiftAvailability.availableSlots
         });
       }
     });

@@ -75,7 +75,7 @@ public class CollaboratorController {
     @CrossOrigin
     @GetMapping(ADMIN)
     public ResponseEntity<List<CollaboratorEntity>> getAllAdmin() {
-        List<CollaboratorEntity> collaborators = collaboratorService.getAll();
+        List<CollaboratorEntity> collaborators = collaboratorService.findCollaboratorEntitiesWhereIsPopulated();
         return new ResponseEntity<>(collaborators, HttpStatus.OK);
     }
 

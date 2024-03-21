@@ -1,21 +1,26 @@
 package com.sunvalley.festivalFlowbe.controller.utility;
 
 import com.sunvalley.festivalFlowbe.entity.utility.AuthEntity;
+import com.sunvalley.festivalFlowbe.service.utility.ExportService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
-@RequestMapping("/festival-flow/")
+@RequestMapping("/festival-flow/admin/")
 @RequiredArgsConstructor
 @Slf4j
 public class AdminController {
 
     private final JWTTokenProviderService tokenProvider;
+    private final ExportService exportService;
 
     @CrossOrigin
-    @GetMapping("admin/token")
+    @GetMapping("token")
     public AuthEntity login() {
         AuthEntity authEntity = new AuthEntity();
         authEntity.setToken(tokenProvider.generateTokenForAdmin());
@@ -23,9 +28,10 @@ public class AdminController {
     }
 
     @CrossOrigin
-    @PostMapping("admin/export")
-    public String loginConfirm() {
-        return "not implmented yet";
+    @GetMapping("export")
+    public String loginConfirm() throws IOException, InvalidFormatException {
+        exportService.export();
+        return null;
     }
 
 

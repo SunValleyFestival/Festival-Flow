@@ -12,12 +12,9 @@
           <input *ngIf="!isEmailInserted" type="email" name="email" placeholder="Email" class="input input-bordered w-full max-w-xs" [(ngModel)]="mail"/>
           <input *ngIf="isEmailInserted && !isDateInserted" [(ngModel)]="date" class="input input-bordered w-full max-w-xs" name="date" placeholder="01/01/2001" type="date">
           <input *ngIf="isEmailInserted && isDateInserted" [(ngModel)]="code" class="input input-bordered w-full max-w-xs" name="code" placeholder="123456" type="number"/>
-          <div class="btn btn-primary" (click)="onSubmit()" >Invia</div>
+          <button [disabled]="isButtonDisabled" class="btn btn-primary" (click)="onSubmit()" >Invia</button>
         </div>
       </label>
     </form>
-
-
-
   </div>
 </div>

@@ -4,4 +4,5 @@ export interface Association {
     shiftId: number;
   }
   status?: number;
+  comment?: string;
 }

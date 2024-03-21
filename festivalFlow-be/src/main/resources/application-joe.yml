@@ -72,6 +72,6 @@ spring:
         -----END PRIVATE KEY-----
       issuer: localhost:8080
       algorithm: RS256
-      expirationTime: 10m
+      expirationTime: 60m
 
 # The RSA algorithm is being used here.

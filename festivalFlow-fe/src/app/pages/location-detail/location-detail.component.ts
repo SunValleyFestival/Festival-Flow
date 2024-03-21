@@ -1,14 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {ShiftService} from "../../services/http/shift.service";
 import {ActivatedRoute} from "@angular/router";
-import {Shift} from "../../interfaces/ShiftEntity";
+import {Shift, ShiftClient} from "../../interfaces/ShiftEntity";
 import {AssociationService} from "../../services/http/association.service";
 import {CollaboratorService} from "../../services/http/collaborator.service";
 import {Collaborator} from "../../interfaces/CollaboratorEntity";
 import {Location} from "../../interfaces/LocationEntity";
 import {LocationService} from "../../services/http/location.service";
 import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
-import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
 import {timer} from 'rxjs';
 import {Association} from "../../interfaces/AssociationEntity";
 import {NavigationService} from "../../services/navigation/navigation.service";
@@ -22,8 +21,8 @@ export class LocationDetailComponent implements OnInit {
   protected selectedLocation: Location | undefined;
   protected signedIn: boolean = false;
   protected dataError: boolean = false;
-  protected shifts: Shift[] | undefined;
-  protected shiftAvailability: ShiftAvailability[] = [];
+  protected shifts: ShiftClient[] | undefined;
+
   formData: Collaborator = {
     email: '',
     phone: '',
@@ -32,6 +31,8 @@ export class LocationDetailComponent implements OnInit {
     age: '',
     size: 'Taglia Maglietta'
   }
+  protected associationComment: string = '';
+
   protected activeCollaborator: Collaborator | undefined;
 
   constructor(
@@ -67,7 +68,7 @@ export class LocationDetailComponent implements OnInit {
 
         for (let shift of shifts) {
           this.shiftAvailabilityService.getShiftAvailability(shift.id).pipe().subscribe((shiftAvailability: any) => {
-            this.shiftAvailability.push(shiftAvailability);
+            shift.shiftAvailability = shiftAvailability.availableSlots
           });
         }
       });
@@ -99,7 +100,8 @@ export class LocationDetailComponent implements OnInit {
           collaboratorId: this.activeCollaborator.id,
           shiftId: shiftId
         },
-        status: 0
+        status: 0,
+        comment: this.associationComment
       }
 
       this.collaboratorService.updateCollaborator(collaborator).pipe().subscribe(() => {
@@ -112,7 +114,10 @@ export class LocationDetailComponent implements OnInit {
   }
 
   checkData(): boolean {
-    let error = this.formData.firstName === '' || this.formData.lastName === '' || this.formData.phone === '' || this.formData.age === '' || this.formData.size === 'Taglia Maglietta';
+    let error = this.formData.firstName === '' || this.formData.lastName === '' ||
+      this.formData.phone === '' || this.formData.age === '' || this.formData.size === 'Taglia Maglietta' ||
+      this.formData.yearsExperience === undefined;
+
     this.dataError = error;
 
     if (error) {
@@ -125,20 +130,23 @@ export class LocationDetailComponent implements OnInit {
   }
 
   resetFormData() {
-    this.formData.firstName = this.activeCollaborator?.firstName
-    this.formData.lastName = this.activeCollaborator?.lastName
-
-    if (this.activeCollaborator?.email !== undefined) {
-      this.formData.email = this.activeCollaborator.email
+    if (this.activeCollaborator) {
+      this.formData = {
+        email: this.activeCollaborator.email,
+        phone: this.activeCollaborator.phone || '',
+        firstName: this.activeCollaborator.firstName || '',
+        lastName: this.activeCollaborator.lastName || '',
+        age: this.activeCollaborator.age || '',
+        size: this.activeCollaborator.size || 'Taglia Maglietta',
+        yearsExperience: this.activeCollaborator.yearsExperience || undefined,
+        town: this.activeCollaborator.town || '',
+      }
     }
-    this.formData.phone = this.activeCollaborator?.phone
-    this.formData.age = this.activeCollaborator?.age
-    this.formData.size = this.activeCollaborator?.size
+    this.associationComment = '';
   }
 
   parseTime(timeString: string): number {
     let value = timeString.replaceAll(":", "");
     return parseInt(value);
   };
-
 }

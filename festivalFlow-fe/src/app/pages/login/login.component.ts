@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
   protected date: any;
   protected isEmailInserted: boolean = false;
   protected isDateInserted: boolean = false;
+  protected isButtonDisabled: boolean = false;
 
   constructor(private navigationService: NavigationService,
               private cookiesService: CookiesService,
@@ -35,6 +36,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isButtonDisabled = true;
     if (!this.isEmailInserted) {
       if (this.checkCredentials(this.mail)) {
         let authEntity: AuthEntity;
@@ -44,6 +46,7 @@ export class LoginComponent implements OnInit {
             if (response !== undefined) {
               authEntity = response;
               this.isEmailInserted = true;
+              this.isButtonDisabled = false;
               this.cookiesService.setUserId(String(authEntity.userId));
             }
           }
@@ -51,10 +54,12 @@ export class LoginComponent implements OnInit {
       }
     } else if (this.isEmailInserted && !this.isDateInserted) {
       this.isDateInserted = true;
+      this.isButtonDisabled = false;
     } else if (this.isEmailInserted && this.isDateInserted) {
       this.tokenService.loginConfirm(this.cookiesService.getUserId(), this.code).subscribe(response => {
         if (response !== undefined && response.valid) {
           this.cookiesService.setToken(String(response.token));
+          this.isButtonDisabled = false;
           this.navigationService.goToHome()
         }
       });
