@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CollaboratorService} from "../../../services/http/collaborator.service";
 import {Collaborator} from "../../../interfaces/CollaboratorEntity";
 import {Router} from "@angular/router";
+import {LocationClient} from "../../../interfaces/LocationEntity";
 
 @Component({
   selector: 'app-manage-user',
@@ -9,7 +10,9 @@ import {Router} from "@angular/router";
   styleUrls: ['./manage-user.component.css']
 })
 export class ManageUserComponent implements OnInit {
-  protected collaborators: Collaborator[] = []
+  protected collaborators: Collaborator[] = [];
+  protected filteredCollaborators: Collaborator[] = [];
+  protected nameToFilter: string = '';
 
   constructor(
     private collaboratorService: CollaboratorService,
@@ -20,6 +23,7 @@ export class ManageUserComponent implements OnInit {
   ngOnInit() {
     this.collaboratorService.getCollaborators().pipe().subscribe((collaborators: Collaborator[]) => {
       this.collaborators = collaborators
+      this.filteredCollaborators = collaborators
     });
   }
 
@@ -27,5 +31,16 @@ export class ManageUserComponent implements OnInit {
     if (id) {
       this.router.navigate(['admin/user/' + id]);
     }
+  }
+
+  filterFirstName() {
+    const searchTermList = this.nameToFilter.toLowerCase().trim().split(" ");
+
+    this.filteredCollaborators = this.collaborators.filter(collaborator => (
+      searchTermList.some((search) => collaborator.firstName?.toLowerCase().includes(search))||
+      searchTermList.some((search) => collaborator.lastName?.toLowerCase().includes(search)) ||
+      searchTermList.some((search) => collaborator.email?.toLowerCase().includes(search))||
+      searchTermList.some((search) => collaborator.phone?.toLowerCase().includes(search))
+    ));
   }
 }
