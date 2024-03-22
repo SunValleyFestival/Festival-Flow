@@ -4,11 +4,10 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
 import com.sunvalley.festivalFlowbe.entity.utility.AuthEntity;
 import com.sunvalley.festivalFlowbe.repository.CollaboratorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CollaboratorService {
@@ -92,4 +91,7 @@ public class CollaboratorService {
 
     }
 
+    public Date getDateByEmail(final String email) {
+        return collaboratorRepository.findByEmail(email).getAge();
+    }
 }

@@ -26,4 +26,6 @@ public interface CollaboratorRepository extends JpaRepository<CollaboratorEntity
     List<CollaboratorEntity> findCollaboratorEntitiesWhereIsPopulatedAndAssociationAcceptedByShiftId(int shiftId);
 
     boolean existsByEmail(String email);
+
+    CollaboratorEntity findByEmail(String email);
 }

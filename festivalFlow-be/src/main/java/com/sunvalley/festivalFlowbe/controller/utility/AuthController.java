@@ -6,11 +6,14 @@ import com.sunvalley.festivalFlowbe.service.CollaboratorService;
 import com.sunvalley.festivalFlowbe.service.utility.EmailService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import com.sunvalley.festivalFlowbe.service.utility.VerificationCodeService;
+import java.text.ParseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
-
-import java.text.ParseException;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/festival-flow/user/auth/")
@@ -28,7 +31,14 @@ public class AuthController {
 
     @PostMapping("login/mail")
     public AuthEntity mailLogin(@RequestBody AuthEntity authEntity) {
-        authEntity.setValid(collaboratorService.existsByEmail(authEntity.getEmail()));
+        var exists = collaboratorService.existsByEmail(authEntity.getEmail());
+        authEntity.setValid(false);
+        if (exists) {
+            var date = collaboratorService.getDateByEmail(authEntity.getEmail());
+            if (date != null) {
+                authEntity.setValid(true);
+            }
+        }
         return authEntity;
     }
 
