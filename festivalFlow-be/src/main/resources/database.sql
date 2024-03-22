@@ -38,7 +38,7 @@ create table shift
 create table collaborator
 (
     id        int auto_increment not null,
-    phone varchar(11),
+    phone varchar(12),
     first_name varchar(20),
     last_name  varchar(20),
     age       date,
@@ -76,102 +76,92 @@ values ('Sabato', 'Secondo giorno di festa');
 insert into day (name, description)
 values ('Domenica', 'Terzo giorno di festa');
 
-insert into location (name, description, day_id)
-values ('Main Stage', 'Main stage VE', 1);
-insert into location (name, description, day_id)
-values ('Bar', 'Turno bar VE', 1);
-insert into location (name, description, day_id)
-values ('Cassa', 'Cassa VE', 1);
-insert into location (name, description, day_id)
-values ('Bicchieri', 'Raccolta bicchieri VE', 1);
-insert into location (name, description, day_id)
-values ('Rifornimento', 'Rifornimento bar VE', 1);
+insert into location (name, description, day_id, adults_only)
+values ('Main Stage', 'Main stage VE', 1, false),
+       ('Bar', 'Turno bar VE', 1, false),
+       ('Cassa', 'Cassa VE', 1, false),
+       ('Bicchieri', 'Raccolta bicchieri VE', 1, false),
+       ('Rifornimento', 'Rifornimento bar VE', 1, false);
 
-insert into location (name, description, day_id)
-values ('Main Stage', 'Main stage SA', 2);
-insert into location (name, description, day_id)
-values ('Bar', 'Turno bar SA', 2);
-insert into location (name, description, day_id)
-values ('Cassa', 'Cassa SA', 2);
-insert into location (name, description, day_id)
-values ('Bicchieri', 'Raccolta bicchieri SA', 2);
-insert into location (name, description, day_id)
-values ('Rifornimento', 'Rifornimento bar SA', 2);
+-- Inserimento dei dati per il giorno 2
+insert into location (name, description, day_id, adults_only)
+values ('Main Stage', 'Main stage SA', 2, false),
+       ('Bar', 'Turno bar SA', 2, false),
+       ('Cassa', 'Cassa SA', 2, false),
+       ('Bicchieri', 'Raccolta bicchieri SA', 2, false),
+       ('Rifornimento', 'Rifornimento bar SA', 2, false);
 
-
-insert into location (name, description, day_id)
-values ('Main Stage', 'Main stage DO', 3);
-insert into location (name, description, day_id)
-values ('Bar', 'Turno bar DO', 3);
-insert into location (name, description, day_id)
-values ('Cassa', 'Cassa DO', 3);
-insert into location (name, description, day_id)
-values ('Bicchieri', 'Raccolta bicchieri DO', 3);
-insert into location (name, description, day_id)
-values ('Rifornimento', 'Rifornimento bar DO', 3);
+-- Inserimento dei dati per il giorno 3
+insert into location (name, description, day_id, adults_only)
+values ('Main Stage', 'Main stage DO', 3, false),
+       ('Bar', 'Turno bar DO', 3, false),
+       ('Cassa', 'Cassa DO', 3, false),
+       ('Bicchieri', 'Raccolta bicchieri DO', 3, false),
+       ('Rifornimento', 'Rifornimento bar DO', 3, false);
 
 
 
-insert into shift (name, description, location_id, start_time, end_time, max_collaborator, adults_only)
-values ('Turno 1', 'Primo turno', 1, '12:00', '14:00', 5, true),
-       ('Turno 2', 'Secondo turno', 1, '14:00', '16:00', 5, false),
-       ('Turno 3', 'Terzo turno', 1, '16:00', '18:00', 5, true),
+insert into shift (name, description, location_id, start_time, end_time, max_collaborator)
+values ('Turno 1', 'Primo turno', 1, '12:00', '14:00', 5),
+       ('Turno 2', 'Secondo turno', 1, '14:00', '16:00', 5),
+       ('Turno 3', 'Terzo turno', 1, '16:00', '18:00', 5),
 
-       ('Turno 1', 'Primo turno', 2, '12:00', '14:00', 5, true),
-       ('Turno 2', 'Secondo turno', 2, '14:00', '16:00', 5, false),
-       ('Turno 3', 'Terzo turno', 2, '16:00', '18:00', 5, true),
+       ('Turno 1', 'Primo turno', 2, '12:00', '14:00', 5),
+       ('Turno 2', 'Secondo turno', 2, '14:00', '16:00', 5),
+       ('Turno 3', 'Terzo turno', 2, '16:00', '18:00', 5),
 
-       ('Turno 1', 'Primo turno', 3, '12:00', '14:00', 5, true),
-       ('Turno 2', 'Secondo turno', 3, '14:00', '16:00', 5, false),
-       ('Turno 3', 'Terzo turno', 3, '16:00', '18:00', 5, true),
+       ('Turno 1', 'Primo turno', 3, '12:00', '14:00', 5),
+       ('Turno 2', 'Secondo turno', 3, '14:00', '16:00', 5),
+       ('Turno 3', 'Terzo turno', 3, '16:00', '18:00', 5),
 
-       ('Turno 1', 'Primo turno', 4, '12:00', '14:00', 5, true),
-       ('Turno 2', 'Secondo turno', 4, '14:00', '16:00', 5, false),
-       ('Turno 3', 'Terzo turno', 4, '16:00', '18:00', 5, true),
+       ('Turno 1', 'Primo turno', 4, '12:00', '14:00', 5),
+       ('Turno 2', 'Secondo turno', 4, '14:00', '16:00', 5),
+       ('Turno 3', 'Terzo turno', 4, '16:00', '18:00', 5),
 
-       ('Turno 1', 'Primo turno', 5, '12:00', '14:00', 5, true),
-       ('Turno 2', 'Secondo turno', 5, '14:00', '16:00', 5, false),
-       ('Turno 3', 'Terzo turno', 5, '16:00', '18:00', 5, true),
+       ('Turno 1', 'Primo turno', 5, '12:00', '14:00', 5),
+       ('Turno 2', 'Secondo turno', 5, '14:00', '16:00', 5),
+       ('Turno 3', 'Terzo turno', 5, '16:00', '18:00', 5),
 
-       ('Turno 1', 'Primo turno', 6, '12:00', '14:00', 5, true),
-       ('Turno 2', 'Secondo turno', 6, '14:00', '16:00', 5, false),
-       ('Turno 3', 'Terzo turno', 6, '16:00', '18:00', 5, true),
+       ('Turno 1', 'Primo turno', 6, '12:00', '14:00', 5),
+       ('Turno 2', 'Secondo turno', 6, '14:00', '16:00', 5),
+       ('Turno 3', 'Terzo turno', 6, '16:00', '18:00', 5),
 
-       ('Turno 1', 'Primo turno', 7, '12:00', '14:00', 5, true),
-       ('Turno 2', 'Secondo turno', 7, '14:00', '16:00', 5, false),
-       ('Turno 3', 'Terzo turno', 7, '16:00', '18:00', 5, true),
+       ('Turno 1', 'Primo turno', 7, '12:00', '14:00', 5),
+       ('Turno 2', 'Secondo turno', 7, '14:00', '16:00', 5),
+       ('Turno 3', 'Terzo turno', 7, '16:00', '18:00', 5),
 
-       ('Turno 1', 'Primo turno', 8, '12:00', '14:00', 5, true),
-       ('Turno 2', 'Secondo turno', 8, '14:00', '16:00', 5, false),
-       ('Turno 3', 'Terzo turno', 8, '16:00', '18:00', 5, true),
+       ('Turno 1', 'Primo turno', 8, '12:00', '14:00', 5),
+       ('Turno 2', 'Secondo turno', 8, '14:00', '16:00', 5),
+       ('Turno 3', 'Terzo turno', 8, '16:00', '18:00', 5),
 
-       ('Turno 1', 'Primo turno', 9, '12:00', '14:00', 5, true),
-       ('Turno 2', 'Secondo turno', 9, '14:00', '16:00', 5, false),
-       ('Turno 3', 'Terzo turno', 9, '16:00', '18:00', 5, true),
+       ('Turno 1', 'Primo turno', 9, '12:00', '14:00', 5),
+       ('Turno 2', 'Secondo turno', 9, '14:00', '16:00', 5),
+       ('Turno 3', 'Terzo turno', 9, '16:00', '18:00', 5),
 
-       ('Turno 1', 'Primo turno', 10, '12:00', '14:00', 5, true),
-       ('Turno 2', 'Secondo turno', 10, '14:00', '16:00', 5, false),
-       ('Turno 3', 'Terzo turno', 10, '16:00', '18:00', 5, true),
+       ('Turno 1', 'Primo turno', 10, '12:00', '14:00', 5),
+       ('Turno 2', 'Secondo turno', 10, '14:00', '16:00', 5),
+       ('Turno 3', 'Terzo turno', 10, '16:00', '18:00', 5),
 
-       ('Turno 1', 'Primo turno', 11, '12:00', '14:00', 5, true),
-       ('Turno 2', 'Secondo turno', 11, '14:00', '16:00', 5, false),
-       ('Turno 3', 'Terzo turno', 11, '16:00', '18:00', 5, true),
+       ('Turno 1', 'Primo turno', 11, '12:00', '14:00', 5),
+       ('Turno 2', 'Secondo turno', 11, '14:00', '16:00', 5),
+       ('Turno 3', 'Terzo turno', 11, '16:00', '18:00', 5),
 
-       ('Turno 1', 'Primo turno', 12, '12:00', '14:00', 5, true),
-       ('Turno 2', 'Secondo turno', 12, '14:00', '16:00', 5, false),
-       ('Turno 3', 'Terzo turno', 12, '16:00', '18:00', 5, true),
+       ('Turno 1', 'Primo turno', 12, '12:00', '14:00', 5),
+       ('Turno 2', 'Secondo turno', 12, '14:00', '16:00', 5),
+       ('Turno 3', 'Terzo turno', 12, '16:00', '18:00', 5),
 
-       ('Turno 1', 'Primo turno', 13, '12:00', '14:00', 5, true),
-       ('Turno 2', 'Secondo turno', 13, '14:00', '16:00', 5, false),
-       ('Turno 3', 'Terzo turno', 13, '16:00', '18:00', 5, true),
+       ('Turno 1', 'Primo turno', 13, '12:00', '14:00', 5),
+       ('Turno 2', 'Secondo turno', 13, '14:00', '16:00', 5),
+       ('Turno 3', 'Terzo turno', 13, '16:00', '18:00', 5),
 
-       ('Turno 1', 'Primo turno', 14, '12:00', '14:00', 5, true),
-       ('Turno 2', 'Secondo turno', 14, '14:00', '16:00', 5, false),
-       ('Turno 3', 'Terzo turno', 14, '16:00', '18:00', 5, true),
+       ('Turno 1', 'Primo turno', 14, '12:00', '14:00', 5),
+       ('Turno 2', 'Secondo turno', 14, '14:00', '16:00', 5),
+       ('Turno 3', 'Terzo turno', 14, '16:00', '18:00', 5),
 
-       ('Turno 1', 'Primo turno', 15, '12:00', '14:00', 5, true),
-       ('Turno 2', 'Secondo turno', 15, '14:00', '16:00', 5, false),
-       ('Turno 3', 'Terzo turno', 15, '16:00', '18:00', 5, true);
+       ('Turno 1', 'Primo turno', 15, '12:00', '14:00', 5),
+       ('Turno 2', 'Secondo turno', 15, '14:00', '16:00', 5),
+       ('Turno 3', 'Terzo turno', 15, '16:00', '18:00', 5);
+
 
 
 

@@ -11,5 +11,6 @@ public interface LocationRepository extends JpaRepository<LocationEntity, Intege
     @Query("select l from LocationEntity l where l.day = ?1")
     List<LocationEntity>findByDay(DayEntity day);
 
-    @Query("select l from LocationEntity l where
+    List<LocationEntity> findByDayAndAdultsOnly(DayEntity day, boolean adultsOnly);
+
 }

@@ -12,7 +12,6 @@ import java.util.List;
 public class LocationService {
 
     private final LocationRepository locationRepository;
-
     private final DayService dayService;
 
 
@@ -26,17 +25,18 @@ public class LocationService {
         return locationRepository.findAll();
     }
 
-    public List<LocationEntity> getOnlyForMinor() {
-        return locationRepository.
-    }
 
     public LocationEntity create(LocationEntity location) {
         return locationRepository.save(location);
     }
 
-    public List<LocationEntity> getLocationsByDayId(int id) {
+    public List<LocationEntity> getLocationsByDayId(int id, boolean minor) {
         DayEntity day = dayService.getDayById(id);
-        return locationRepository.findByDay(day);
+        if (minor) {
+            return locationRepository.findByDayAndAdultsOnly(day, false);
+        } else {
+            return locationRepository.findByDay(day);
+        }
     }
 
     public LocationEntity getById(int id) {

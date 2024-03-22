@@ -16,6 +16,7 @@ import java.text.ParseException;
 @RequestMapping("/festival-flow/user/auth/")
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin
 public class AuthController {
     private final JWTTokenProviderService tokenProvider;
 

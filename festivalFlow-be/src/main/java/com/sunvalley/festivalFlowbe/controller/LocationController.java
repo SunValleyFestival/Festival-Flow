@@ -33,18 +33,6 @@ public class LocationController {
         this.jwtTokenProviderService = jwtTokenProviderService;
     }
 
-    @CrossOrigin
-    @GetMapping(LOCATION)
-    public ResponseEntity<List<LocationEntity>> getAll(@RequestHeader("Authorization") String token) throws ParseException {
-        if (collaboratorService.isMinor(jwtTokenProviderService.getUserIdFromToken(token))) {
-            List<LocationEntity> Locations = locationService.getAll();
-            return new ResponseEntity<>(Locations, HttpStatus.OK);
-
-        } else {
-            List<LocationEntity> Locations = locationService.getAll();
-            return new ResponseEntity<>(Locations, HttpStatus.OK);
-        }
-    }
 
     @GetMapping(LOCATION + "{id}")
     public ResponseEntity<LocationEntity> getById(@PathVariable int id) {
@@ -54,8 +42,8 @@ public class LocationController {
 
     @CrossOrigin
     @GetMapping(LOCATION + "day/{day}")
-    public ResponseEntity<List<LocationEntity>> getByDayId(@PathVariable int day) {
-        List<LocationEntity> locations = locationService.getLocationsByDayId(day);
+    public ResponseEntity<List<LocationEntity>> getByDayId(@RequestHeader("Authorization") String token, @PathVariable int day) throws ParseException {
+        List<LocationEntity> locations = locationService.getLocationsByDayId(day, isMinor(token));
         return new ResponseEntity<>(locations, HttpStatus.OK);
     }
 
@@ -72,6 +60,10 @@ public class LocationController {
     public ResponseEntity<LocationEntity> deleteById(@RequestBody LocationEntity locationEntity) {
         locationService.deleteById(locationEntity.getId());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private boolean isMinor(String token) throws ParseException {
+        return collaboratorService.isMinor(jwtTokenProviderService.getUserIdFromToken(token));
     }
 
 }

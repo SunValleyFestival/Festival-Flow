@@ -95,7 +95,7 @@ public class ExportService {
         Map<Integer, List<ShiftEntity>> shiftsByDay = new HashMap<>();
 
         for (int i = 0; i < dayCount; i++) {
-            List<LocationEntity> locationEntities = locationService.getLocationsByDayId(dayEntities.get(i).getId());
+            List<LocationEntity> locationEntities = locationService.getLocationsByDayId(dayEntities.get(i).getId(), false);
             for (LocationEntity locationEntity : locationEntities) {
                 List<ShiftEntity> shiftEntities = shiftService.getShiftsByLocationId(locationEntity.getId());
                 for (ShiftEntity shiftEntity : shiftEntities) {
@@ -174,7 +174,7 @@ public class ExportService {
             cellDay.setCellValue(dayEntity.getName());
             cellDay.setCellStyle(shiftNameStyle);
             int firstCol = h;
-            for (LocationEntity locationEntity : locationService.getLocationsByDayId(dayEntity.getId())) {
+            for (LocationEntity locationEntity : locationService.getLocationsByDayId(dayEntity.getId(), false)) {
                 Cell cellLocation = rowLocationCollaboratori.createCell(h);
                 cellLocation.setCellValue(locationEntity.getName());
                 cellLocation.setCellStyle(shiftNameStyle);
@@ -230,7 +230,7 @@ public class ExportService {
             cellDay.setCellValue(dayEntity.getName());
             cellDay.setCellStyle(shiftNameStyle);
             int firstCol = h;
-            for (LocationEntity locationEntity : locationService.getLocationsByDayId(dayEntity.getId())) {
+            for (LocationEntity locationEntity : locationService.getLocationsByDayId(dayEntity.getId(), false)) {
                 Cell cellLocation = rowLocation.createCell(h);
                 cellLocation.setCellValue(locationEntity.getName());
                 cellLocation.setCellStyle(shiftNameStyle);

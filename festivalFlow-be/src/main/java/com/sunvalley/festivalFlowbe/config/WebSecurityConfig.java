@@ -22,7 +22,8 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable
+                )
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("festival-flow/user/auth/**", "festival-flow/admin/**").permitAll()
                         .anyRequest().authenticated()
@@ -30,7 +31,6 @@ public class WebSecurityConfig {
                 .sessionManagement(configure -> configure.sessionCreationPolicy(SessionCreationPolicy.NEVER))
                 .oauth2ResourceServer((configure) -> configure
                         .jwt(Customizer.withDefaults())
-                ).cors(AbstractHttpConfigurer::disable
                 ).build();
     }
 
