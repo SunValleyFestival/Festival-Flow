@@ -2,8 +2,8 @@ package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.DayEntity;
 import com.sunvalley.festivalFlowbe.service.DayService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +14,17 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequestMapping("/festival-flow/")
-@RequiredArgsConstructor
 public class DayController {
 
     private static final String ADMIN = "admin/day/";
     private static final String DAY = "user/day/";
 
     private final DayService dayService;
+
+    @Autowired
+    public DayController(DayService dayService) {
+        this.dayService = dayService;
+    }
 
     @GetMapping(DAY)
     public ResponseEntity<List<DayEntity>> getAll() {
