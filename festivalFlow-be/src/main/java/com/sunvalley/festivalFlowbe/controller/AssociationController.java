@@ -67,7 +67,9 @@ public class AssociationController {
         if (!jwtTokenProviderService.getUserIdFromToken(token).equals(associationEntity.getId().getCollaboratorId())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else {
-            if (shiftAvailabilityService.getByShiftId(associationEntity.getId().getShiftId()).getAvailableSlots() <= 0) {
+            if (associationService.getByCollaboratorIdAndShiftId(associationEntity.getId().getCollaboratorId(), associationEntity.getId().getShiftId()) != null) {
+                return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
+            } else if (shiftAvailabilityService.getByShiftId(associationEntity.getId().getShiftId()).getAvailableSlots() <= 0) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } else {
                 if (shiftService.getById(associationEntity.getId().getShiftId()).getLocation().isAdultsOnly()) {
@@ -77,7 +79,7 @@ public class AssociationController {
                 }
                 associationEntity.setStatus(Status.ACCEPTED);
                 associationService.save(associationEntity);
-                emailService.sendNotificationViaEmail(associationEntity.getId().getCollaboratorId(), Status.PENDING, associationEntity.getId().getShiftId());
+                emailService.sendNotificationViaEmail(associationEntity.getId().getCollaboratorId(), Status.ACCEPTED, associationEntity.getId().getShiftId());
                 return new ResponseEntity<>(associationEntity, HttpStatus.OK);
             }
         }

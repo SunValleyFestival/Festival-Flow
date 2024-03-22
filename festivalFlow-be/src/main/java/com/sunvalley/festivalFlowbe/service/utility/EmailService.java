@@ -72,10 +72,10 @@ public class EmailService {
             return false;
         }
         emailRequest.setTo(email);
-        emailRequest.setSubject("Verification Code");
+        emailRequest.setSubject("Codice di verifica");
 
         //add message with link
-        emailRequest.setMessage("Your verification code is: " + code);
+        emailRequest.setMessage("Il tuo codice di verifica é: " + code);
         return sendEmail(emailRequest);
 
     }
@@ -87,7 +87,7 @@ public class EmailService {
         switch (status) {
             case ACCEPTED:
                 emailRequest.setSubject("Turno accettato!");
-                emailRequest.setMessage("Il tuo turno: " + shiftService.getById(shiftId).getName() + " è stato accettato \n Il tuo turno inizia alle: " + shiftService.getById(shiftId).getStartTime() + " e finisce alle: " + shiftService.getById(shiftId).getEndTime() + "\n localhost:4200/collaborator \n\n Grazie per la tua collaborazione \n Il team di SVF");
+                emailRequest.setMessage("Il tuo turno: " + shiftService.getById(shiftId).getName() + " è stato accettato <br> Il tuo turno inizia alle: " + shiftService.getById(shiftId).getStartTime() + " e finisce alle: " + shiftService.getById(shiftId).getEndTime() + "\n localhost:4200/collaborator \n\n Grazie per la tua collaborazione \n Il team di SVF");
                 break;
             case REJECTED:
                 emailRequest.setSubject("Turno rifiutato!");
