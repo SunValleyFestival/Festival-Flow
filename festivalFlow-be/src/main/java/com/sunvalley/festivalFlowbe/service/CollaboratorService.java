@@ -6,21 +6,19 @@ import com.sunvalley.festivalFlowbe.entity.utility.AuthEntity;
 import com.sunvalley.festivalFlowbe.repository.CollaboratorRepository;
 import java.util.Date;
 import java.util.List;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class CollaboratorService {
 
     private final CollaboratorRepository collaboratorRepository;
 
     PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
 
-
-    @Autowired
-    public CollaboratorService(CollaboratorRepository collaboratorRepository) {
-        this.collaboratorRepository = collaboratorRepository;
-    }
 
     public List<CollaboratorEntity> getAll() {
         return collaboratorRepository.findAll();

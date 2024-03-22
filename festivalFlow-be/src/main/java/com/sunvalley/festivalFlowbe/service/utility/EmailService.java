@@ -8,6 +8,7 @@ import com.sunvalley.festivalFlowbe.service.ShiftService;
 import io.micrometer.common.util.StringUtils;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -15,8 +16,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-@Service
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class EmailService {
 
     private final JavaMailSender mailSender;
@@ -29,12 +31,6 @@ public class EmailService {
     private boolean enabled;
     @Value("${spring.mail.properties.test-receiver}")
     private String testReceiver;
-
-    public EmailService(JavaMailSender mailSender, CollaboratorService collaboratorService, ShiftService shiftService) {
-        this.mailSender = mailSender;
-        this.collaboratorService = collaboratorService;
-        this.shiftService = shiftService;
-    }
 
     public boolean sendEmail(EmailRequest emailRequest) {
         log.info("Sending email to <{}> with subject<{}>...", emailRequest.getTo(), emailRequest.getSubject());

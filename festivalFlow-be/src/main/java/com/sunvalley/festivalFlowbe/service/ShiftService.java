@@ -2,12 +2,14 @@ package com.sunvalley.festivalFlowbe.service;
 
 import com.sunvalley.festivalFlowbe.entity.ShiftEntity;
 import com.sunvalley.festivalFlowbe.repository.ShiftRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ShiftService {
 
     private final ShiftRepository shiftRepository;
@@ -15,13 +17,6 @@ public class ShiftService {
     private final LocationService locationService;
 
     private final CollaboratorService collaboratorService;
-
-    @Autowired
-    public ShiftService(ShiftRepository shiftRepository, LocationService locationService, CollaboratorService collaboratorService) {
-        this.shiftRepository = shiftRepository;
-        this.locationService = locationService;
-        this.collaboratorService = collaboratorService;
-    }
 
 
     public List<ShiftEntity> getShiftsByLocationId(int id) {

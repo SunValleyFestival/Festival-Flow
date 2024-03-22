@@ -4,6 +4,7 @@ import com.sunvalley.festivalFlowbe.entity.LocationEntity;
 import com.sunvalley.festivalFlowbe.service.CollaboratorService;
 import com.sunvalley.festivalFlowbe.service.LocationService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.util.List;
 @Slf4j
 @CrossOrigin
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/festival-flow/")
 public class LocationController {
 
@@ -26,13 +28,6 @@ public class LocationController {
     private final LocationService locationService;
     private final CollaboratorService collaboratorService;
     private final JWTTokenProviderService jwtTokenProviderService;
-
-    @Autowired
-    public LocationController(LocationService locationService, CollaboratorService collaboratorService, JWTTokenProviderService jwtTokenProviderService) {
-        this.locationService = locationService;
-        this.collaboratorService = collaboratorService;
-        this.jwtTokenProviderService = jwtTokenProviderService;
-    }
 
 
     @GetMapping(LOCATION + "{id}")

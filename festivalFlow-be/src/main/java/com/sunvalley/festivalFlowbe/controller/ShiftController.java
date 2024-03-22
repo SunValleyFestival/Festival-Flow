@@ -5,6 +5,7 @@ import com.sunvalley.festivalFlowbe.service.CollaboratorService;
 import com.sunvalley.festivalFlowbe.service.LocationService;
 import com.sunvalley.festivalFlowbe.service.ShiftService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.List;
 @Slf4j
 @CrossOrigin
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/festival-flow/")
 public class ShiftController {
 
@@ -29,13 +31,6 @@ public class ShiftController {
     private final LocationService locationService;
     private final CollaboratorService collaboratorService;
     private final JWTTokenProviderService jwtTokenProviderService;
-
-    public ShiftController(ShiftService shiftService, LocationService locationService, CollaboratorService collaboratorService, JWTTokenProviderService jwtTokenProviderService) {
-        this.shiftService = shiftService;
-        this.locationService = locationService;
-        this.collaboratorService = collaboratorService;
-        this.jwtTokenProviderService = jwtTokenProviderService;
-    }
 
 
     @CrossOrigin

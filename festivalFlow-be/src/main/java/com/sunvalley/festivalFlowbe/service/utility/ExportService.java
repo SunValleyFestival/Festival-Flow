@@ -6,6 +6,7 @@ import com.sunvalley.festivalFlowbe.entity.LocationEntity;
 import com.sunvalley.festivalFlowbe.entity.ShiftEntity;
 import com.sunvalley.festivalFlowbe.entity.utility.Attachment;
 import com.sunvalley.festivalFlowbe.service.*;
+import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -20,6 +21,7 @@ import java.util.*;
 
 
 @Service
+@RequiredArgsConstructor
 public class ExportService {
 
 
@@ -28,16 +30,6 @@ public class ExportService {
     private final LocationService locationService;
     private final ShiftService shiftService;
     private final AssociationService associationService;
-
-
-    @Autowired
-    public ExportService(CollaboratorService collaboratorService, DayService dayService, LocationService locationService, ShiftService shiftService, AssociationService associationService) {
-        this.collaboratorService = collaboratorService;
-        this.dayService = dayService;
-        this.locationService = locationService;
-        this.shiftService = shiftService;
-        this.associationService = associationService;
-    }
 
 
     public Attachment export() throws IOException {

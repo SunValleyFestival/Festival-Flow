@@ -9,6 +9,7 @@ import com.sunvalley.festivalFlowbe.service.utility.ExportService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +42,14 @@ public class AdminController {
 
     @PostMapping("lock")
     public ResponseEntity<String> lock(ConfigurationEntity configurationEntity) {
+        configurationService.updateByName(configurationEntity.getName(), false);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
+    @PostMapping("unlock")
+    public ResponseEntity<String> unlock(ConfigurationEntity configurationEntity) {
+        configurationService.updateByName(configurationEntity.getName(), true);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
