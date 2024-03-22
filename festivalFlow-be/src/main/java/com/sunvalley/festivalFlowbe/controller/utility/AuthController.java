@@ -49,12 +49,12 @@ public class AuthController {
         authEntity.setUserId(userId);
         log.info("userId: " + userId);
         verificationCodeService.createCode(userId);
-        verificationCodeService.logCode(userId);
+//        verificationCodeService.logCode(userId);
         String code = verificationCodeService.getCode(userId);
         authEntity.setEmailSended(emailService.sendCodeViaEmail(code, userId));
         if (!authEntity.isEmailSended()) {
             verificationCodeService.removeCode(userId);
-            verificationCodeService.logCode(userId);
+//            verificationCodeService.logCode(userId);
         }
         return authEntity;
     }
