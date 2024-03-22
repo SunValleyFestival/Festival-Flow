@@ -36,7 +36,6 @@ public class AssociationController {
         this.shiftService = shiftService;
         this.collaboratorService = collaboratorService;
         this.shiftAvailabilityService = shiftAvailabilityService;
-        this.locationService = locationService;
         this.emailService = emailService;
         this.jwtTokenProviderService = jwtTokenProviderService;
     }

@@ -4,7 +4,6 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
 import com.sunvalley.festivalFlowbe.entity.utility.AuthEntity;
 import com.sunvalley.festivalFlowbe.repository.CollaboratorRepository;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +30,7 @@ public class CollaboratorService {
     public void createIfExistByEmail(AuthEntity authEntity) {
         if (null == collaboratorRepository.getIdByEmail(authEntity.getEmail())) {
             CollaboratorEntity collaborator = new CollaboratorEntity();
-            collaborator.setEmail(email);
+            collaborator.setEmail(authEntity.getEmail());
             collaboratorRepository.save(collaborator);
         }
     }
@@ -86,10 +85,7 @@ public class CollaboratorService {
             Date dataNascita = collaboratorRepository.findById(id).get().getAge();
             long differenzaMillisecondi = new Date().getTime() - dataNascita.getTime();
             long anni = differenzaMillisecondi / (1000L * 60 * 60 * 24 * 365);
-            if (anni < 18) {
-                return true;
-            }
-            return false;
+            return anni < 18;
         } catch (Exception e) {
             return false;
         }
