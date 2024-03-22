@@ -77,7 +77,7 @@ export class ManageLocationComponent implements OnInit {
           shiftId: shift_id
         },
       }
-      this.associationService.rejectAssociation(association).pipe().subscribe();
+      this.associationService.rejectAssociation(association).pipe().subscribe(() => this.ngOnInit());
     }
   }
 
@@ -91,7 +91,7 @@ export class ManageLocationComponent implements OnInit {
         status: 0
       }
 
-      this.associationService.approveAssociation(association).pipe().subscribe();
+      this.associationService.approveAssociation(association).pipe().subscribe(() => this.ngOnInit());
     }
   }
 

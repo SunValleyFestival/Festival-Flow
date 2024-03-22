@@ -92,9 +92,10 @@ export class AdminComponent implements OnInit {
   }
 
   submitData() {
-    this.dayService.saveDay(this.getDayFromForm()).pipe().subscribe();
-    this.dayForm.reset();
-    this.ngOnInit();
+    this.dayService.saveDay(this.getDayFromForm()).pipe().subscribe(() => {
+      this.dayForm.reset();
+      this.ngOnInit();
+    });
   }
 
   getDayFromForm(): Day {

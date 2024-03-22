@@ -6,9 +6,7 @@ import com.sunvalley.festivalFlowbe.entity.utility.AuthEntity;
 import com.sunvalley.festivalFlowbe.repository.CollaboratorRepository;
 import java.util.Date;
 import java.util.List;
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,6 +26,11 @@ public class CollaboratorService {
         if (null == collaboratorRepository.getIdByEmail(authEntity.getEmail())) {
             CollaboratorEntity collaborator = new CollaboratorEntity();
             collaborator.setEmail(authEntity.getEmail());
+
+            if (authEntity.getDate() != null) {
+                collaborator.setAge(authEntity.getDate());
+            }
+
             collaboratorRepository.save(collaborator);
         }
     }
