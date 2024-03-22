@@ -39,8 +39,12 @@ public class LocationService {
         }
     }
 
-    public LocationEntity getById(int id) {
-        return locationRepository.findById(id).orElse(null);
+    public LocationEntity getById(int id, boolean minor) {
+        if (minor) {
+            return locationRepository.findByIdAndAdultsOnly(id, false);
+        } else {
+            return locationRepository.findById(id).orElse(null);
+        }
     }
 
     public void deleteById(int id) {

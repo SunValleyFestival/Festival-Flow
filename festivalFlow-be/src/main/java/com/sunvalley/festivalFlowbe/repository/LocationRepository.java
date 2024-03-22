@@ -13,4 +13,6 @@ public interface LocationRepository extends JpaRepository<LocationEntity, Intege
 
     List<LocationEntity> findByDayAndAdultsOnly(DayEntity day, boolean adultsOnly);
 
+    LocationEntity findByIdAndAdultsOnly(int id, boolean adultsOnly);
+
 }

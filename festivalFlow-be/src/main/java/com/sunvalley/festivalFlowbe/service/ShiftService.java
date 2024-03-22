@@ -32,6 +32,7 @@ public class ShiftService {
         return shiftRepository.findAllByLocationIdAndOnlyAdult(id, onlyAdult);
     }
 
+
     public List<ShiftEntity> getAll() {
         return shiftRepository.findAll();
     }

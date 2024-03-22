@@ -38,7 +38,7 @@ public class ShiftController {
     @GetMapping(SHIFT + "{id}")
     public ResponseEntity<ShiftEntity> getById(@RequestHeader("Authorization") String token, @PathVariable int id) throws ParseException {
         ShiftEntity shift;
-        if (collaboratorService.isMinor(jwtTokenProviderService.getUserIdFromToken(token))) {
+        if (isMinor(token)) {
             shift = shiftService.getByIdOnlyAdult(id);
             if (shift == null) {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -55,8 +55,11 @@ public class ShiftController {
     @GetMapping(SHIFT + "location/{location}")
     public ResponseEntity<List<ShiftEntity>> getByLocationId(@RequestHeader("Authorization") String token, @PathVariable int location) throws ParseException {
         List<ShiftEntity> shifts;
-
-        shifts = shiftService.finAllByLocationIdAndOnlyAdult(location, collaboratorService.isMinor(jwtTokenProviderService.getUserIdFromToken(token)));
+        if (isMinor(token)) {
+            shifts = shiftService.finAllByLocationIdAndOnlyAdult(location, true);
+        } else {
+            shifts = shiftService.getShiftsByLocationId(location);
+        }
         if (shifts.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else {
@@ -65,12 +68,14 @@ public class ShiftController {
 
     }
 
-
     @CrossOrigin
     @PostMapping(ADMIN + "create")
     public ResponseEntity<ShiftEntity> create(@RequestBody ShiftEntity shift) {
         shift.setId(null);
-        shift.setLocation(locationService.getById(shift.getLocation().getId()));
+        shift.setLocation(locationService.getById(shift.getLocation().getId(), false));
+        if (shift.getLocation() == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
         ShiftEntity newShift = shiftService.create(shift);
         return new ResponseEntity<>(newShift, HttpStatus.CREATED);
     }
@@ -80,6 +85,10 @@ public class ShiftController {
     public ResponseEntity<ShiftEntity> deleteById(@RequestBody ShiftEntity shiftEntity) {
         shiftService.deleteById(shiftEntity.getId());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private boolean isMinor(String token) throws ParseException {
+        return collaboratorService.isMinor(jwtTokenProviderService.getUserIdFromToken(token));
     }
 
 }

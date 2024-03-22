@@ -35,8 +35,8 @@ public class LocationController {
 
 
     @GetMapping(LOCATION + "{id}")
-    public ResponseEntity<LocationEntity> getById(@PathVariable int id) {
-        LocationEntity location = locationService.getById(id);
+    public ResponseEntity<LocationEntity> getById(@RequestHeader("Authorization") String token, @PathVariable int id) throws ParseException {
+        LocationEntity location = locationService.getById(id, isMinor(token));
         return new ResponseEntity<>(location, HttpStatus.OK);
     }
 
