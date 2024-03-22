@@ -31,7 +31,7 @@ public class AdminController {
     }
 
     @PostMapping("export")
-    public String loginConfirm(EmailRequest emailRequest) throws IOException, InvalidFormatException {
+    public String export(@RequestBody EmailRequest emailRequest) throws IOException, InvalidFormatException {
         emailService.sendExport(emailRequest.getTo(), exportService.export());
         return null;
     }

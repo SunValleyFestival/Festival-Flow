@@ -6,6 +6,8 @@ import {DayService} from "../../../services/http/day.service";
 import {LocationService} from "../../../services/http/location.service";
 import {ShiftAvailabilityService} from "../../../services/http/shift-availability.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ExportService} from "../../../services/http/export.service";
+import {EmailRequest} from "../../../interfaces/EmailRequestEntity";
 
 @Component({
   selector: 'app-admin',
@@ -19,6 +21,12 @@ export class AdminComponent implements OnInit {
   protected currentDayId: number = 0;
   protected dataError: boolean = false;
   protected nameToFilter: string = '';
+  protected buttonDisabled: boolean = false;
+
+
+  protected exportForm: FormGroup = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+  });
 
   protected dayForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
@@ -31,7 +39,9 @@ export class AdminComponent implements OnInit {
     private locationService: LocationService,
     private shiftAvailabilityService: ShiftAvailabilityService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private exportService: ExportService,
+
   ) {
   }
 
@@ -110,5 +120,20 @@ export class AdminComponent implements OnInit {
     this.filteredLocations = this.locations.filter(location => {
       return location.name.toLowerCase().includes(this.nameToFilter.toLowerCase());
     });
+  }
+
+  submitEmailToExport() {
+
+    this.exportService.exportByMail(this.getEmailRequestFromForm()).pipe().subscribe();
+    this.buttonDisabled = true;
+    //window.location.reload();
+  }
+
+  getEmailRequestFromForm(): EmailRequest {
+    return {
+      to: this.exportForm.get('email')?.value,
+      description: '',
+      subject: ''
+    }
   }
 }
