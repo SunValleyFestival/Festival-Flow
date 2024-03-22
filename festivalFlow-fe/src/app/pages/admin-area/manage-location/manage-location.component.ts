@@ -97,7 +97,7 @@ export class ManageLocationComponent implements OnInit {
   getSelectedShiftAssociations(shiftId: number | undefined) {
     if (shiftId !== undefined) {
       this.associationService.getAdminAssociationByShiftId(shiftId).pipe().subscribe((associations: AssociationAdmin[]) => {
-        this.adminAssociations = associations;
+        this.adminAssociations = associations.filter(association => association.status !== 'REJECTED');
       });
     }
   }
