@@ -1,6 +1,6 @@
 package com.sunvalley.festivalFlowbe.service;
 
-import com.sunvalley.festivalFlowbe.entity.AssociationAdmin;
+import com.sunvalley.festivalFlowbe.entity.utility.AssociationAdmin;
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
 import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
 import com.sunvalley.festivalFlowbe.repository.AssociationRepository;
