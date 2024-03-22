@@ -43,9 +43,9 @@ public class VerificationCodeService {
 
 
     //method only for test
-    public void logCode(int userId) {
-        log.info("code for user: " + userId + " is: " + cache.getIfPresent(userId));
-    }
+//    public void logCode(int userId) {
+//        log.info("code for user: " + userId + " is: " + cache.getIfPresent(userId));
+//    }
 
     public String getCode(int userId) {
         return (String) cache.getIfPresent(userId);

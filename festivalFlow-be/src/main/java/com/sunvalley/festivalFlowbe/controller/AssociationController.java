@@ -75,7 +75,7 @@ public class AssociationController {
                         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
                     }
                 }
-                associationEntity.setStatus(Status.PENDING);
+                associationEntity.setStatus(Status.ACCEPTED);
                 associationService.save(associationEntity);
                 emailService.sendNotificationViaEmail(associationEntity.getId().getCollaboratorId(), Status.PENDING, associationEntity.getId().getShiftId());
                 return new ResponseEntity<>(associationEntity, HttpStatus.OK);
