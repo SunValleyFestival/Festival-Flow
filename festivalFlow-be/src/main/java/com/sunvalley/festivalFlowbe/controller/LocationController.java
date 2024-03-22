@@ -1,13 +1,16 @@
 package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.LocationEntity;
+import com.sunvalley.festivalFlowbe.service.CollaboratorService;
 import com.sunvalley.festivalFlowbe.service.LocationService;
+import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @Slf4j
@@ -21,27 +24,26 @@ public class LocationController {
 
 
     private final LocationService locationService;
+    private final CollaboratorService collaboratorService;
+    private final JWTTokenProviderService jwtTokenProviderService;
 
     @Autowired
-    public LocationController(LocationService locationService) {
+    public LocationController(LocationService locationService, CollaboratorService collaboratorService, JWTTokenProviderService jwtTokenProviderService) {
         this.locationService = locationService;
+        this.collaboratorService = collaboratorService;
+        this.jwtTokenProviderService = jwtTokenProviderService;
     }
 
-    @GetMapping(LOCATION)
-    public ResponseEntity<List<LocationEntity>> getAll() {
-        List<LocationEntity> Locations = locationService.getAll();
-        return new ResponseEntity<>(Locations, HttpStatus.OK);
-    }
 
     @GetMapping(LOCATION + "{id}")
-    public ResponseEntity<LocationEntity> getById(@PathVariable int id) {
-        LocationEntity location = locationService.getById(id);
+    public ResponseEntity<LocationEntity> getById(@RequestHeader("Authorization") String token, @PathVariable int id) throws ParseException {
+        LocationEntity location = locationService.getById(id, isMinor(token));
         return new ResponseEntity<>(location, HttpStatus.OK);
     }
 
     @GetMapping(LOCATION + "day/{day}")
-    public ResponseEntity<List<LocationEntity>> getByDayId(@PathVariable int day) {
-        List<LocationEntity> locations = locationService.getLocationsByDayId(day);
+    public ResponseEntity<List<LocationEntity>> getByDayId(@RequestHeader("Authorization") String token, @PathVariable int day) throws ParseException {
+        List<LocationEntity> locations = locationService.getLocationsByDayId(day, isMinor(token));
         return new ResponseEntity<>(locations, HttpStatus.OK);
     }
 
@@ -56,6 +58,10 @@ public class LocationController {
     public ResponseEntity<LocationEntity> deleteById(@RequestBody LocationEntity locationEntity) {
         locationService.deleteById(locationEntity.getId());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private boolean isMinor(String token) throws ParseException {
+        return collaboratorService.isMinor(jwtTokenProviderService.getUserIdFromToken(token));
     }
 
 }

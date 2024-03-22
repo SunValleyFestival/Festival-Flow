@@ -8,6 +8,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
+
 @Service
 public class CollaboratorService {
 
@@ -28,12 +31,7 @@ public class CollaboratorService {
     public void createIfExistByEmail(AuthEntity authEntity) {
         if (null == collaboratorRepository.getIdByEmail(authEntity.getEmail())) {
             CollaboratorEntity collaborator = new CollaboratorEntity();
-            collaborator.setEmail(authEntity.getEmail());
-
-            if (authEntity.getDate() != null) {
-                collaborator.setAge(authEntity.getDate());
-            }
-
+            collaborator.setEmail(email);
             collaboratorRepository.save(collaborator);
         }
     }
@@ -83,4 +81,19 @@ public class CollaboratorService {
     public boolean existsByEmail(final String email) {
         return collaboratorRepository.existsByEmail(email);
     }
+    public boolean isMinor(int id) {
+        try {
+            Date dataNascita = collaboratorRepository.findById(id).get().getAge();
+            long differenzaMillisecondi = new Date().getTime() - dataNascita.getTime();
+            long anni = differenzaMillisecondi / (1000L * 60 * 60 * 24 * 365);
+            if (anni < 18) {
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
 }

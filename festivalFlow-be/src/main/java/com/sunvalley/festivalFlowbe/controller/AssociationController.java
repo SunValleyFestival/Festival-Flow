@@ -3,10 +3,7 @@ package com.sunvalley.festivalFlowbe.controller;
 import com.sunvalley.festivalFlowbe.entity.AssociationAdmin;
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
 import com.sunvalley.festivalFlowbe.entity.Status;
-import com.sunvalley.festivalFlowbe.service.AssociationService;
-import com.sunvalley.festivalFlowbe.service.CollaboratorService;
-import com.sunvalley.festivalFlowbe.service.ShiftAvailabilityService;
-import com.sunvalley.festivalFlowbe.service.ShiftService;
+import com.sunvalley.festivalFlowbe.service.*;
 import com.sunvalley.festivalFlowbe.service.utility.EmailService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -35,22 +31,17 @@ public class AssociationController {
     private final JWTTokenProviderService jwtTokenProviderService;
 
     @Autowired
-    public AssociationController(AssociationService associationService, ShiftService shiftService, CollaboratorService collaboratorService, ShiftAvailabilityService shiftAvailabilityService, EmailService emailService, JWTTokenProviderService jwtTokenProviderService) {
+    public AssociationController(AssociationService associationService, ShiftService shiftService, CollaboratorService collaboratorService, ShiftAvailabilityService shiftAvailabilityService, LocationService locationService, EmailService emailService, JWTTokenProviderService jwtTokenProviderService) {
         this.associationService = associationService;
         this.shiftService = shiftService;
         this.collaboratorService = collaboratorService;
         this.shiftAvailabilityService = shiftAvailabilityService;
+        this.locationService = locationService;
         this.emailService = emailService;
         this.jwtTokenProviderService = jwtTokenProviderService;
     }
 
     @CrossOrigin
-    @GetMapping(ASSOCIATION)
-    public ResponseEntity<List<AssociationEntity>> getAll() {
-        List<AssociationEntity> associations = associationService.getAll();
-        return new ResponseEntity<>(associations, HttpStatus.OK);
-    }
-
     @GetMapping(ASSOCIATION + "collaborator-id/{id}")
     public ResponseEntity<List<AssociationEntity>> getByTypeAndId(int id, @RequestHeader("Authorization") String token) throws ParseException {
         if (!jwtTokenProviderService.getUserIdFromToken(token).equals(id)) {
@@ -62,12 +53,6 @@ public class AssociationController {
         }
     }
 
-    @CrossOrigin
-    @GetMapping(ASSOCIATION + "{shiftId}")
-    public ResponseEntity<List<AssociationEntity>> getByShiftId(@PathVariable int shiftId) {
-        List<AssociationEntity> associations = associationService.getByShiftId(shiftId);
-        return new ResponseEntity<>(associations, HttpStatus.OK);
-    }
 
     @CrossOrigin
     @GetMapping(ADMIN + "shift/{shiftId}")
@@ -86,11 +71,8 @@ public class AssociationController {
             if (shiftAvailabilityService.getByShiftId(associationEntity.getId().getShiftId()).getAvailableSlots() <= 0) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } else {
-                if (shiftService.getById(associationEntity.getId().getShiftId()).isAdultsOnly()) {
-                    Date dataNascita = collaboratorService.getById(associationEntity.getId().getCollaboratorId()).getAge();
-                    long differenzaMillisecondi = new Date().getTime() - dataNascita.getTime();
-                    long anni = differenzaMillisecondi / (1000L * 60 * 60 * 24 * 365);
-                    if (anni < 18) {
+                if (shiftService.getById(associationEntity.getId().getShiftId()).getLocation().isAdultsOnly()) {
+                    if (collaboratorService.isMinor(associationEntity.getId().getCollaboratorId())) {
                         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
                     }
                 }

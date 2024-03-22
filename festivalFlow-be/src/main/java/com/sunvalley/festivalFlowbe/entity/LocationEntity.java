@@ -26,4 +26,8 @@ public class LocationEntity {
     @ManyToOne
     @JoinColumn(name = "day_id", referencedColumnName = "id")
     private DayEntity day;
+
+    @Column(name = "adultsOnly", nullable = false)
+    private boolean adultsOnly;
+
 }
