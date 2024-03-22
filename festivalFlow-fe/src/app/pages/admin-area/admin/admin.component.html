@@ -50,9 +50,15 @@
           <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album"/></figure>
           <div class="card-body">
             <h2 class="card-title">{{ location.name }}</h2>
-            <div role="alert" class="alert bg-gray-50 border-accent w-fit">
-              <img src="../../../assets/icons/group.svg" alt="group">
-              <span>{{ location.shiftAvailability }} Rimanenti</span>
+            <div class="join gap-2">
+              <div class="alert bg-gray-50 border-accent w-fit" role="alert">
+                <img alt="group" src="../../../assets/icons/group.svg">
+                <span>{{ location.shiftAvailability }} Rimanenti</span>
+              </div>
+              <div *ngIf="location.manager" class="alert bg-gray-50 border-accent w-fit" role="alert">
+                <img alt="manager" src="../../../assets/icons/manager.svg">
+                <span>{{ location.manager }}</span>
+              </div>
             </div>
             <p>{{ location.description }}</p>
             <div class="card-actions justify-end">

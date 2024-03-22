@@ -1,14 +1,23 @@
 <div class="max-h-screen overflow-y-hidden">
   <app-header></app-header>
-  <div role="alert" class="alert alert-error" *ngIf="dataError">
-    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-    </svg>
-    <span>Errore! Dati inseriti incompleti!</span>
-  </div>
   <div class="max-h-screen overflow-scroll">
-    <h1 class="ml-5 mt-5 text-4xl">{{ locationName }}</h1>
+    <h1 class="ml-5 mt-5 text-4xl">{{ location.name }}</h1>
     <div class="flex gap-3 flex-col m-5">
+      <div class="join gap-2">
+
+        <label class="input input-bordered flex items-center gap-2 w-fit">
+          <svg class="w-4 h-4 opacity-70" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z"/>
+          </svg>
+          <input [(ngModel)]="location.manager" class="bg-base-100" placeholder="Manager" type="text"/>
+        </label>
+
+        <button (click)="reloadManager()" class="btn btn-circle btn-outline">
+          <img alt="sync" src="../../../assets/icons/sync.svg">
+        </button>
+
+      </div>
+
       <div class="collapse collapse-arrow bg-base-200" *ngFor="let shift of shifts">
         <input (click)="getSelectedShiftAssociations(shift.id)" name="my-accordion-2" type="radio"/>
         <div class="collapse-title text-xl justify-between flex font-medium">
@@ -58,7 +67,7 @@
     <div class="flex justify-center">
       <form [formGroup]="shiftForm" class="mt-2" method="dialog">
 
-        <button (click)="formShow()" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 
         <label [ngClass]="{'input-error': shiftForm.get('name')?.invalid && shiftForm.get('name')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
           Nome:

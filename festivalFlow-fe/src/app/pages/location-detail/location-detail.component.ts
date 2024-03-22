@@ -105,7 +105,7 @@ export class LocationDetailComponent implements OnInit {
 
       this.collaboratorService.updateCollaborator(collaborator).pipe().subscribe(() => {
         this.associationService.saveAssociation(association).pipe().subscribe();
-        window.location.reload();
+        this.ngOnInit();
       });
 
 

@@ -47,7 +47,7 @@ export class UserDetailComponent implements OnInit {
 
   submitData() {
     this.collaboratorService.updateCollaboratorFromAdmin(this.getCollaboratorFromFormData()).pipe().subscribe(() => {
-      window.location.reload();
+      this.ngOnInit();
     });
   }
 

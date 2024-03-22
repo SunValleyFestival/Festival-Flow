@@ -14,7 +14,7 @@ import {UserComponent} from "./pages/user/user.component";
 
 const routes: Routes = [
   {path: 'user/login', component: LoginComponent},
-  {path: 'admin/location/:name/:location', component: ManageLocationComponent, canActivate: [authGuard]},
+  {path: 'admin/location/:location', component: ManageLocationComponent, canActivate: [authGuard]},
   {path: 'admin/user', component: ManageUserComponent, canActivate: [authGuard]},
   {path: 'admin/user/:id', component: UserDetailComponent, canActivate: [authGuard]},
   {path: 'admin/create', component: CreateLocationComponent, canActivate: [authGuard]},

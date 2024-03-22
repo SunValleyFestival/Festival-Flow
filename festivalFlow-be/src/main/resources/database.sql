@@ -18,6 +18,7 @@ create table location
     image  blob,
     day_id int,
     adults_only boolean not null,
+    manager varchar(20),
     primary key (id),
     foreign key (day_id) references day (id)
 );
