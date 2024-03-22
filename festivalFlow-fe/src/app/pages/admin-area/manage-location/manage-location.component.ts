@@ -6,6 +6,8 @@ import {Association} from "../../../interfaces/AssociationEntity";
 import {AssociationService} from "../../../services/http/association.service";
 import {AssociationAdmin} from "../../../interfaces/AssociationAdminEntity";
 import {FormBuilder, Validators} from "@angular/forms";
+import {LocationService} from "../../../services/http/location.service";
+import {Location} from "../../../interfaces/LocationEntity";
 
 @Component({
   selector: 'app-manage-location',
@@ -13,12 +15,11 @@ import {FormBuilder, Validators} from "@angular/forms";
   styleUrls: ['./manage-location.component.css']
 })
 export class ManageLocationComponent implements OnInit {
-  protected dataError: boolean = false;
-  protected locationName: string = '';
   protected shifts: Shift[] = [];
-
   protected locationId!: number;
   protected adminAssociations: AssociationAdmin[] = [];
+  protected location!: Location;
+
 
   protected shiftForm = this.fb.group({
     name: ['', [Validators.required]],
@@ -32,7 +33,8 @@ export class ManageLocationComponent implements OnInit {
     private shiftService: ShiftService,
     protected associationService: AssociationService,
     private route: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private locationService: LocationService
   ) {
 
   }
@@ -41,21 +43,21 @@ export class ManageLocationComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params['location']) {
         this.locationId = params['location'];
+        this.locationService.getLocationById(this.locationId).subscribe((location) => {
+          this.location = location;
+        });
+
 
         this.shiftService.getShiftsByLocationId(this.locationId).subscribe((shifts: Shift[]) => {
           this.shifts = shifts;
         });
       }
-      if (params['name']) {
-        this.locationName = params['name'];
-      }
-
     });
   }
 
   submitData() {
     this.shiftService.createShift(this.getShiftFromFormData()).pipe().subscribe(() => {
-      window.location.reload();
+      this.ngOnInit();
     });
 
   }
@@ -124,7 +126,9 @@ export class ManageLocationComponent implements OnInit {
     return {} as Shift;
   }
 
-  formShow() {
-    console.log(this.shiftForm)
+  reloadManager() {
+    this.locationService.updateLocation(this.location).pipe().subscribe(() => {
+      this.ngOnInit()
+    });
   }
 }

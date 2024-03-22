@@ -30,4 +30,8 @@ export class LocationService {
   createLocation(formData: Location) {
     return this.http.post(ADMIN_BASE_URL + 'create', formData);
   }
+
+  updateLocation(location: Location) {
+    return this.http.put(ADMIN_BASE_URL + 'update', location);
+  }
 }

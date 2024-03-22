@@ -5,6 +5,7 @@ export interface Location {
   name: string;
   description?: string | null;
   day: Day;
+  manager?: string;
 }
 
 export interface LocationClient {
@@ -13,5 +14,6 @@ export interface LocationClient {
   description?: string | null;
   day: Day;
   shiftAvailability: number;
+  manager?: string;
 }
 

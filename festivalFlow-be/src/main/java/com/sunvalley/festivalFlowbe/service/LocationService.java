@@ -3,10 +3,9 @@ package com.sunvalley.festivalFlowbe.service;
 import com.sunvalley.festivalFlowbe.entity.DayEntity;
 import com.sunvalley.festivalFlowbe.entity.LocationEntity;
 import com.sunvalley.festivalFlowbe.repository.LocationRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class LocationService {
@@ -49,5 +48,9 @@ public class LocationService {
 
     public void deleteById(int id) {
         locationRepository.deleteById(id);
+    }
+
+    public LocationEntity update(final LocationEntity location) {
+        return locationRepository.save(location);
     }
 }
