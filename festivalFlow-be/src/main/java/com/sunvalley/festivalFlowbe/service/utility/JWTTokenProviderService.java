@@ -20,9 +20,9 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
 
+@Service
 @Component
 @RequiredArgsConstructor
-@Service
 public class JWTTokenProviderService {
     private final ApplicationJwtConfig applicationJwtConfig;
 

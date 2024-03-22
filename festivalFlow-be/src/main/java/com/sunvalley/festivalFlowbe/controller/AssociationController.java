@@ -1,11 +1,13 @@
 package com.sunvalley.festivalFlowbe.controller;
 
-import com.sunvalley.festivalFlowbe.entity.AssociationAdmin;
+import com.sunvalley.festivalFlowbe.entity.utility.AssociationAdmin;
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
 import com.sunvalley.festivalFlowbe.entity.Status;
 import com.sunvalley.festivalFlowbe.service.*;
+import com.sunvalley.festivalFlowbe.service.utility.ConfigurationService;
 import com.sunvalley.festivalFlowbe.service.utility.EmailService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/festival-flow/")
 public class AssociationController {
 
@@ -29,16 +32,8 @@ public class AssociationController {
     private final ShiftAvailabilityService shiftAvailabilityService;
     private final EmailService emailService;
     private final JWTTokenProviderService jwtTokenProviderService;
+    private final ConfigurationService configurationService;
 
-    @Autowired
-    public AssociationController(AssociationService associationService, ShiftService shiftService, CollaboratorService collaboratorService, ShiftAvailabilityService shiftAvailabilityService, LocationService locationService, EmailService emailService, JWTTokenProviderService jwtTokenProviderService) {
-        this.associationService = associationService;
-        this.shiftService = shiftService;
-        this.collaboratorService = collaboratorService;
-        this.shiftAvailabilityService = shiftAvailabilityService;
-        this.emailService = emailService;
-        this.jwtTokenProviderService = jwtTokenProviderService;
-    }
 
     @CrossOrigin
     @GetMapping(ASSOCIATION + "collaborator-id/{id}")
@@ -64,7 +59,7 @@ public class AssociationController {
     @CrossOrigin
     @PostMapping(ASSOCIATION + "create")
     public ResponseEntity<AssociationEntity> create(@RequestBody AssociationEntity associationEntity, @RequestHeader("Authorization") String token) throws ParseException {
-        if (!jwtTokenProviderService.getUserIdFromToken(token).equals(associationEntity.getId().getCollaboratorId())) {
+        if (!jwtTokenProviderService.getUserIdFromToken(token).equals(associationEntity.getId().getCollaboratorId()) || configurationService.getByName("lock")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else {
             if (associationService.getByCollaboratorIdAndShiftId(associationEntity.getId().getCollaboratorId(), associationEntity.getId().getShiftId()) != null) {

@@ -3,22 +3,19 @@ package com.sunvalley.festivalFlowbe.service;
 import com.sunvalley.festivalFlowbe.entity.DayEntity;
 import com.sunvalley.festivalFlowbe.entity.LocationEntity;
 import com.sunvalley.festivalFlowbe.repository.LocationRepository;
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
+@RequiredArgsConstructor
 public class LocationService {
 
     private final LocationRepository locationRepository;
     private final DayService dayService;
 
-
-    @Autowired
-    public LocationService(LocationRepository locationRepository, DayService dayService) {
-        this.locationRepository = locationRepository;
-        this.dayService = dayService;
-    }
 
     public List<LocationEntity> getAll() {
         return locationRepository.findAll();
