@@ -41,14 +41,14 @@ public class AdminController {
     }
 
     @PostMapping("lock")
-    public ResponseEntity<String> lock(ConfigurationEntity configurationEntity) {
-        configurationService.updateByName(configurationEntity.getName(), false);
+    public ResponseEntity<String> lock() {
+        configurationService.updateByName("lock", true);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("unlock")
-    public ResponseEntity<String> unlock(ConfigurationEntity configurationEntity) {
-        configurationService.updateByName(configurationEntity.getName(), true);
+    public ResponseEntity<String> unlock() {
+        configurationService.updateByName("lock", false);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

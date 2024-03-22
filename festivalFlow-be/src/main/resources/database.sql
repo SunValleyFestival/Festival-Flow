@@ -2,6 +2,16 @@ drop database if exists FestivalFLow;
 create database FestivalFlow;
 use FestivalFlow;
 
+create table configuration
+(
+    id int auto_increment,
+    name varchar(20) not null unique,
+    value boolean not null,
+    primary key (id)
+);
+
+insert into configuration (name, value) value ('lock', false);
+
 create table day
 (
     id          int auto_increment,

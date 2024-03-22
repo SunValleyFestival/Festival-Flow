@@ -4,6 +4,7 @@ import com.sunvalley.festivalFlowbe.entity.utility.AssociationAdmin;
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
 import com.sunvalley.festivalFlowbe.entity.Status;
 import com.sunvalley.festivalFlowbe.service.*;
+import com.sunvalley.festivalFlowbe.service.utility.ConfigurationService;
 import com.sunvalley.festivalFlowbe.service.utility.EmailService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class AssociationController {
     private final ShiftAvailabilityService shiftAvailabilityService;
     private final EmailService emailService;
     private final JWTTokenProviderService jwtTokenProviderService;
+    private final ConfigurationService configurationService;
 
 
     @CrossOrigin
@@ -57,7 +59,7 @@ public class AssociationController {
     @CrossOrigin
     @PostMapping(ASSOCIATION + "create")
     public ResponseEntity<AssociationEntity> create(@RequestBody AssociationEntity associationEntity, @RequestHeader("Authorization") String token) throws ParseException {
-        if (!jwtTokenProviderService.getUserIdFromToken(token).equals(associationEntity.getId().getCollaboratorId())) {
+        if (!jwtTokenProviderService.getUserIdFromToken(token).equals(associationEntity.getId().getCollaboratorId()) || configurationService.getByName("lock")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else {
             if (associationService.getByCollaboratorIdAndShiftId(associationEntity.getId().getCollaboratorId(), associationEntity.getId().getShiftId()) != null) {
