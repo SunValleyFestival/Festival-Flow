@@ -14,6 +14,7 @@ import java.util.List;
 
 
 @Slf4j
+@CrossOrigin
 @RestController
 @RequestMapping("/festival-flow/")
 public class CollaboratorController {
@@ -30,21 +31,18 @@ public class CollaboratorController {
         this.jwtTokenProviderService = jwtTokenProviderService;
     }
 
-    @CrossOrigin
     @GetMapping(COLLABORATOR)
     public ResponseEntity<CollaboratorEntity> get(@RequestHeader("Authorization") String token) throws ParseException {
         CollaboratorEntity collaborator = collaboratorService.getById(jwtTokenProviderService.getUserIdFromToken(token));
         return new ResponseEntity<>(collaborator, HttpStatus.OK);
     }
 
-    @CrossOrigin
     @GetMapping(COLLABORATOR + "{id}")
     public ResponseEntity<CollaboratorEntity> getById(@PathVariable int id) {
         CollaboratorEntity collaborator = collaboratorService.getById(id);
         return new ResponseEntity<>(collaborator, HttpStatus.OK);
     }
 
-    @CrossOrigin
     @GetMapping(COLLABORATOR + "all")
     public ResponseEntity<List<CollaboratorEntity>> getAll() {
         List<CollaboratorEntity> collaborators = collaboratorService.getAll();
@@ -52,7 +50,6 @@ public class CollaboratorController {
     }
 
 
-    @CrossOrigin
     @PutMapping(COLLABORATOR + "update")
     public ResponseEntity<CollaboratorEntity> update(@RequestBody CollaboratorEntity collaborator, @RequestHeader("Authorization") String token) throws ParseException {
         collaborator.setEmail(collaboratorService.getEmailById(collaborator.getId()));
@@ -75,14 +72,12 @@ public class CollaboratorController {
     return new ResponseEntity<>(newCollaborator, HttpStatus.OK);
   }
 
-    @CrossOrigin
     @GetMapping(ADMIN)
     public ResponseEntity<List<CollaboratorEntity>> getAllAdmin() {
         List<CollaboratorEntity> collaborators = collaboratorService.findCollaboratorEntitiesWhereIsPopulated();
         return new ResponseEntity<>(collaborators, HttpStatus.OK);
     }
 
-    @CrossOrigin
     @GetMapping(ADMIN + "shift/{shiftId}")
     public ResponseEntity<List<CollaboratorEntity>> getByShiftId(@PathVariable int shiftId) {
         List<CollaboratorEntity> collaborators = collaboratorService.getByShiftId(shiftId);
@@ -90,7 +85,6 @@ public class CollaboratorController {
     }
 
 
-    @CrossOrigin
     @DeleteMapping(ADMIN)
     public ResponseEntity<CollaboratorEntity> deleteById(@RequestBody CollaboratorEntity collaboratorEntity) {
         collaboratorService.deleteById(collaboratorEntity.getId());

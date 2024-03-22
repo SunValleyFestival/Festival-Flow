@@ -16,13 +16,13 @@ import java.io.IOException;
 @RequestMapping("/festival-flow/admin/")
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin
 public class AdminController {
 
     private final JWTTokenProviderService tokenProvider;
     private final ExportService exportService;
     private final EmailService emailService;
 
-    @CrossOrigin
     @GetMapping("token")
     public AuthEntity login() {
         AuthEntity authEntity = new AuthEntity();
@@ -30,7 +30,6 @@ public class AdminController {
         return authEntity;
     }
 
-    @CrossOrigin
     @PostMapping("export")
     public String loginConfirm(EmailRequest emailRequest) throws IOException, InvalidFormatException {
         emailService.sendExport(emailRequest.getTo(), exportService.export());

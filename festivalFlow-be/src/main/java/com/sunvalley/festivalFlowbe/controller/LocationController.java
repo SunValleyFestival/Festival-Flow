@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
+@CrossOrigin
 @RestController
 @RequestMapping("/festival-flow/")
 public class LocationController {
@@ -26,7 +27,6 @@ public class LocationController {
         this.locationService = locationService;
     }
 
-    @CrossOrigin
     @GetMapping(LOCATION)
     public ResponseEntity<List<LocationEntity>> getAll() {
         List<LocationEntity> Locations = locationService.getAll();
@@ -39,14 +39,12 @@ public class LocationController {
         return new ResponseEntity<>(location, HttpStatus.OK);
     }
 
-    @CrossOrigin
     @GetMapping(LOCATION + "day/{day}")
     public ResponseEntity<List<LocationEntity>> getByDayId(@PathVariable int day) {
         List<LocationEntity> locations = locationService.getLocationsByDayId(day);
         return new ResponseEntity<>(locations, HttpStatus.OK);
     }
 
-    @CrossOrigin
     @PostMapping(ADMIN + "create")
     public ResponseEntity<LocationEntity> create(@RequestBody LocationEntity location) {
         location.setId(null);
@@ -54,7 +52,6 @@ public class LocationController {
         return new ResponseEntity<>(newLocation, HttpStatus.CREATED);
     }
 
-    @CrossOrigin
     @DeleteMapping(ADMIN)
     public ResponseEntity<LocationEntity> deleteById(@RequestBody LocationEntity locationEntity) {
         locationService.deleteById(locationEntity.getId());
