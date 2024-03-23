@@ -33,12 +33,12 @@
 
           <br>
 
-          <button class="btn" (click)="dialog.showModal()">Crea Giorno</button>
+          <button class="btn" (click)="dialogDay.showModal()">Crea Giorno</button>
           <button class="btn" (click)="goToCreateLocationPage()">Crea postazione</button>
 
           <br>
 
-          <button class="btn">Esporta Excel</button>
+          <button class="btn" (click)="dialogExport.showModal()">Esporta Excel</button>
 
 
         </div>
@@ -72,7 +72,7 @@
   </div>
 </div>
 
-<dialog #dialog class="modal modal-bottom sm:modal-middle">
+<dialog #dialogDay class="modal modal-bottom sm:modal-middle">
   <div class="modal-box">
     <h3 class="font-bold text-lg">Crea Giorno</h3>
     <div class="flex justify-center">
@@ -89,7 +89,28 @@
           <input class="grow bg-base-100" formControlName="description" name="description" placeholder="Descrizione del giorno" required type="text"/>
         </label>
         <div class="mt-2 w-full flex justify-end">
-          <button (click)="submitData()" [disabled]="dayForm.invalid" class="btn">Conferma</button>
+          <button (click)="submitData()" [disabled]="buttonDisabled ||dayForm.invalid" class="btn">Conferma</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+
+<dialog #dialogExport class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Inserisci email</h3>
+    <div class="flex justify-center">
+      <form [formGroup]="exportForm" class="mt-2" method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+
+        <label [ngClass]="{'input-error': exportForm.get('email')?.invalid && exportForm.get('email')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
+          Nome:
+          <input class="grow bg-base-100" formControlName="email" name="email" placeholder="mario.rossi@mail.com" required type="text"/>
+        </label>
+
+        <div class="mt-2 w-full flex justify-end">
+          <button (click)="submitEmailToExport()" [disabled]="exportForm.invalid" class="btn">Conferma</button>
         </div>
       </form>
     </div>
