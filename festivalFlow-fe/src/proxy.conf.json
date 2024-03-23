@@ -1,6 +1,6 @@
 {
   "/festival-flow/*": {
-    "target": "http://localhost:8080",
+    "target": "https://festivalflow.web.inetsolutions.cloud",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true

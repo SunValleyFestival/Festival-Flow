@@ -35,7 +35,6 @@ public class VerificationCodeService {
             removeCode(userId);
             return true;
         } else {
-            removeCode(userId);
             return false;
 
         }
