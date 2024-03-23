@@ -93,7 +93,7 @@
 
 <dialog #dialogExport class="modal modal-bottom sm:modal-middle">
   <div class="modal-box">
-    <h3 class="font-bold text-lg">Email per mandare excel</h3>
+    <h3 class="font-bold text-lg">Inserisci email</h3>
     <div class="flex justify-center">
       <form [formGroup]="exportForm" class="mt-2" method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
@@ -103,8 +103,8 @@
           <input class="grow bg-base-100" formControlName="email" name="email" placeholder="mario.rossi@mail.com" required type="text"/>
         </label>
 
-        <div class="mt-12 w-full flex justify-end">
-          <button (click)="submitEmailToExport()" [disabled]="exportForm.invalid" class="btn absolute right-2 bottom-3">Conferma</button>
+        <div class="mt-2 w-full flex justify-end">
+          <button (click)="submitEmailToExport()" [disabled]="exportForm.invalid" class="btn">Conferma</button>
         </div>
       </form>
     </div>
