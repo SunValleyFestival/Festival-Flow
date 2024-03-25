@@ -18,9 +18,11 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class LocationDetailComponent implements OnInit {
   protected selectedLocation: Location | undefined;
-  protected dataError: boolean = false;
   protected shifts: ShiftClient[] | undefined;
   protected activeCollaborator: Collaborator | undefined;
+  protected noticeDialog: boolean = false;
+  protected noticeMessage: string = '';
+  protected noticeClass = '';
 
   protected formData: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -104,8 +106,17 @@ export class LocationDetailComponent implements OnInit {
       }
 
       this.collaboratorService.updateCollaborator(collaborator).pipe().subscribe(() => {
-        this.associationService.saveAssociation(association).pipe().subscribe();
-        this.ngOnInit();
+        this.associationService.saveAssociation(association).subscribe((response: any) => {
+
+          if (response.status === 200) {
+            this.ngOnInit();
+            this.showNotice("Iscrizione effettuata con successo", 0);
+          } else if (response.status === 208) {
+            this.showNotice("Ti sei già iscritto a questo turno", 1);
+          } else {
+            this.showNotice("Errore durante la registrazione", 2);
+          }
+        });
       });
 
 
@@ -146,4 +157,21 @@ export class LocationDetailComponent implements OnInit {
     let value = timeString.replaceAll(":", "");
     return parseInt(value);
   };
+
+  showNotice(notice: string, noticeType: number) {
+
+    if (noticeType == 0) {
+      this.noticeClass = 'alert-success';
+    } else if (noticeType == 1) {
+      this.noticeClass = 'alert-warning';
+    } else {
+      this.noticeClass = 'alert-error';
+    }
+
+    this.noticeMessage = notice;
+    this.noticeDialog = true;
+    setTimeout(() => {
+      this.noticeDialog = false;
+    }, 3000);
+  }
 }

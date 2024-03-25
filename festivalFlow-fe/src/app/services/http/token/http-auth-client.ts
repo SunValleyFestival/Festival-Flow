@@ -21,14 +21,16 @@ export class HttpAuthClient {
   post(url: string, data: any): any {
     let headers = new HttpHeaders({'Authorization': 'Bearer ' + this.cookiesService.getToken()});
     return this.http.post(url, data, {
-      headers: headers
+      headers: headers,
+      observe: 'response'
     });
   }
 
   put(url: string, data: any): any {
     let headers = new HttpHeaders({'Authorization': 'Bearer ' + this.cookiesService.getToken()});
     return this.http.put(url, data, {
-      headers: headers
+      headers: headers,
+      observe: 'response'
     });
   }
 
@@ -36,7 +38,8 @@ export class HttpAuthClient {
     let headers = new HttpHeaders({'Authorization': 'Bearer ' + this.cookiesService.getToken()});
     return this.http.delete(url, {
       headers: headers,
-      body: data
+      body: data,
+      observe: 'response'
     });
   }
 }
