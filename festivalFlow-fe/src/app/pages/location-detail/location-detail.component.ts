@@ -33,7 +33,7 @@ export class LocationDetailComponent implements OnInit {
     age: ['', Validators.required],
     yearsExperience: ['', Validators.required],
     town: ['', Validators.required],
-    size: ['', Validators.required],
+    size: ['Taglia Maglietta', Validators.required],
     comment: ['']
   });
 
