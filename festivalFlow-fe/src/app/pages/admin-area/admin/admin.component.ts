@@ -135,4 +135,10 @@ export class AdminComponent implements OnInit {
       subject: ''
     }
   }
+
+  deleteCurrentDay() {
+    this.dayService.deleteDayById(this.currentDayId).pipe().subscribe(() => {
+      this.router.navigate(['/admin'])
+    })
+  }
 }
