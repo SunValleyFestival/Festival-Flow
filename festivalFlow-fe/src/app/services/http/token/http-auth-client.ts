@@ -8,7 +8,8 @@ export class HttpAuthClient {
 
   constructor(private http: HttpClient,
               private cookiesService: CookiesService,
-              ) {}
+  ) {
+  }
 
 
   get(url: string): Observable<any> {

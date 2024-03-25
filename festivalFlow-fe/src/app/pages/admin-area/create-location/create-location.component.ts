@@ -14,11 +14,13 @@ import {FormBuilder, Validators} from "@angular/forms";
 export class CreateLocationComponent implements OnInit {
   protected dataError: boolean = false;
   protected days: Day[] = [];
+  protected image: File = {} as File;
 
   protected locationForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
-    day: ['', Validators.required]
+    image: [null, Validators.required],
+    day: ['', [Validators.required]]
   });
 
   constructor(
@@ -37,8 +39,13 @@ export class CreateLocationComponent implements OnInit {
 
 
   submitData() {
-    this.locationService.createLocation(this.getLocationFromForm()).pipe().subscribe();
-    this.router.navigate(['/admin']);
+    this.locationService.createLocation(this.getLocationFromForm()).pipe().subscribe((location: Location) => {
+      if (location.id != null) {
+        this.locationService.uploadImage(this.image, location.id).pipe().subscribe(() => {
+          this.router.navigate(['/admin']);
+        });
+      }
+    });
   }
 
   getLocationFromForm(): Location {
@@ -56,6 +63,14 @@ export class CreateLocationComponent implements OnInit {
       };
     } else {
       return {} as Location;
+    }
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.image = file;
+      console.log(file)
     }
   }
 

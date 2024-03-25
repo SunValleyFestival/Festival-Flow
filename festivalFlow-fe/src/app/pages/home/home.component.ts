@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  sanitizeImageUrl(imageUrl: string | undefined) {
+  sanitizeImageUrl(imageUrl: any | undefined) {
     if (imageUrl != undefined) {
       return this.sanitizerService.sanitizeImageUrl(imageUrl);
     }

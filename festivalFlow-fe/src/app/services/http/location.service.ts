@@ -31,6 +31,12 @@ export class LocationService {
     return this.http.post(ADMIN_BASE_URL + 'create', formData);
   }
 
+  uploadImage(image: File, locationId: number) {
+    const formData = new FormData();
+    formData.append('image', image);
+    return this.http.post(ADMIN_BASE_URL + 'upload-image/' + locationId, formData);
+  }
+
   updateLocation(location: Location) {
     return this.http.put(ADMIN_BASE_URL + 'update', location);
   }

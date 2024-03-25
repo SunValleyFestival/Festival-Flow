@@ -8,6 +8,7 @@ import {ShiftAvailabilityService} from "../../../services/http/shift-availabilit
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ExportService} from "../../../services/http/export.service";
 import {EmailRequest} from "../../../interfaces/EmailRequestEntity";
+import {SanitizerService} from "../../../services/utility/sanitizer.service";
 
 @Component({
   selector: 'app-admin',
@@ -41,7 +42,7 @@ export class AdminComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private exportService: ExportService,
-
+    private sanitizerService: SanitizerService
   ) {
   }
 
@@ -140,5 +141,12 @@ export class AdminComponent implements OnInit {
     this.dayService.deleteDayById(this.currentDayId).pipe().subscribe(() => {
       this.router.navigate(['/admin'])
     })
+  }
+
+  sanitizeImageUrl(imageUrl: any | undefined) {
+    if (imageUrl != undefined) {
+      return this.sanitizerService.sanitizeImageUrl(imageUrl);
+    }
+    return '';
   }
 }

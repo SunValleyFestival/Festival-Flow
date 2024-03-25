@@ -19,6 +19,9 @@ public class ShiftAvailabilityService {
   public ShiftAvailabilityView getAvailableSlotsByLocationId(int locationId) {
     var availableSlots = shiftAvailabilityRepository.getAvailableSlotsByLocationId(locationId);
     var shiftAvailability = new ShiftAvailabilityView();
+    if(availableSlots == null) {
+      return null;
+    }
     shiftAvailability.setAvailableSlots(availableSlots);
     shiftAvailability.setLocationId(locationId);
     return shiftAvailability;

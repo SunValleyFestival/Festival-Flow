@@ -23,7 +23,8 @@
           <div class="label">
             <span class="label-text">Immagine</span>
           </div>
-          <input class="file-input file-input-bordered" required type="file"/>
+          <input (change)="onFileSelected($event)" [ngClass]="{'file-input-error': locationForm.get('image')?.invalid && locationForm.get('image')?.touched}"
+                 accept="image/*" class="file-input file-input-bordered" formControlName="image" required type="file"/>
         </label>
 
         <label class="form-control w-1/3">
