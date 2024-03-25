@@ -2,11 +2,9 @@ package com.sunvalley.festivalFlowbe.service;
 
 import com.sunvalley.festivalFlowbe.entity.ShiftEntity;
 import com.sunvalley.festivalFlowbe.repository.ShiftRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -14,19 +12,10 @@ public class ShiftService {
 
     private final ShiftRepository shiftRepository;
 
-    private final LocationService locationService;
-
-    private final CollaboratorService collaboratorService;
-
 
     public List<ShiftEntity> getShiftsByLocationId(int id) {
         return shiftRepository.findByLocationId(id);
     }
-
-    public List<ShiftEntity> finAllByLocationIdAndOnlyAdult(int id, boolean onlyAdult) {
-        return shiftRepository.findAllByLocationIdAndOnlyAdult(id, onlyAdult);
-    }
-
 
     public List<ShiftEntity> getAll() {
         return shiftRepository.findAll();
@@ -34,10 +23,6 @@ public class ShiftService {
 
     public ShiftEntity getById(int id) {
         return shiftRepository.findById(id).orElse(null);
-    }
-
-    public ShiftEntity getByIdOnlyAdult(int id) {
-        return shiftRepository.findByIdOnlyAduldt(id);
     }
 
     public void deleteById(int id) {
