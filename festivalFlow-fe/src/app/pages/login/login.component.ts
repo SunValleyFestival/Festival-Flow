@@ -14,6 +14,8 @@ export class LoginComponent implements OnInit {
   protected isEmailInserted: boolean = false;
   protected isDateInserted: boolean = false;
   protected buttonDisabled: boolean = false;
+  protected loginError: boolean = false;
+  protected errorDescription: string = '';
 
   protected loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -61,6 +63,9 @@ export class LoginComponent implements OnInit {
             this.buttonDisabled = false;
             this.isEmailInserted = true;
           }
+        } else {
+          this.buttonDisabled = false;
+          this.showError('Errore interno per favore riprovare più tardi');
         }
       }
     );
@@ -80,6 +85,9 @@ export class LoginComponent implements OnInit {
           this.cookiesService.setUserId(String(authEntity.userId));
           this.isDateInserted = true;
           this.buttonDisabled = false;
+        } else {
+          this.buttonDisabled = false;
+          this.showError('Errore interno per favore riprovare più tardi');
         }
       }
     );
@@ -89,13 +97,27 @@ export class LoginComponent implements OnInit {
   login() {
     this.buttonDisabled = true;
     this.tokenService.loginConfirm(this.cookiesService.getUserId(), this.loginForm.value.code ? this.loginForm.value.code : '').subscribe(response => {
-      if (response !== undefined && response.valid) {
-        this.cookiesService.setToken(String(response.token));
-        this.buttonDisabled = false;
-        this.navigationService.goToHome();
+      if (response !== undefined) {
+        if (response.valid) {
+          this.cookiesService.setToken(String(response.token));
+          this.buttonDisabled = false;
+          this.navigationService.goToHome();
+        } else {
+          this.buttonDisabled = false;
+          this.showError('Codice inserito non valido');
+        }
       } else {
         this.buttonDisabled = false;
+        this.showError('Errore interno per favore riprovare più tardi');
       }
     });
+  }
+
+  showError(error: string) {
+    this.errorDescription = error;
+    this.loginError = true;
+    setTimeout(() => {
+      this.loginError = false;
+    }, 3000);
   }
 }
