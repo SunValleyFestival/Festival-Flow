@@ -18,7 +18,9 @@ export class CreateLocationComponent implements OnInit {
   protected locationForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
-    day: ['', Validators.required]
+    day: ['', Validators.required],
+    manager: [''],
+    adultsOnly: [false],
   });
 
   constructor(
@@ -45,11 +47,15 @@ export class CreateLocationComponent implements OnInit {
     let name = this.locationForm.get('name')?.value;
     let description = this.locationForm.get('description')?.value;
     let id = this.locationForm.get('day')?.value;
+    let manager = this.locationForm.get('manager')?.value;
+    let adultsOnly = this.locationForm.get('adultsOnly')?.value;
 
-    if (name && description && id) {
+    if (name && description && id && manager && adultsOnly) {
       return {
         name: name,
         description: description,
+        manager: manager,
+        adultsOnly: adultsOnly,
         day: {
           id: Number(id)
         }
