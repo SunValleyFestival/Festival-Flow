@@ -1,18 +1,34 @@
 <div>
   <app-header></app-header>
-  <div *ngIf="dataError" class="alert alert-error" role="alert">
-    <svg class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-    </svg>
-    <span>Errore! Dati inseriti incompleti!</span>
+  <div *ngIf="dataError" class="displayerror">
+    <div class="alert alert-error" role="alert">
+      <svg class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
+              stroke-linejoin="round" stroke-width="2"/>
+      </svg>
+      <span>Errore! Dati inseriti incompleti!</span>
+    </div>
   </div>
+
+
+  <div class="displayerror" *ngIf="locked">
+    <div role="alert" class="alert alert-error">
+      <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <span>Iscrizioni bloccate!</span>
+    </div>
+  </div>
+
   <div class="wrapper flex flex-col lg:flex-row-reverse sm:overflow-scroll">
     <div class="lg:order-2 h-full mt-5">
       <div class="card bg-white ml-5 shadow filter text-black">
         <div class="card-body">
           <h2 class="card-title">Azioni</h2>
 
-          <select [(ngModel)]='currentDayId' #id class="select select-bordered w-full max-w-xs" (change)="changeDayAdmin(id.value)">
+          <select [(ngModel)]='currentDayId' #id class="select select-bordered w-full max-w-xs"
+                  (change)="changeDayAdmin(id.value)">
             <option *ngFor="let day of days" [value]="day.id">{{ day.name }}</option>
           </select>
 
@@ -20,10 +36,11 @@
             <div class="label">
               <span class="label-text">Postazione</span>
             </div>
-            <input (keyup)="filterLocation()" [(ngModel)]="nameToFilter" class="input input-bordered w-full max-w-xs" placeholder="Inserisci postazione..." type="text"/>
+            <input (keyup)="filterLocation()" [(ngModel)]="nameToFilter" class="input input-bordered w-full max-w-xs"
+                   placeholder="Inserisci postazione..." type="text"/>
           </label>
 
-          <button (click)="filterLocation()" class="btn btn-primary">
+          <button (click)="filterLocation()" class="btn btn-secondary">
             Cerca
           </button>
 
@@ -45,13 +62,23 @@
           <button (click)="deleteCurrentDay()" class="btn btn-error">Elimina giorno</button>
 
 
+          <br>
+          <div class="form-control w-52">
+            <label class="cursor-pointer label">
+              <span class="label-text">Blocco iscrizioni</span>
+              <input type="checkbox" class="toggle toggle-error" [checked]="locked" (click)="togleLock()"/>
+            </label>
+          </div>
+
         </div>
       </div>
     </div>
     <div class="flex-grow lg:order-1">
       <div class="flex flex-col items-center md:overflow-scroll h-mobile" style="">
-        <div *ngFor="let location of filteredLocations; index as i" class="card lg:card-side bg-white text-black shadow md:w-2/3 my-5 mx-5">
-          <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album"/></figure>
+        <div *ngFor="let location of filteredLocations; index as i"
+             class="card lg:card-side bg-white text-black shadow md:w-2/3 my-5 mx-5">
+          <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album"/>
+          </figure>
           <div class="card-body">
             <h2 class="card-title">{{ location.name }}</h2>
             <div class="join gap-2">
@@ -83,14 +110,17 @@
       <form [formGroup]="dayForm" class="mt-2" method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 
-        <label [ngClass]="{'input-error': dayForm.get('name')?.invalid && dayForm.get('name')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
+        <label [ngClass]="{'input-error': dayForm.get('name')?.invalid && dayForm.get('name')?.touched}"
+               class="input input-bordered flex items-center mt-2 gap-2">
           Nome:
           <input class="grow bg-base-100" formControlName="name" name="name" placeholder="Lunedì" required type="text"/>
         </label>
 
-        <label [ngClass]="{'input-error': dayForm.get('description')?.invalid && dayForm.get('description')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
+        <label [ngClass]="{'input-error': dayForm.get('description')?.invalid && dayForm.get('description')?.touched}"
+               class="input input-bordered flex items-center mt-2 gap-2">
           Descrizione:
-          <input class="grow bg-base-100" formControlName="description" name="description" placeholder="Descrizione del giorno" required type="text"/>
+          <input class="grow bg-base-100" formControlName="description" name="description"
+                 placeholder="Descrizione del giorno" required type="text"/>
         </label>
         <div class="mt-2 w-full flex justify-end">
           <button (click)="submitData()" [disabled]="buttonDisabled ||dayForm.invalid" class="btn">Conferma</button>
@@ -108,9 +138,11 @@
       <form [formGroup]="exportForm" class="mt-2" method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 
-        <label [ngClass]="{'input-error': exportForm.get('email')?.invalid && exportForm.get('email')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
+        <label [ngClass]="{'input-error': exportForm.get('email')?.invalid && exportForm.get('email')?.touched}"
+               class="input input-bordered flex items-center mt-2 gap-2">
           Nome:
-          <input class="grow bg-base-100" formControlName="email" name="email" placeholder="mario.rossi@mail.com" required type="text"/>
+          <input class="grow bg-base-100" formControlName="email" name="email" placeholder="mario.rossi@mail.com"
+                 required type="text"/>
         </label>
 
         <div class="mt-2 w-full flex justify-end">
