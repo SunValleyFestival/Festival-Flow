@@ -17,12 +17,16 @@ public class ShiftService {
         return shiftRepository.findByLocationId(id);
     }
 
-    public List<ShiftEntity> getAll() {
-        return shiftRepository.findAll();
+    public List<ShiftEntity> findAllByLocationIdAndOnlyMinors(int id) {
+        return shiftRepository.findAllByLocationIdAndOnlyMinors(id);
     }
 
     public ShiftEntity getById(int id) {
         return shiftRepository.findById(id).orElse(null);
+    }
+
+    public ShiftEntity getByIdOnlyMinors(int id) {
+        return shiftRepository.findByIdOnlyMinors(id);
     }
 
     public void deleteById(int id) {
