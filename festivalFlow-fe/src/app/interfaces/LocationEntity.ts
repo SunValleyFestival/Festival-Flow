@@ -7,6 +7,7 @@ export interface Location {
   day: Day;
   adultsOnly?: boolean;
   manager?: string;
+  image?: string;
 }
 
 export interface LocationClient {
@@ -16,6 +17,7 @@ export interface LocationClient {
   day: Day;
   adultsOnly?: boolean;
   manager?: string;
+  image?: string;
   shiftAvailability: number;
 }
 

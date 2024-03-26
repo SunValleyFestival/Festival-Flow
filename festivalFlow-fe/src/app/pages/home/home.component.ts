@@ -5,6 +5,7 @@ import {DayService} from "../../services/http/day.service";
 import {LocationService} from "../../services/http/location.service";
 import {LocationClient} from "../../interfaces/LocationEntity";
 import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
+import {SanitizerService} from "../../services/utility/sanitizer.service";
 
 
 @Component({
@@ -25,6 +26,7 @@ export class HomeComponent implements OnInit {
     private locationService: LocationService,
     private shiftAvailabilityService: ShiftAvailabilityService,
     private route: ActivatedRoute,
+    private sanitizerService: SanitizerService
   ) {
   }
 
@@ -73,5 +75,12 @@ export class HomeComponent implements OnInit {
     this.filteredLocations = this.locations.filter(location => {
       return location.name.toLowerCase().includes(this.nameToFilter.toLowerCase());
     });
+  }
+
+  sanitizeImageUrl(imageUrl: any | undefined) {
+    if (imageUrl != undefined) {
+      return this.sanitizerService.sanitizeImageUrl(imageUrl);
+    }
+    return '';
   }
 }

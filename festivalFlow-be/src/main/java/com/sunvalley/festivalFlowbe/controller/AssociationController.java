@@ -60,16 +60,16 @@ public class AssociationController {
     @PostMapping(ASSOCIATION + "create")
     public ResponseEntity<AssociationEntity> create(@RequestBody AssociationEntity associationEntity, @RequestHeader("Authorization") String token) throws ParseException {
         if (!jwtTokenProviderService.getUserIdFromToken(token).equals(associationEntity.getId().getCollaboratorId()) || configurationService.getByName("lock")) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
         } else {
             if (associationService.getByCollaboratorIdAndShiftId(associationEntity.getId().getCollaboratorId(), associationEntity.getId().getShiftId()) != null) {
                 return new ResponseEntity<>(HttpStatus.ALREADY_REPORTED);
             } else if (shiftAvailabilityService.getByShiftId(associationEntity.getId().getShiftId()).getAvailableSlots() <= 0) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             } else {
                 if (shiftService.getById(associationEntity.getId().getShiftId()).getLocation().isAdultsOnly()) {
                     if (collaboratorService.isMinor(associationEntity.getId().getCollaboratorId())) {
-                        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+                        return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
                     }
                 }
                 associationEntity.setStatus(Status.ACCEPTED);
