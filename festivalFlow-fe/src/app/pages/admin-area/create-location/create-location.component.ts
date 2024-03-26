@@ -57,7 +57,9 @@ export class CreateLocationComponent implements OnInit {
     let manager = this.locationForm.get('manager')?.value;
     let adultsOnly = this.locationForm.get('adultsOnly')?.value;
 
-    if (name && description && id && manager && adultsOnly) {
+    console.log(this.locationForm);
+
+    if (name && description && id && manager && adultsOnly != undefined) {
       return {
         name: name,
         description: description,
