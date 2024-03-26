@@ -66,7 +66,7 @@ export class ManageLocationComponent implements OnInit {
     console.log('delete shift');
     if (shift !== undefined) {
       this.shiftService.deleteShift(shift).pipe().subscribe(() => {
-        this.ngOnInit();
+        window.location.reload();
       });
     }
   }
