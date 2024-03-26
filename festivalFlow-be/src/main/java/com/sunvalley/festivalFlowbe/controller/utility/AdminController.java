@@ -43,6 +43,11 @@ public class AdminController {
         return null;
     }
 
+    @GetMapping("lock")
+    public ResponseEntity<Boolean> isLocked() {
+        return new ResponseEntity<>(configurationService.getByName("lock"), HttpStatus.OK);
+    }
+
     @PostMapping("lock")
     public ResponseEntity<String> lock() {
         configurationService.updateByName("lock", true);
