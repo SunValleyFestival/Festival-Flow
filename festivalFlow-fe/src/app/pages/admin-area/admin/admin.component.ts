@@ -43,7 +43,6 @@ export class AdminComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private adminService: AdminService,
-    private exportService: ExportService,
     private sanitizerService: SanitizerService
   ) {
   }
