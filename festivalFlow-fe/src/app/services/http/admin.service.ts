@@ -8,13 +8,21 @@ const ADMIN_BASE_URL = environment.adminBaseUrl;
 @Injectable({
   providedIn: 'root'
 })
-export class ExportService {
+export class AdminService {
 
   constructor(private http: HttpAuthClient) {
   }
 
   exportByMail(email: EmailRequest){
     return this.http.post(ADMIN_BASE_URL + "/export", email);
+  }
+
+  getLockStatus(){
+    return this.http.get(ADMIN_BASE_URL + "/lock/get");
+  }
+
+  setLockStatus(status: boolean){
+    return this.http.post(ADMIN_BASE_URL + "/lock", status);
   }
 
 }

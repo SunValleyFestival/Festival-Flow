@@ -6,7 +6,7 @@ import {DayService} from "../../../services/http/day.service";
 import {LocationService} from "../../../services/http/location.service";
 import {ShiftAvailabilityService} from "../../../services/http/shift-availability.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ExportService} from "../../../services/http/export.service";
+import {AdminService} from "../../../services/http/admin.service";
 import {EmailRequest} from "../../../interfaces/EmailRequestEntity";
 import {SanitizerService} from "../../../services/utility/sanitizer.service";
 
@@ -23,6 +23,7 @@ export class AdminComponent implements OnInit {
   protected dataError: boolean = false;
   protected nameToFilter: string = '';
   protected buttonDisabled: boolean = false;
+  protected locked: boolean = false;
 
 
   protected exportForm: FormGroup = this.fb.group({
@@ -41,6 +42,7 @@ export class AdminComponent implements OnInit {
     private shiftAvailabilityService: ShiftAvailabilityService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
+    private adminService: AdminService,
     private exportService: ExportService,
     private sanitizerService: SanitizerService
   ) {
@@ -59,6 +61,10 @@ export class AdminComponent implements OnInit {
           }
         }
       });
+    });
+
+    this.adminService.getLockStatus().pipe().subscribe((locked: boolean) => {
+      this.locked = locked;
     });
   }
 
@@ -96,10 +102,10 @@ export class AdminComponent implements OnInit {
   }
 
   deleteLocation(location: Location | undefined) {
-      if(location !== undefined) {
-        this.locationService.deleteLocation(location).pipe().subscribe();
-        this.ngOnInit();
-      }
+    if (location !== undefined) {
+      this.locationService.deleteLocation(location).pipe().subscribe();
+      this.ngOnInit();
+    }
   }
 
   submitData() {
@@ -124,7 +130,7 @@ export class AdminComponent implements OnInit {
 
   submitEmailToExport() {
 
-    this.exportService.exportByMail(this.getEmailRequestFromForm()).pipe().subscribe();
+    this.adminService.exportByMail(this.getEmailRequestFromForm()).pipe().subscribe();
     this.buttonDisabled = true;
     //window.location.reload();
   }
@@ -141,6 +147,12 @@ export class AdminComponent implements OnInit {
     this.dayService.deleteDayById(this.currentDayId).pipe().subscribe(() => {
       this.router.navigate(['/admin'])
     })
+  }
+
+  togleLock() {
+    this.adminService.setLockStatus(!this.locked).pipe().subscribe((locked: boolean) => {
+      this.locked = locked;
+    });
   }
 
   sanitizeImageUrl(imageUrl: any | undefined) {
