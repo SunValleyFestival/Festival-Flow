@@ -2,6 +2,7 @@ package com.sunvalley.festivalFlowbe.service;
 
 import com.sunvalley.festivalFlowbe.entity.DayEntity;
 import com.sunvalley.festivalFlowbe.repository.DayRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,13 +10,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class DayService {
     private final DayRepository dayRepository;
-
-    @Autowired
-    public DayService(DayRepository dayRepository) {
-        this.dayRepository = dayRepository;
-    }
 
     public DayEntity getDayById(int id) {
         return dayRepository.findById(id).orElse(null);

@@ -1,30 +1,36 @@
 package com.sunvalley.festivalFlowbe.service;
 
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
+import com.sunvalley.festivalFlowbe.entity.utility.AuthEntity;
 import com.sunvalley.festivalFlowbe.repository.CollaboratorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Date;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
+@RequiredArgsConstructor
 public class CollaboratorService {
 
     private final CollaboratorRepository collaboratorRepository;
 
-    @Autowired
-    public CollaboratorService(CollaboratorRepository collaboratorRepository) {
-        this.collaboratorRepository = collaboratorRepository;
-    }
+    PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
+
 
     public List<CollaboratorEntity> getAll() {
         return collaboratorRepository.findAll();
     }
 
-    public void createIfExistByEmail(String email) {
-        if (null == collaboratorRepository.getIdByEmail(email)) {
+    public void createIfExistByEmail(AuthEntity authEntity) {
+        if (null == collaboratorRepository.getIdByEmail(authEntity.getEmail())) {
             CollaboratorEntity collaborator = new CollaboratorEntity();
-            collaborator.setEmail(email);
+            collaborator.setEmail(authEntity.getEmail());
+
+            if (authEntity.getDate() != null) {
+                collaborator.setAge(authEntity.getDate());
+            }
+
             collaboratorRepository.save(collaborator);
         }
     }
@@ -54,4 +60,39 @@ public class CollaboratorService {
         return collaboratorRepository.save(collaborator);
     }
 
+    public List<CollaboratorEntity> findCollaboratorEntitiesWhereIsPopulated() {
+        return collaboratorRepository.findCollaboratorEntitiesWhereIsPopulated();
+    }
+
+    public List<CollaboratorEntity> findCollaboratorEntitiesWhereIsPopulatedAndAssociationAccepted() {
+        return collaboratorRepository.findCollaboratorEntitiesWhereIsPopulatedAndAssociationAccepted();
+    }
+
+    public List<CollaboratorEntity> findCollaboratorEntitiesWhereIsPopulatedAndAssociationAcceptedByShiftId(int shiftId) {
+        return collaboratorRepository.findCollaboratorEntitiesWhereIsPopulatedAndAssociationAcceptedByShiftId(shiftId);
+    }
+
+    public boolean phoneIsValid(String phone) {
+        return phoneNumberUtil.isPossibleNumber(phone, "CH") || phoneNumberUtil.isPossibleNumber(phone, "IT");
+
+    }
+
+    public boolean existsByEmail(final String email) {
+        return collaboratorRepository.existsByEmail(email);
+    }
+    public boolean isMinor(int id) {
+        try {
+            Date dataNascita = collaboratorRepository.findById(id).get().getAge();
+            long differenzaMillisecondi = new Date().getTime() - dataNascita.getTime();
+            long anni = differenzaMillisecondi / (1000L * 60 * 60 * 24 * 365);
+            return anni < 18;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
+
+    public Date getDateByEmail(final String email) {
+        return collaboratorRepository.findByEmail(email).getAge();
+    }
 }

@@ -8,6 +8,7 @@ import com.sunvalley.festivalFlowbe.service.ShiftService;
 import io.micrometer.common.util.StringUtils;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -15,10 +16,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-@Service
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class EmailService {
 
     private final JavaMailSender mailSender;
@@ -32,12 +32,6 @@ public class EmailService {
     @Value("${spring.mail.properties.test-receiver}")
     private String testReceiver;
 
-    public EmailService(JavaMailSender mailSender, CollaboratorService collaboratorService, ShiftService shiftService) {
-        this.mailSender = mailSender;
-        this.collaboratorService = collaboratorService;
-        this.shiftService = shiftService;
-    }
-
     public boolean sendEmail(EmailRequest emailRequest) {
         log.info("Sending email to <{}> with subject<{}>...", emailRequest.getTo(), emailRequest.getSubject());
 
@@ -50,6 +44,22 @@ public class EmailService {
         return sendMimeMessage(emailRequest);
     }
 
+    public boolean sendExport(String email, Attachment attachment) {
+
+        if (!enabled) {
+            log.info("Send email disabled, check configuration");
+            return false;
+        }
+
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setTo(email);
+        emailRequest.setSubject("Export");
+        emailRequest.setMessage("Export");
+
+//        addTestReceiverIfConfigured(emailRequest);
+        return sendMimeMessageExport(emailRequest, attachment);
+    }
+
     public boolean sendCodeViaEmail(String code, int userId) {
         log.info("Sending code to user <{}>...", userId);
         var emailRequest = new EmailRequest();
@@ -58,10 +68,10 @@ public class EmailService {
             return false;
         }
         emailRequest.setTo(email);
-        emailRequest.setSubject("Verification Code");
+        emailRequest.setSubject("Codice di verifica");
 
         //add message with link
-        emailRequest.setMessage("Your verification code is: " + code);
+        emailRequest.setMessage("Il tuo codice di verifica é: " + code + "<br><br> Il team di SVF");
         return sendEmail(emailRequest);
 
     }
@@ -73,15 +83,15 @@ public class EmailService {
         switch (status) {
             case ACCEPTED:
                 emailRequest.setSubject("Turno accettato!");
-                emailRequest.setMessage("Il tuo turno: "+shiftService.getById(shiftId).getName() + " è stato accettato \n Il tuo turno inizia alle: "+shiftService.getById(shiftId).getStartTime()+" e finisce alle: "+shiftService.getById(shiftId).getEndTime()+"\n localhost:4200/collaborator \n\n Grazie per la tua collaborazione \n Il team di SVF");
+                emailRequest.setMessage("Il tuo turno: " + shiftService.getById(shiftId).getName() + " è stato accettato <br> Il tuo turno inizia alle: " + shiftService.getById(shiftId).getStartTime() + " e finisce alle: " + shiftService.getById(shiftId).getEndTime() + "<br> localhost:4200/collaborator <br><br> Grazie per la tua collaborazione <br> Il team di SVF");
                 break;
             case REJECTED:
                 emailRequest.setSubject("Turno rifiutato!");
-                emailRequest.setMessage("Il tuo turno: "+shiftService.getById(shiftId).getName() + " è stato rifiutato \n Il tuo turno sarebbe iniziato alle: "+shiftService.getById(shiftId).getStartTime()+" e finito alle: "+shiftService.getById(shiftId).getEndTime()+"\n localhost:4200/collaborator \n\n Grazie per la tua collaborazione \n Il team di SVF");
+                emailRequest.setMessage("Il tuo turno: " + shiftService.getById(shiftId).getName() + " è stato rifiutato <br> Il tuo turno sarebbe iniziato alle: " + shiftService.getById(shiftId).getStartTime() + " e finito alle: " + shiftService.getById(shiftId).getEndTime() + "<br> localhost:4200/collaborator <br><br> Grazie per la tua collaborazione <br> Il team di SVF");
                 break;
             case PENDING:
                 emailRequest.setSubject("Turno in attesa!");
-                emailRequest.setMessage("Il tuo turno: "+shiftService.getById(shiftId).getName() + " è in attesa di approvazione \n Il tuo turno inizia alle: "+shiftService.getById(shiftId).getStartTime()+" e finisce alle: "+shiftService.getById(shiftId).getEndTime()+"\n localhost:4200/collaborator \n\n Grazie per la tua collaborazione \n Il team di SVF");
+                emailRequest.setMessage("Il tuo turno: " + shiftService.getById(shiftId).getName() + " è in attesa di approvazione \n Il tuo turno inizia alle: " + shiftService.getById(shiftId).getStartTime() + " e finisce alle: " + shiftService.getById(shiftId).getEndTime() + "<br> localhost:4200/collaborator <br> Grazie per la tua collaborazione <br> Il team di SVF");
                 break;
             default:
                 log.error("Invalid status");
@@ -96,6 +106,23 @@ public class EmailService {
         try {
             var helper = getMimeMessageHelper(emailRequest, mimeMessage);
             //addAttachments(helper, emailRequest.getAttachments());
+
+            mailSender.send(mimeMessage);
+            log.info("Email sent");
+            return true;
+
+        } catch (MessagingException e) {
+            log.error("Error sending email", e);
+            return false;
+        }
+    }
+
+    private boolean sendMimeMessageExport(EmailRequest emailRequest, Attachment attachment) {
+        var mimeMessage = mailSender.createMimeMessage();
+        try {
+            var helper = getMimeMessageHelper(emailRequest, mimeMessage);
+
+            addAttachments(helper, attachment);
 
             mailSender.send(mimeMessage);
             log.info("Email sent");
@@ -124,10 +151,8 @@ public class EmailService {
         }
     }
 
-    private void addAttachments(MimeMessageHelper helper, List<Attachment> attachments) {
-        if (!attachments.isEmpty()) {
-            attachments.forEach(attachment -> addAttachment(helper, attachment));
-        }
+    private void addAttachments(MimeMessageHelper helper, Attachment attachment) {
+        addAttachment(helper, attachment);
     }
 
     private void addAttachment(MimeMessageHelper helper, Attachment attachment) {

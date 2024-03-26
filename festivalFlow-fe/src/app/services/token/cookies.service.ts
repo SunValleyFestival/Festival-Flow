@@ -12,7 +12,9 @@ export class CookiesService {
   }
 
   setUserId(userId: string) {
-    this.cookieService.set('userId', userId);
+    this.cookieService.set('userId', userId, {
+      path: '/'
+    });
   }
 
   getUserId(): number {
@@ -20,7 +22,9 @@ export class CookiesService {
   }
 
   setToken(token: string) {
-    this.cookieService.set('token', token);
+    this.cookieService.set('token', token, {
+      path: '/'
+    });
   }
 
   getToken() {

@@ -22,4 +22,8 @@ export class DayService {
   saveDay(day: Day) {
     return this.http.post(ADMIN_BASE_URL + 'create', day);
   }
+
+  deleteDayById(currentDayId: number) {
+    return this.http.delete(ADMIN_BASE_URL + currentDayId, null);
+  }
 }

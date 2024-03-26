@@ -3,9 +3,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Day} from "../../interfaces/DayEntity";
 import {DayService} from "../../services/http/day.service";
 import {LocationService} from "../../services/http/location.service";
-import {Location} from "../../interfaces/LocationEntity";
+import {LocationClient} from "../../interfaces/LocationEntity";
 import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
-import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
 
 
 @Component({
@@ -15,10 +14,9 @@ import {ShiftAvailability} from "../../interfaces/ShiftAvailabilityView";
 })
 export class HomeComponent implements OnInit {
   protected days: Day[] = [];
-  protected locations: Location[] = [];
-  protected filteredLocations: Location[] = [];
+  protected locations: LocationClient[] = [];
+  protected filteredLocations: LocationClient[] = [];
   protected currentDayId: number = 0;
-  protected locationAvailability: ShiftAvailability[] = [];
   protected nameToFilter: string = '';
 
   constructor(
@@ -44,6 +42,7 @@ export class HomeComponent implements OnInit {
         }
       });
     });
+
   }
 
   changeDay(value: string) {
@@ -62,18 +61,15 @@ export class HomeComponent implements OnInit {
       this.locations = locations;
       this.filteredLocations = locations;
 
-      this.locationAvailability = [];
-
-      for (let location of this.locations){
+      for (let location of locations) {
         this.shiftAvailabilityService.getAvailableSlotsByLocationId(location.id).pipe().subscribe((shiftAvailability: any) => {
-          this.locationAvailability.push(shiftAvailability);
+          location.shiftAvailability = shiftAvailability.availableSlots
         });
       }
     });
   }
 
   filterLocation() {
-    console.log(this.nameToFilter);
     this.filteredLocations = this.locations.filter(location => {
       return location.name.toLowerCase().includes(this.nameToFilter.toLowerCase());
     });

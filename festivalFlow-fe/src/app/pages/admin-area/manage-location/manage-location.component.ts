@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Shift} from "../../../interfaces/ShiftEntity";
-import {Location} from "../../../interfaces/LocationEntity";
-import {timer} from "rxjs";
 import {ShiftService} from "../../../services/http/shift.service";
 import {ActivatedRoute} from "@angular/router";
-import {CollaboratorService} from "../../../services/http/collaborator.service";
 import {Association} from "../../../interfaces/AssociationEntity";
 import {AssociationService} from "../../../services/http/association.service";
 import {AssociationAdmin} from "../../../interfaces/AssociationAdminEntity";
+import {FormBuilder, Validators} from "@angular/forms";
+import {LocationService} from "../../../services/http/location.service";
+import {Location} from "../../../interfaces/LocationEntity";
 
 @Component({
   selector: 'app-manage-location',
@@ -15,26 +15,26 @@ import {AssociationAdmin} from "../../../interfaces/AssociationAdminEntity";
   styleUrls: ['./manage-location.component.css']
 })
 export class ManageLocationComponent implements OnInit {
-  protected dataError: boolean = false;
-  protected locationName: string = '';
   protected shifts: Shift[] = [];
-
+  protected locationId!: number;
   protected adminAssociations: AssociationAdmin[] = [];
+  protected location!: Location;
 
-  formData: Shift = {
-    name: '',
-    description: '',
-    location: {} as Location,
-    startTime: '',
-    endTime: '',
-    maxCollaborator: 0
-  }
+
+  protected shiftForm = this.fb.group({
+    name: ['', [Validators.required]],
+    description: ['', Validators.required],
+    startTime: ['', Validators.required],
+    endTime: ['', Validators.required],
+    maxCollaborator: ['', Validators.required]
+  });
 
   constructor(
     private shiftService: ShiftService,
     protected associationService: AssociationService,
     private route: ActivatedRoute,
-    protected collaboratorService: CollaboratorService
+    private fb: FormBuilder,
+    private locationService: LocationService
   ) {
 
   }
@@ -42,39 +42,24 @@ export class ManageLocationComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       if (params['location']) {
-        this.formData.location.id = params['location'];
+        this.locationId = params['location'];
+        this.locationService.getLocationById(this.locationId).subscribe((location) => {
+          this.location = location;
+        });
 
-        this.shiftService.getShiftsByLocationId(params['location']).subscribe((shifts: Shift[]) => {
+
+        this.shiftService.getShiftsByLocationId(this.locationId).subscribe((shifts: Shift[]) => {
           this.shifts = shifts;
         });
       }
-      if (params['name']) {
-        this.locationName = params['name'];
-      }
-
     });
   }
 
   submitData() {
-    if (this.checkData()) {
-      return;
-    }
+    this.shiftService.createShift(this.getShiftFromFormData()).pipe().subscribe(() => {
+      this.ngOnInit();
+    });
 
-    this.shiftService.createShift(this.formData).pipe().subscribe();
-  }
-
-  checkData(): boolean {
-    let error = this.formData.name === '' || this.formData.description === '' || this.formData.startTime === '' || this.formData.endTime === '' || this.formData.maxCollaborator === 0;
-
-    this.dataError = error;
-
-    if (error) {
-      timer(5000).subscribe(() => {
-        this.dataError = false;
-      });
-    }
-
-    return error;
   }
 
   deleteShift(shift: Shift | undefined) {
@@ -92,7 +77,7 @@ export class ManageLocationComponent implements OnInit {
           shiftId: shift_id
         },
       }
-      this.associationService.rejectAssociation(association).pipe().subscribe();
+      this.associationService.rejectAssociation(association).pipe().subscribe(() => this.ngOnInit());
     }
   }
 
@@ -106,7 +91,7 @@ export class ManageLocationComponent implements OnInit {
         status: 0
       }
 
-      this.associationService.approveAssociation(association).pipe().subscribe();
+      this.associationService.approveAssociation(association).pipe().subscribe(() => this.ngOnInit());
     }
   }
 
@@ -114,9 +99,36 @@ export class ManageLocationComponent implements OnInit {
   getSelectedShiftAssociations(shiftId: number | undefined) {
     if (shiftId !== undefined) {
       this.associationService.getAdminAssociationByShiftId(shiftId).pipe().subscribe((associations: AssociationAdmin[]) => {
-        this.adminAssociations = associations;
+        this.adminAssociations = associations.filter(association => association.status !== 'REJECTED');
       });
     }
   }
 
+  getShiftFromFormData(): Shift {
+    let name = this.shiftForm.get('name')?.value;
+    let description = this.shiftForm.get('description')?.value;
+    let startTime = this.shiftForm.get('startTime')?.value;
+    let endTime = this.shiftForm.get('endTime')?.value;
+    let maxCollaborator = this.shiftForm.get('maxCollaborator')?.value;
+
+    if (name && description && startTime && endTime && maxCollaborator && this.locationId) {
+      return {
+        name: name,
+        description: description,
+        startTime: startTime,
+        endTime: endTime,
+        maxCollaborator: Number(maxCollaborator),
+        location: {
+          id: this.locationId
+        },
+      } as Shift;
+    }
+    return {} as Shift;
+  }
+
+  reloadManager() {
+    this.locationService.updateLocation(this.location).pipe().subscribe(() => {
+      this.ngOnInit()
+    });
+  }
 }

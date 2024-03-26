@@ -13,7 +13,7 @@
             <div class="label">
               <span class="label-text">Postazione</span>
             </div>
-            <input (change)="filterLocation()" [(ngModel)]="nameToFilter" class="input input-bordered w-full max-w-xs" placeholder="Inserisci postazione..." type="text"/>
+            <input (keyup)="filterLocation()" [(ngModel)]="nameToFilter" class="input input-bordered w-full max-w-xs" placeholder="Inserisci postazione..." type="text"/>
           </label>
 
           <button (click)="filterLocation()" class="btn btn-primary">
@@ -29,10 +29,14 @@
           <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album"/></figure>
           <div class="card-body">
             <h2 class="card-title">{{ location.name }}</h2>
-            <div role="alert" class="alert bg-gray-50 border-accent w-fit">
-              <img src="../../../assets/icons/group.svg" alt="group">
-              <div *ngFor="let availability of locationAvailability" class="w-fit">
-                <span *ngIf="availability.locationId === location.id">{{ availability.availableSlots }} Rimanenti</span>
+            <div class="join gap-2">
+              <div class="alert bg-gray-50 border-accent w-fit" role="alert">
+                <img alt="group" src="../../../assets/icons/group.svg">
+                <span>{{ location.shiftAvailability }} Rimanenti</span>
+              </div>
+              <div *ngIf="location.manager" class="alert bg-gray-50 border-accent w-fit" role="alert">
+                <img alt="group" src="../../../assets/icons/manager.svg">
+                <span>{{ location.manager }}</span>
               </div>
             </div>
             <p>{{ location.description }}</p>

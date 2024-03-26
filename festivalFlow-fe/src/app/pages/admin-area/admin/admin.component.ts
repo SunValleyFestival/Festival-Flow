@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Day} from "../../../interfaces/DayEntity";
-import {Location} from "../../../interfaces/LocationEntity";
-import {ShiftAvailability} from "../../../interfaces/ShiftAvailabilityView";
+import {Location, LocationClient} from "../../../interfaces/LocationEntity";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DayService} from "../../../services/http/day.service";
 import {LocationService} from "../../../services/http/location.service";
 import {ShiftAvailabilityService} from "../../../services/http/shift-availability.service";
-import {timer} from "rxjs";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ExportService} from "../../../services/http/export.service";
+import {EmailRequest} from "../../../interfaces/EmailRequestEntity";
 
 @Component({
   selector: 'app-admin',
@@ -15,17 +16,22 @@ import {timer} from "rxjs";
 })
 export class AdminComponent implements OnInit {
   protected days: Day[] = [];
-  protected locations: Location[] = [];
-  protected filteredLocations: Location[] = [];
+  protected locations: LocationClient[] = [];
+  protected filteredLocations: LocationClient[] = [];
   protected currentDayId: number = 0;
-  protected locationAvailability: ShiftAvailability[] = [];
   protected dataError: boolean = false;
   protected nameToFilter: string = '';
+  protected buttonDisabled: boolean = false;
 
-  protected formData: Day = {
-    name: '',
-    description: ''
-  };
+
+  protected exportForm: FormGroup = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+  });
+
+  protected dayForm: FormGroup = this.fb.group({
+    name: ['', Validators.required],
+    description: ['', Validators.required]
+  });
 
   constructor(
     private router: Router,
@@ -33,6 +39,9 @@ export class AdminComponent implements OnInit {
     private locationService: LocationService,
     private shiftAvailabilityService: ShiftAvailabilityService,
     private route: ActivatedRoute,
+    private fb: FormBuilder,
+    private exportService: ExportService,
+
   ) {
   }
 
@@ -54,7 +63,7 @@ export class AdminComponent implements OnInit {
 
 
   openDetail(location: Location | undefined) {
-    this.router.navigate(['admin/location/' + location?.name + "/" + location?.id]);
+    this.router.navigate(['admin/location/' + location?.id]);
   }
 
   changeDayAdmin(dayId: string) {
@@ -69,11 +78,9 @@ export class AdminComponent implements OnInit {
       this.locations = locations;
       this.filteredLocations = locations;
 
-      this.locationAvailability = [];
-
-      for (let location of this.locations){
+      for (let location of locations) {
         this.shiftAvailabilityService.getAvailableSlotsByLocationId(location.id).pipe().subscribe((shiftAvailability: any) => {
-          this.locationAvailability.push(shiftAvailability);
+          location.shiftAvailability = shiftAvailability.availableSlots
         });
       }
     });
@@ -90,42 +97,48 @@ export class AdminComponent implements OnInit {
   deleteLocation(location: Location | undefined) {
       if(location !== undefined) {
         this.locationService.deleteLocation(location).pipe().subscribe();
-        window.location.reload();
+        this.ngOnInit();
       }
   }
 
   submitData() {
-    if (this.checkData()) return;
-
-    this.dayService.saveDay(this.formData).pipe().subscribe();
-    this.resetFormData();
-
-    window.location.reload();
+    this.dayService.saveDay(this.getDayFromForm()).pipe().subscribe(() => {
+      this.dayForm.reset();
+      this.ngOnInit();
+    });
   }
 
-  checkData(): boolean {
-    let error = this.formData.name === '' || this.formData.description === '';
-    this.dataError = error;
-    if (error) {
-      timer(5000).subscribe(() => {
-        this.dataError = false;
-      });
+  getDayFromForm(): Day {
+    return {
+      name: this.dayForm.get('name')?.value,
+      description: this.dayForm.get('description')?.value
     }
-
-    return error;
-  }
-
-  resetFormData() {
-    this.formData = {
-      name: '',
-      description: ''
-    };
   }
 
   filterLocation() {
-    console.log(this.nameToFilter);
     this.filteredLocations = this.locations.filter(location => {
       return location.name.toLowerCase().includes(this.nameToFilter.toLowerCase());
     });
+  }
+
+  submitEmailToExport() {
+
+    this.exportService.exportByMail(this.getEmailRequestFromForm()).pipe().subscribe();
+    this.buttonDisabled = true;
+    //window.location.reload();
+  }
+
+  getEmailRequestFromForm(): EmailRequest {
+    return {
+      to: this.exportForm.get('email')?.value,
+      description: '',
+      subject: ''
+    }
+  }
+
+  deleteCurrentDay() {
+    this.dayService.deleteDayById(this.currentDayId).pipe().subscribe(() => {
+      this.router.navigate(['/admin'])
+    })
   }
 }

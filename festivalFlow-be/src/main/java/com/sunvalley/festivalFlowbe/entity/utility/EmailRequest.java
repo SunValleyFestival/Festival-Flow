@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(staticName = "of")
 @Builder
 public class EmailRequest {
-
   private String to;
   private String subject;
   private String message;

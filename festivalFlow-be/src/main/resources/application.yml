@@ -19,12 +19,11 @@ spring:
         health:
           mail:
             enabled: false # health check at startup
-      test-receiver: aramis.grata@bluewin.ch
       mail:
         smtp:
           auth: true
           starttls:
-            enable: true
+            enable: false
           from: festivalflowsvf@thunderhosting.cloud
     test-connection: false
     protocol: smtps

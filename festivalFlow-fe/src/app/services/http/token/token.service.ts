@@ -18,9 +18,12 @@ export class TokenService {
   ) {
   }
 
-  public login(email: string): Observable<AuthEntity> {
-    let loginData: AuthEntity = {email};
-    return this.http.post<AuthEntity>(BASE_URL + "login", loginData);
+  public login(authEntity: AuthEntity): Observable<AuthEntity> {
+    return this.http.post<AuthEntity>(BASE_URL + "login", authEntity);
+  }
+
+  public loginMail(authEntity: AuthEntity): Observable<AuthEntity> {
+    return this.http.post<AuthEntity>(BASE_URL + "login/mail", authEntity);
   }
 
   public loginConfirm(userId: number, code: string): Observable<AuthEntity> {

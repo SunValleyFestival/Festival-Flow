@@ -1,6 +1,13 @@
 package com.sunvalley.festivalFlowbe.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,4 +33,10 @@ public class LocationEntity {
     @ManyToOne
     @JoinColumn(name = "day_id", referencedColumnName = "id")
     private DayEntity day;
+
+    @Column(name = "adultsOnly", nullable = false)
+    private boolean adultsOnly;
+
+  @Column(name = "manager")
+  private String manager;
 }

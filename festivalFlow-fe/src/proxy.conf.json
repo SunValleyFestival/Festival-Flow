@@ -1,6 +1,6 @@
 {
   "/festival-flow/*": {
-    "target": "https://flowbk.sunvalleyfestival.com",
+    "target": "https://festivalflow.web.inetsolutions.cloud",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true

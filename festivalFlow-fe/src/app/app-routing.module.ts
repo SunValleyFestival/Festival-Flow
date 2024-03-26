@@ -14,12 +14,12 @@ import {UserComponent} from "./pages/user/user.component";
 
 const routes: Routes = [
   {path: 'user/login', component: LoginComponent},
-  {path: 'admin/location/:name/:location', component: ManageLocationComponent, canActivate: [authGuard]},
-  {path: 'admin/user', component: ManageUserComponent, canActivate: [authGuard]},
-  {path: 'admin/user/:id', component: UserDetailComponent, canActivate: [authGuard]},
-  {path: 'admin/create', component: CreateLocationComponent, canActivate: [authGuard]},
-  {path: 'admin', component: AdminComponent, canActivate: [authGuard]},
-  {path: 'admin/:day', component: AdminComponent, canActivate: [authGuard]},
+  {path: 'admin/location/:location', component: ManageLocationComponent},
+  {path: 'admin/user', component: ManageUserComponent},
+  {path: 'admin/user/:id', component: UserDetailComponent},
+  {path: 'admin/create', component: CreateLocationComponent},
+  {path: 'admin', component: AdminComponent},
+  {path: 'admin/:day', component: AdminComponent},
   {path: 'user/location/:location', component: LocationDetailComponent, canActivate: [authGuard]},
   {path: 'user/user', component: UserComponent, canActivate: [authGuard]},
   {path: 'user', component: HomeComponent, canActivate: [authGuard]},

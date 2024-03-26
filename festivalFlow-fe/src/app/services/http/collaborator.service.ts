@@ -24,6 +24,10 @@ export class CollaboratorService {
     return this.http.put(BASE_URL + "update", collaborator);
   }
 
+  updateCollaboratorFromAdmin(collaborator: Collaborator) {
+    return this.http.put(ADMIN_BASE_URL + "update", collaborator);
+  }
+
   getCollaboratorById(id: number): Observable<Collaborator> {
     return this.http.get(BASE_URL + id);
   }

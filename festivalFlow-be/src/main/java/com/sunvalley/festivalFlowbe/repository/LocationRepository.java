@@ -10,4 +10,9 @@ import java.util.List;
 public interface LocationRepository extends JpaRepository<LocationEntity, Integer> {
     @Query("select l from LocationEntity l where l.day = ?1")
     List<LocationEntity>findByDay(DayEntity day);
+
+    List<LocationEntity> findByDayAndAdultsOnly(DayEntity day, boolean adultsOnly);
+
+    LocationEntity findByIdAndAdultsOnly(int id, boolean adultsOnly);
+
 }

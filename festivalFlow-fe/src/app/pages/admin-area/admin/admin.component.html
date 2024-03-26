@@ -20,7 +20,7 @@
             <div class="label">
               <span class="label-text">Postazione</span>
             </div>
-            <input (change)="filterLocation()" [(ngModel)]="nameToFilter" class="input input-bordered w-full max-w-xs" placeholder="Inserisci postazione..." type="text"/>
+            <input (keyup)="filterLocation()" [(ngModel)]="nameToFilter" class="input input-bordered w-full max-w-xs" placeholder="Inserisci postazione..." type="text"/>
           </label>
 
           <button (click)="filterLocation()" class="btn btn-primary">
@@ -33,12 +33,16 @@
 
           <br>
 
-          <button class="btn" (click)="dialog.showModal()">Crea Giorno</button>
+          <button class="btn" (click)="dialogDay.showModal()">Crea Giorno</button>
           <button class="btn" (click)="goToCreateLocationPage()">Crea postazione</button>
 
           <br>
 
-          <button class="btn">Esporta Excel</button>
+          <button class="btn" (click)="dialogExport.showModal()">Esporta Excel</button>
+
+          <br>
+
+          <button (click)="deleteCurrentDay()" class="btn btn-error">Elimina giorno</button>
 
 
         </div>
@@ -50,16 +54,20 @@
           <figure><img src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg" alt="Album"/></figure>
           <div class="card-body">
             <h2 class="card-title">{{ location.name }}</h2>
-            <div role="alert" class="alert bg-gray-50 border-accent w-fit">
-              <img src="../../../assets/icons/group.svg" alt="group">
-              <ng-container *ngFor="let availability of locationAvailability">
-                <span *ngIf="availability.locationId === location.id">{{ availability.availableSlots }} Rimanenti</span>
-              </ng-container>
+            <div class="join gap-2">
+              <div class="alert bg-gray-50 border-accent w-fit" role="alert">
+                <img alt="group" src="../../../assets/icons/group.svg">
+                <span>{{ location.shiftAvailability }} Rimanenti</span>
+              </div>
+              <div *ngIf="location.manager" class="alert bg-gray-50 border-accent w-fit" role="alert">
+                <img alt="manager" src="../../../assets/icons/manager.svg">
+                <span>{{ location.manager }}</span>
+              </div>
             </div>
             <p>{{ location.description }}</p>
             <div class="card-actions justify-end">
               <button class="btn btn-error text-white" (click)="deleteLocation(location)">Elimina</button>
-              <button class="btn btn-primary text-white" (click)="openDetail(location)">Gestisci</button>
+              <button class="btn btn-secondary text-white" (click)="openDetail(location)">Gestisci</button>
             </div>
           </div>
         </div>
@@ -68,24 +76,45 @@
   </div>
 </div>
 
-<dialog #dialog class="modal modal-bottom sm:modal-middle">
+<dialog #dialogDay class="modal modal-bottom sm:modal-middle">
   <div class="modal-box">
     <h3 class="font-bold text-lg">Crea Giorno</h3>
     <div class="flex justify-center">
-      <form method="dialog" #myForm="ngForm" class="mt-2">
+      <form [formGroup]="dayForm" class="mt-2" method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 
-        <label class="input input-bordered flex items-center mt-2 gap-2">
+        <label [ngClass]="{'input-error': dayForm.get('name')?.invalid && dayForm.get('name')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
           Nome:
-          <input [(ngModel)]="formData.name" class="grow bg-base-100" name="name" placeholder="Lunedì" required type="text"/>
+          <input class="grow bg-base-100" formControlName="name" name="name" placeholder="Lunedì" required type="text"/>
         </label>
 
-        <label class="input input-bordered flex items-center mt-2 gap-2">
+        <label [ngClass]="{'input-error': dayForm.get('description')?.invalid && dayForm.get('description')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
           Descrizione:
-          <input type="text" class="grow bg-base-100" [(ngModel)]="formData.description" name="description" placeholder="Descrizione del giorno" required/>
+          <input class="grow bg-base-100" formControlName="description" name="description" placeholder="Descrizione del giorno" required type="text"/>
         </label>
         <div class="mt-2 w-full flex justify-end">
-          <button class="btn" (click)="submitData()">Conferma</button>
+          <button (click)="submitData()" [disabled]="buttonDisabled ||dayForm.invalid" class="btn">Conferma</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+
+<dialog #dialogExport class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Inserisci email</h3>
+    <div class="flex justify-center">
+      <form [formGroup]="exportForm" class="mt-2" method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+
+        <label [ngClass]="{'input-error': exportForm.get('email')?.invalid && exportForm.get('email')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
+          Nome:
+          <input class="grow bg-base-100" formControlName="email" name="email" placeholder="mario.rossi@mail.com" required type="text"/>
+        </label>
+
+        <div class="mt-2 w-full flex justify-end">
+          <button (click)="submitEmailToExport()" [disabled]="exportForm.invalid" class="btn">Conferma</button>
         </div>
       </form>
     </div>

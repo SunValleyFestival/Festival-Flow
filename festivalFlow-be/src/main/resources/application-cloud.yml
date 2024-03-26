@@ -1,12 +1,12 @@
-spring:
+$spring:
   jpa:
     hibernate:
       ddl-auto: update
 
   datasource:
-    url: jdbc:mysql://localhost:3306/FestivalFlow
-    username: root
-    password: Eragon05
+    url: jdbc:mysql://157.90.97.105:3306/jdqxzldu_festiflow
+    username: jdqxzldu_festiflow
+    password: 1kli6B88*
 
   mail:
     host: fotoember.ch
@@ -19,12 +19,11 @@ spring:
         health:
           mail:
             enabled: false # health check at startup
-      test-receiver: joekueng05@gmail.com
       mail:
         smtp:
           auth: true
           starttls:
-            enable: true
+            enable: false
           from: festivalflowsvf@thunderhosting.cloud
     test-connection: false
     protocol: smtps
@@ -72,6 +71,6 @@ spring:
         -----END PRIVATE KEY-----
       issuer: localhost:8080
       algorithm: RS256
-      expirationTime: 60m
+      expirationTime: 10m
 
 # The RSA algorithm is being used here.

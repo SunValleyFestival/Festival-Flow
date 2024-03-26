@@ -1,14 +1,23 @@
 <div class="max-h-screen overflow-y-hidden">
   <app-header></app-header>
-  <div role="alert" class="alert alert-error" *ngIf="dataError">
-    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-    </svg>
-    <span>Errore! Dati inseriti incompleti!</span>
-  </div>
   <div class="max-h-screen overflow-scroll">
-    <h1 class="ml-5 mt-5 text-4xl">{{ locationName }}</h1>
+    <h1 class="ml-5 mt-5 text-4xl">{{ location.name }}</h1>
     <div class="flex gap-3 flex-col m-5">
+      <div class="join gap-2">
+
+        <label class="input input-bordered flex items-center gap-2 w-fit">
+          <svg class="w-4 h-4 opacity-70" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z"/>
+          </svg>
+          <input [(ngModel)]="location.manager" class="bg-base-100" placeholder="Manager" type="text"/>
+        </label>
+
+        <button (click)="reloadManager()" class="btn btn-circle btn-outline">
+          <img alt="sync" src="../../../assets/icons/sync.svg">
+        </button>
+
+      </div>
+
       <div class="collapse collapse-arrow bg-base-200" *ngFor="let shift of shifts">
         <input (click)="getSelectedShiftAssociations(shift.id)" name="my-accordion-2" type="radio"/>
         <div class="collapse-title text-xl justify-between flex font-medium">
@@ -29,7 +38,7 @@
                 {{ association.collaborator.email }}
               </div>
               <div class="self-center">
-                note...
+                {{ association.comment }}
               </div>
               <div class="flex gap-2 mr-5">
                 <button (click)="rejectAssociation(association.collaborator.id, shift.id)" class="btn btn-error">Rifiuta</button>
@@ -56,35 +65,39 @@
   <div class="modal-box">
     <h3 class="font-bold text-lg">Crea Turno</h3>
     <div class="flex justify-center">
-      <form method="dialog" #myForm="ngForm" class="mt-2">
+      <form [formGroup]="shiftForm" class="mt-2" method="dialog">
 
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
 
-        <label class="input input-bordered flex items-center mt-2 gap-2">
+        <label [ngClass]="{'input-error': shiftForm.get('name')?.invalid && shiftForm.get('name')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
           Nome:
-          <input type="text" class="grow bg-base-100" [(ngModel)]="formData.name" name="name" placeholder="Turno 1" required/>
+          <input class="grow bg-base-100" formControlName="name" name="name" placeholder="Turno 1" required type="text"/>
         </label>
 
-        <label class="input input-bordered flex items-center mt-2 gap-2">
+        <label [ngClass]="{'input-error': shiftForm.get('description')?.invalid && shiftForm.get('description')?.touched}"
+               class="input input-bordered flex items-center mt-2 gap-2">
           Descrizione:
-          <input type="text" class="grow bg-base-100" [(ngModel)]="formData.description" name="description" placeholder="Descrizione di Turno 1" required/>
+          <input class="grow bg-base-100" formControlName="description" name="description" placeholder="Descrizione di Turno 1" required type="text"/>
         </label>
-        <label class="input input-bordered flex items-center mt-2 gap-2">
+
+        <label [ngClass]="{'input-error': shiftForm.get('startTime')?.invalid && shiftForm.get('startTime')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
           Inizio:
-          <input type="time" class="grow bg-base-100" [(ngModel)]="formData.startTime" name="startTime" required/>
+          <input class="grow bg-base-100" formControlName="startTime" name="startTime" required type="time"/>
         </label>
 
-        <label class="input input-bordered flex items-center mt-2 gap-2">
+        <label [ngClass]="{'input-error': shiftForm.get('endTime')?.invalid && shiftForm.get('endTime')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
           Fine:
-          <input type="time" class="grow bg-base-100" [(ngModel)]="formData.endTime" name="endTime" required/>
+          <input class="grow bg-base-100" formControlName="endTime" name="endTime" required type="time"/>
         </label>
 
-        <label class="input input-bordered flex items-center mt-2 gap-2">
+        <label [ngClass]="{'input-error': shiftForm.get('maxCollaborator')?.invalid && shiftForm.get('maxCollaborator')?.touched}"
+               class="input input-bordered flex items-center mt-2 gap-2">
           Numero di collaboratori:
-          <input type="number" class="grow bg-base-100" [(ngModel)]="formData.maxCollaborator" name="maxCollaborator" placeholder="1" required/>
+          <input class="grow bg-base-100" formControlName="maxCollaborator" name="maxCollaborator" placeholder="1" required type="number"/>
         </label>
+
         <div class="mt-2 w-full flex justify-end">
-          <button class="btn" (click)="submitData()">Conferma</button>
+          <button (click)="submitData()" [disabled]="shiftForm.invalid" class="btn">Conferma</button>
         </div>
       </form>
     </div>

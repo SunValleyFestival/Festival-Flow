@@ -11,8 +11,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
 
-//When Testing Non-Reactive Flow Comment the @ReactiveWebSecurityConfig class defined for Reactive Approach
+import java.util.Arrays;
+import java.util.List;
+
 @Configuration
 @RequiredArgsConstructor
 public class WebSecurityConfig {
@@ -23,7 +26,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)  // Consider enabling CSRF protection for better security
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("festival-flow/user/auth/**", "festival-flow/admin/**").permitAll()
                         .anyRequest().authenticated()
@@ -31,7 +34,13 @@ public class WebSecurityConfig {
                 .sessionManagement(configure -> configure.sessionCreationPolicy(SessionCreationPolicy.NEVER))
                 .oauth2ResourceServer((configure) -> configure
                         .jwt(Customizer.withDefaults())
-                ).build();
+                ).cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration configuration = new CorsConfiguration();
+                    configuration.setAllowedOrigins(List.of("*"));
+                    configuration.setAllowedMethods(List.of("*"));
+                    configuration.setAllowedHeaders(List.of("*"));
+                    return configuration;
+                })).build();
     }
 
     @Bean
