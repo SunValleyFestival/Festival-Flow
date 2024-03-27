@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {CollaboratorService} from "../../services/http/collaborator.service";
-import {AssociationService} from "../../services/http/association.service";
+import {CollaboratorService} from "../../services/http/user/collaborator.service";
+import {AssociationService} from "../../services/http/user/association.service";
 import {Collaborator} from "../../interfaces/CollaboratorEntity";
 import {Association} from "../../interfaces/AssociationEntity";
 
