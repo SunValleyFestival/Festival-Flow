@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {ShiftService} from "../../services/http/shift.service";
+import {ShiftService} from "../../services/http/user/shift.service";
 import {ActivatedRoute} from "@angular/router";
 import {Shift, ShiftClient} from "../../interfaces/ShiftEntity";
-import {AssociationService} from "../../services/http/association.service";
-import {CollaboratorService} from "../../services/http/collaborator.service";
+import {AssociationService} from "../../services/http/user/association.service";
+import {CollaboratorService} from "../../services/http/user/collaborator.service";
 import {Collaborator} from "../../interfaces/CollaboratorEntity";
 import {Location} from "../../interfaces/LocationEntity";
-import {LocationService} from "../../services/http/location.service";
-import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
+import {LocationService} from "../../services/http/user/location.service";
+import {ShiftAvailabilityService} from "../../services/http/user/shift-availability.service";
 import {Association} from "../../interfaces/AssociationEntity";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
@@ -18,9 +18,11 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 })
 export class LocationDetailComponent implements OnInit {
   protected selectedLocation: Location | undefined;
-  protected dataError: boolean = false;
   protected shifts: ShiftClient[] | undefined;
   protected activeCollaborator: Collaborator | undefined;
+  protected noticeDialog: boolean = false;
+  protected noticeMessage: string = '';
+  protected noticeClass = '';
 
   protected formData: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -31,7 +33,7 @@ export class LocationDetailComponent implements OnInit {
     age: ['', Validators.required],
     yearsExperience: ['', Validators.required],
     town: ['', Validators.required],
-    size: ['', Validators.required],
+    size: ['Taglia Maglietta', Validators.required],
     comment: ['']
   });
 
@@ -104,8 +106,19 @@ export class LocationDetailComponent implements OnInit {
       }
 
       this.collaboratorService.updateCollaborator(collaborator).pipe().subscribe(() => {
-        this.associationService.saveAssociation(association).pipe().subscribe();
-        this.ngOnInit();
+        this.associationService.saveAssociation(association).subscribe((response: any) => {
+
+          if (response.status === 200) {
+            this.ngOnInit();
+            this.showNotice("Iscrizione effettuata con successo", 0);
+          } else if (response.status === 208) {
+            this.showNotice("Ti sei già iscritto a questo turno", 1);
+          } else if (response.status === 403) {
+            this.showNotice("Non puoi iscriverti a questo turno", 1);
+          } else {
+            this.showNotice("Errore durante la registrazione", 2);
+          }
+        });
       });
 
 
@@ -146,4 +159,21 @@ export class LocationDetailComponent implements OnInit {
     let value = timeString.replaceAll(":", "");
     return parseInt(value);
   };
+
+  showNotice(notice: string, noticeType: number) {
+
+    if (noticeType == 0) {
+      this.noticeClass = 'alert-success';
+    } else if (noticeType == 1) {
+      this.noticeClass = 'alert-warning';
+    } else {
+      this.noticeClass = 'alert-error';
+    }
+
+    this.noticeMessage = notice;
+    this.noticeDialog = true;
+    setTimeout(() => {
+      this.noticeDialog = false;
+    }, 3000);
+  }
 }

@@ -29,8 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @RequestMapping("/festival-flow/")
 public class LocationController {
-
-  private static final String ADMIN = "admin/location/";
   private static final String LOCATION = "user/location/";
 
   @Value("${image.upload.token}")
@@ -53,52 +51,6 @@ public class LocationController {
   public ResponseEntity<List<LocationEntity>> getByDayId(@RequestHeader("Authorization") String token, @PathVariable int day) throws ParseException {
     List<LocationEntity> locations = locationService.getLocationsByDayId(day, isMinor(token));
     return new ResponseEntity<>(locations, HttpStatus.OK);
-  }
-
-  @PostMapping(ADMIN + "create")
-  public ResponseEntity<LocationEntity> create(@RequestBody LocationEntity location) {
-    location.setId(null);
-    LocationEntity newLocation = locationService.create(location);
-    return new ResponseEntity<>(newLocation, HttpStatus.CREATED);
-  }
-
-  @PostMapping(value = ADMIN + "upload-image/{locationId}", consumes = { "multipart/form-data" })
-  public ResponseEntity<String> handleFileUpload(@RequestParam("image") MultipartFile file, @PathVariable int locationId) throws IOException {
-    RestTemplate restTemplate = new RestTemplate();
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-    MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-    body.add("token", token);
-    body.add("file", file.getResource());
-
-    HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-
-    ResponseEntity<String> responseEntity = restTemplate.exchange(imageUpload, HttpMethod.POST, requestEntity, String.class);
-
-    var responseBody = responseEntity.getBody();
-    if (responseBody == null) {
-      return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
-    }
-    String url = responseBody.split(": ")[1];
-
-    LocationEntity location = locationService.getById(locationId, false);
-    location.setImage(url);
-    locationService.update(location);
-
-    return new ResponseEntity<>(url, HttpStatus.OK);
-  }
-
-  @DeleteMapping(ADMIN)
-  public ResponseEntity<LocationEntity> deleteById(@RequestBody LocationEntity locationEntity) {
-    locationService.deleteById(locationEntity.getId());
-    return new ResponseEntity<>(HttpStatus.OK);
-  }
-
-  @PutMapping(ADMIN + "update")
-  public ResponseEntity<LocationEntity> update(@RequestBody LocationEntity location) {
-    LocationEntity updatedLocation = locationService.update(location);
-    return new ResponseEntity<>(updatedLocation, HttpStatus.OK);
   }
 
   private boolean isMinor(String token) throws ParseException {

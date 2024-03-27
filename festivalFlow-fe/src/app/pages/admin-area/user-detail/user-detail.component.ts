@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CollaboratorService} from "../../../services/http/collaborator.service";
+import {CollaboratorService} from "../../../services/http/admin/collaborator.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Collaborator} from "../../../interfaces/CollaboratorEntity";
 import {FormBuilder, Validators} from "@angular/forms";

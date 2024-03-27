@@ -1,15 +1,13 @@
 package com.sunvalley.festivalFlowbe.service;
 
-import com.sunvalley.festivalFlowbe.entity.utility.AssociationAdmin;
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
 import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
+import com.sunvalley.festivalFlowbe.entity.utility.AssociationAdmin;
 import com.sunvalley.festivalFlowbe.repository.AssociationRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +17,7 @@ public class AssociationService {
     private final CollaboratorService collaboratorService;
 
     public List<AssociationEntity> getByCollaboratorId(int id) {
-        return associationRepository.findByCollaboratorId(id);
+        return associationRepository.findByIdCollaboratorId(id);
     }
 
     public AssociationEntity getByCollaboratorIdAndShiftId(int collaboratorId, int shiftId) {
@@ -64,8 +62,6 @@ public class AssociationService {
     }
 
     public boolean existsByCollaboratorIdAndShiftIdAndAccepted(int collaboratorId, int shiftId) {
-        if (associationRepository.existsByCollaboratorIdAndShiftIdAndAccepted(collaboratorId, shiftId).isEmpty()) {
-            return false;
-        } else return true;
+      return !associationRepository.existsByCollaboratorIdAndShiftIdAndAccepted(collaboratorId, shiftId).isEmpty();
     }
 }
