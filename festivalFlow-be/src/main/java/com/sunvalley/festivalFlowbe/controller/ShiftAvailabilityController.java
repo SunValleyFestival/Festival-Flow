@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/festival-flow/")
 public class ShiftAvailabilityController {
-
-    private static final String ADMIN = "admin/shift-availability/";
     private static final String SHIFT_AVAILABILITY = "user/shift-availability/";
 
     private final ShiftAvailabilityService shiftAvailabilityService;
