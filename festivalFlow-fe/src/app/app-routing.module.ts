@@ -24,7 +24,9 @@ const routes: Routes = [
   {path: 'user/user', component: UserComponent, canActivate: [authGuard]},
   {path: 'user', component: HomeComponent, canActivate: [authGuard]},
   {path: 'user/:day', component: HomeComponent, canActivate: [authGuard]},
+  {path: 'user', redirectTo: 'user', pathMatch: 'full'},
   {path: 'not-found', component: NotFoundComponent},
+  {path: '', redirectTo: 'user', pathMatch: 'full'},
   {path: '**', redirectTo: 'user'}
 ];
 

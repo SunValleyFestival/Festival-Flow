@@ -1,9 +1,104 @@
-<div class="max-h-screen overflow-y-hidden">
+<div>
   <app-header></app-header>
-  <div class="max-h-screen overflow-y-scroll max-w-screen m-5 flex flex-col gap-y-5">
-    <div *ngFor="let association of associations">
-      <div>
-        {{ association }}
+  <div class="wrapper flex flex-col lg:flex-row-reverse sm:overflow-scroll">
+    <div class="lg:order-2 h-full mt-5">
+      <div class="card bg-white mx-5 shadow filter text-black">
+        <div class="card-body">
+          <form [formGroup]="formData" class="mt-2" method="dialog">
+
+            <label [ngClass]="{'input-error': formData.get('email')?.invalid && formData.get('email')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
+              Email:
+              <input class="grow bg-base-100" formControlName="email" name="email"
+                     placeholder="max.carota@gmail.com" type="email"/>
+            </label>
+
+            <label [ngClass]="{'input-error': formData.get('phone')?.invalid && formData.get('phone')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
+              Telefono:
+              <select class="grow bg-base-100" formControlName="countryCode" name="countryCode" required>
+                <option value="+41">+41</option>
+                <option value="+39">+39</option>
+              </select>
+              <input class="grow bg-base-100" formControlName="phone" maxlength="9" name="phone" placeholder="123456789"
+                     required type="text"/>
+            </label>
+            <label [ngClass]="{'input-error': formData.get('firstName')?.invalid && formData.get('firstName')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
+              Nome:
+              <input class="grow bg-base-100" formControlName="firstName" name="firstName" placeholder="Max"
+                     required type="text"/>
+            </label>
+
+            <label [ngClass]="{'input-error': formData.get('lastName')?.invalid && formData.get('lastName')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
+              Cognome:
+              <input class="grow bg-base-100" formControlName="lastName" name="lastName" placeholder="Carota"
+                     required type="text"/>
+            </label>
+
+            <label [ngClass]="{'input-error': formData.get('age')?.invalid && formData.get('age')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
+              Età:
+              <input class="grow bg-base-100" formControlName="age" name="age" placeholder="22"
+                     required type="date"/>
+            </label>
+
+            <label [ngClass]="{'input-error': formData.get('yearsExperience')?.invalid && formData.get('yearsExperience')?.touched}"
+                   class="input input-bordered flex items-center mt-2 gap-2">
+              Anni di esperienza:
+              <input class="grow bg-base-100" formControlName="yearsExperience" name="yearsExperience" placeholder="0"
+                     required type="number"/>
+            </label>
+
+            <label [ngClass]="{'input-error': formData.get('town')?.invalid && formData.get('town')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
+              Comune:
+              <input class="grow bg-base-100" formControlName="town" name="town" placeholder="Serravalle" required
+                     type="text"/>
+            </label>
+
+            <div class="mt-2">
+              <select [ngClass]="{'select-error': formData.get('size')?.invalid && formData.get('size')?.touched}"
+                      class="select select-bordered w-full" formControlName="size" name="size" required>
+                <option disabled>Taglia Maglietta</option>
+                <option>S</option>
+                <option>M</option>
+                <option>L</option>
+                <option>XL</option>
+              </select>
+            </div>
+
+            <button (click)="saveUser()" class="btn btn-success w-full mt-2">Salva</button>
+
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="flex-grow lg:order-1 mt-5">
+      <div class="flex flex-col items-center md:overflow-scroll h-mobile mx-5">
+        <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical w-full">
+          <li>
+            <div class="timeline-middle">
+            </div>
+            <div class="timeline-start">
+              <time class="font-mono italic"> Venerdì (18:00 - 20:00)</time>
+              <div class="text-lg font-black">Cassa</div>
+              <div class="flex flex-col gap-3">
+                turno 1
+                <span class="text-success">Accettato</span>
+              </div>
+            </div>
+            <hr class="my-2"/>
+          </li>
+          <li>
+            <div class="timeline-middle">
+            </div>
+            <div class="timeline-start">
+              <time class="font-mono italic"> Sabato (22:00 - 00:00)</time>
+              <div class="text-lg font-black">Bar</div>
+              <div class="flex flex-col gap-3">
+                turno 1
+                <span class="text-error">Rifiutato</span>
+              </div>
+            </div>
+            <hr/>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
