@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Day} from "../../interfaces/DayEntity";
-import {DayService} from "../../services/http/day.service";
-import {LocationService} from "../../services/http/location.service";
+import {DayService} from "../../services/http/user/day.service";
+import {LocationService} from "../../services/http/user/location.service";
 import {LocationClient} from "../../interfaces/LocationEntity";
-import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
+import {ShiftAvailabilityService} from "../../services/http/user/shift-availability.service";
 import {SanitizerService} from "../../services/utility/sanitizer.service";
 
 

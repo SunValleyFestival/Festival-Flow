@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {ShiftService} from "../../services/http/shift.service";
+import {ShiftService} from "../../services/http/user/shift.service";
 import {ActivatedRoute} from "@angular/router";
 import {Shift, ShiftClient} from "../../interfaces/ShiftEntity";
-import {AssociationService} from "../../services/http/association.service";
-import {CollaboratorService} from "../../services/http/collaborator.service";
+import {AssociationService} from "../../services/http/user/association.service";
+import {CollaboratorService} from "../../services/http/user/collaborator.service";
 import {Collaborator} from "../../interfaces/CollaboratorEntity";
 import {Location} from "../../interfaces/LocationEntity";
-import {LocationService} from "../../services/http/location.service";
-import {ShiftAvailabilityService} from "../../services/http/shift-availability.service";
+import {LocationService} from "../../services/http/user/location.service";
+import {ShiftAvailabilityService} from "../../services/http/user/shift-availability.service";
 import {Association} from "../../interfaces/AssociationEntity";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 

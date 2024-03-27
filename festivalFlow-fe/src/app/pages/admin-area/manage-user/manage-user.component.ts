@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {CollaboratorService} from "../../../services/http/collaborator.service";
+import {CollaboratorService} from "../../../services/http/admin/collaborator.service";
 import {Collaborator} from "../../../interfaces/CollaboratorEntity";
 import {Router} from "@angular/router";
-import {LocationClient} from "../../../interfaces/LocationEntity";
 
 @Component({
   selector: 'app-manage-user',

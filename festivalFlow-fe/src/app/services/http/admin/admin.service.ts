@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import {environment} from "../../../environments/environment";
-import {HttpAuthClient} from "./token/http-auth-client";
-import {EmailRequest} from "../../interfaces/EmailRequestEntity";
+import {Injectable} from '@angular/core';
+import {environment} from "../../../../environments/environment";
+import {HttpAuthClient} from "../token/http-auth-client";
+import {EmailRequest} from "../../../interfaces/EmailRequestEntity";
 
 const ADMIN_BASE_URL = environment.adminBaseUrl;
 
