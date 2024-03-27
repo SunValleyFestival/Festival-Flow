@@ -25,8 +25,4 @@ export class ShiftService {
   createShift(shift: Shift) {
     return this.http.post(ADMIN_BASE_URL + 'create', shift);
   }
-
-  getShiftById(shiftId: number) {
-    return this.http.get(BASE_URL + shiftId);
-  }
 }

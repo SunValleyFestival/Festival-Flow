@@ -148,9 +148,10 @@ export class AdminComponent implements OnInit {
     })
   }
 
-  togleLock() {
+  toggleLock() {
     this.adminService.setLockStatus(!this.locked).pipe().subscribe((locked: boolean) => {
       this.locked = locked;
+      this.ngOnInit();
     });
   }
 

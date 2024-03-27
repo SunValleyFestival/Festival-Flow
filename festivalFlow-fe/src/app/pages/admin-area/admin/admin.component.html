@@ -66,7 +66,7 @@
           <div class="form-control w-52">
             <label class="cursor-pointer label">
               <span class="label-text">Blocco iscrizioni</span>
-              <input type="checkbox" class="toggle toggle-error" [checked]="locked" (click)="togleLock()"/>
+              <input (click)="toggleLock()" [checked]="locked" class="toggle toggle-error" type="checkbox"/>
             </label>
           </div>
 

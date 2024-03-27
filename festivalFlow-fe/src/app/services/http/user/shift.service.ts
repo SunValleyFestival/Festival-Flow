@@ -5,7 +5,6 @@ import {Shift} from "../../../interfaces/ShiftEntity";
 import {HttpAuthClient} from "../token/http-auth-client";
 
 const BASE_URL = environment.userBaseUrl + "/shift/";
-const ADMIN_BASE_URL = environment.adminBaseUrl + "/shift/";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +16,10 @@ export class ShiftService {
 
   getShiftsByLocationId(locationId: number): Observable<Shift[]> {
     return this.http.get(BASE_URL + "location/" + locationId);
+  }
+
+  getShiftById(shiftId: number): Observable<Shift> {
+    return this.http.get(BASE_URL + shiftId);
   }
 
 }

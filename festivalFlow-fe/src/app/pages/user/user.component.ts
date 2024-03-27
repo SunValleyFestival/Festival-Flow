@@ -5,7 +5,7 @@ import {AssociationService} from "../../services/http/user/association.service";
 import {Collaborator} from "../../interfaces/CollaboratorEntity";
 import {Association, AssociationClient} from "../../interfaces/AssociationEntity";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ShiftService} from "../../services/http/shift.service";
+import {ShiftService} from "../../services/http/user/shift.service";
 import {Shift} from "../../interfaces/ShiftEntity";
 
 @Component({
