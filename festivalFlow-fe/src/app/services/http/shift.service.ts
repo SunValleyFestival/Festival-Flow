@@ -24,7 +24,10 @@ export class ShiftService {
   }
 
   createShift(shift: Shift) {
-    console.log('create shift', shift);
     return this.http.post(ADMIN_BASE_URL + 'create', shift);
+  }
+
+  getShiftById(shiftId: number) {
+    return this.http.get(BASE_URL + shiftId);
   }
 }
