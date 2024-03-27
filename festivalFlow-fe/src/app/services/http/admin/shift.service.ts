@@ -4,7 +4,6 @@ import {Observable} from "rxjs";
 import {Shift} from "../../../interfaces/ShiftEntity";
 import {HttpAuthClient} from "../token/http-auth-client";
 
-const BASE_URL = environment.userBaseUrl + "/shift/";
 const ADMIN_BASE_URL = environment.adminBaseUrl + "/shift/";
 
 @Injectable({
@@ -24,7 +23,6 @@ export class ShiftService {
   }
 
   createShift(shift: Shift) {
-    console.log('create shift', shift);
     return this.http.post(ADMIN_BASE_URL + 'create', shift);
   }
 }

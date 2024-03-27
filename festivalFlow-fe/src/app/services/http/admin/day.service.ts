@@ -4,7 +4,6 @@ import {environment} from '../../../../environments/environment';
 import {Observable} from "rxjs";
 import {Day} from "../../../interfaces/DayEntity";
 
-const BASE_URL = environment.userBaseUrl + "/day/";
 const ADMIN_BASE_URL = environment.adminBaseUrl + "/day/";
 
 @Injectable({

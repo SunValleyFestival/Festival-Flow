@@ -4,7 +4,6 @@ import {Collaborator} from "../../../interfaces/CollaboratorEntity";
 import {HttpAuthClient} from "../token/http-auth-client";
 import {Observable} from "rxjs";
 
-const BASE_URL = environment.userBaseUrl + "/collaborator/";
 const ADMIN_BASE_URL = environment.adminBaseUrl + "/collaborator/";
 
 @Injectable({
