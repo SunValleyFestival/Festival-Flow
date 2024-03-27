@@ -21,7 +21,6 @@ import java.util.List;
 @RequestMapping("/festival-flow/")
 public class CollaboratorController {
 
-    private static final String ADMIN = "admin/collaborator/";
     private static final String COLLABORATOR = "user/collaborator/";
 
     private final CollaboratorService collaboratorService;
@@ -60,32 +59,5 @@ public class CollaboratorController {
             }
         }
     }
-
-  @CrossOrigin
-  @PutMapping(ADMIN + "update")
-  public ResponseEntity<CollaboratorEntity> updateAdmin(@RequestBody CollaboratorEntity collaborator) {
-    CollaboratorEntity newCollaborator = collaboratorService.update(collaborator);
-    return new ResponseEntity<>(newCollaborator, HttpStatus.OK);
-  }
-
-    @GetMapping(ADMIN)
-    public ResponseEntity<List<CollaboratorEntity>> getAllAdmin() {
-        List<CollaboratorEntity> collaborators = collaboratorService.findCollaboratorEntitiesWhereIsPopulated();
-        return new ResponseEntity<>(collaborators, HttpStatus.OK);
-    }
-
-    @GetMapping(ADMIN + "shift/{shiftId}")
-    public ResponseEntity<List<CollaboratorEntity>> getByShiftId(@PathVariable int shiftId) {
-        List<CollaboratorEntity> collaborators = collaboratorService.getByShiftId(shiftId);
-        return new ResponseEntity<>(collaborators, HttpStatus.OK);
-    }
-
-
-    @DeleteMapping(ADMIN)
-    public ResponseEntity<CollaboratorEntity> deleteById(@RequestBody CollaboratorEntity collaboratorEntity) {
-        collaboratorService.deleteById(collaboratorEntity.getId());
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
 
 }

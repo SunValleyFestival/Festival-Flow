@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/festival-flow/")
 public class ShiftController {
-
-    private static final String ADMIN = "admin/shift/";
     private static final String SHIFT = "user/shift/";
 
     private final ShiftService shiftService;
@@ -69,25 +67,6 @@ public class ShiftController {
             return new ResponseEntity<>(shifts, HttpStatus.OK);
         }
 
-    }
-
-    @CrossOrigin
-    @PostMapping(ADMIN + "create")
-    public ResponseEntity<ShiftEntity> create(@RequestBody ShiftEntity shift) {
-        shift.setId(null);
-        shift.setLocation(locationService.getById(shift.getLocation().getId(), false));
-        if (shift.getLocation() == null) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        ShiftEntity newShift = shiftService.create(shift);
-        return new ResponseEntity<>(newShift, HttpStatus.CREATED);
-    }
-
-    @CrossOrigin
-    @DeleteMapping(ADMIN)
-    public ResponseEntity<ShiftEntity> deleteById(@RequestBody ShiftEntity shiftEntity) {
-        shiftService.deleteById(shiftEntity.getId());
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private boolean isMinor(String token) throws ParseException {
