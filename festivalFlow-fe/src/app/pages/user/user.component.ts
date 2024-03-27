@@ -3,8 +3,10 @@ import {ActivatedRoute} from "@angular/router";
 import {CollaboratorService} from "../../services/http/collaborator.service";
 import {AssociationService} from "../../services/http/association.service";
 import {Collaborator} from "../../interfaces/CollaboratorEntity";
-import {Association} from "../../interfaces/AssociationEntity";
+import {Association, AssociationClient} from "../../interfaces/AssociationEntity";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ShiftService} from "../../services/http/shift.service";
+import {Shift} from "../../interfaces/ShiftEntity";
 
 @Component({
   selector: 'app-user',
@@ -12,8 +14,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-  protected activeUser: Collaborator = {} as Collaborator;
-  protected associations: Association[] = [];
+  protected associations: AssociationClient[] = [];
   protected activeCollaborator: Collaborator | undefined;
 
   protected formData: FormGroup = this.fb.group({
@@ -33,26 +34,35 @@ export class UserComponent implements OnInit {
     private route: ActivatedRoute,
     private collaboratorService: CollaboratorService,
     private associationService: AssociationService,
+    private shiftService: ShiftService,
     private fb: FormBuilder
   ) {
   }
 
   ngOnInit() {
-    this.collaboratorService.getCollaboratorFromToken().subscribe((collaborator: Collaborator) => {
-      this.activeUser = collaborator;
-    });
-
-    this.route.params.subscribe(params => {
-      if (params['id']) {
-        this.associationService.getAssociationByCollaboratorId(params['id']).subscribe((associations: any[]) => {
-          this.associations = associations;
-        });
-      }
-    });
-
     this.collaboratorService.getCollaboratorFromToken().pipe().subscribe((collaborator: any) => {
       this.activeCollaborator = collaborator;
       this.initFormData();
+
+      this.route.params.subscribe(params => {
+
+        if (this.activeCollaborator != undefined && this.activeCollaborator.id) {
+
+          this.associationService.getAssociationByCollaboratorId(this.activeCollaborator.id).subscribe((associations: Association[]) => {
+
+            for (let association of associations) {
+              this.shiftService.getShiftById(association.id.shiftId).subscribe((shift: Shift) => {
+                let associationClient: AssociationClient = {
+                  collaboratorId: association.id.collaboratorId,
+                  status: association.status,
+                  shift: shift
+                };
+                this.associations.push(associationClient);
+              })
+            }
+          });
+        }
+      });
     });
   }
 
@@ -83,7 +93,9 @@ export class UserComponent implements OnInit {
     }
   }
 
-  getCollaboratorFromFormData(): Collaborator {
+  getCollaboratorFromFormData()
+    :
+    Collaborator {
     return {
       email: this.formData.get('email')?.value,
       phone: this.formData.get('countryCode')?.value + this.formData.get('phone')?.value,

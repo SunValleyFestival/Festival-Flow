@@ -2,7 +2,7 @@
   <app-header></app-header>
   <div class="wrapper flex flex-col lg:flex-row-reverse sm:overflow-scroll">
     <div class="lg:order-2 h-full mt-5">
-      <div class="card bg-white mx-5 shadow filter text-black">
+      <div class="card bg-white ml-5 mr-5 shadow filter text-black">
         <div class="card-body">
           <form [formGroup]="formData" class="mt-2" method="dialog">
 
@@ -69,34 +69,23 @@
         </div>
       </div>
     </div>
-    <div class="flex-grow lg:order-1 mt-5">
-      <div class="flex flex-col items-center md:overflow-scroll h-mobile mx-5">
-        <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical w-full">
-          <li>
+    <div class="flex-grow lg:order-1">
+      <div class="flex flex-col items-center md:overflow-scroll h-mobile" style="">
+        <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical w-full mt-5">
+          <li *ngFor="let association of associations">
             <div class="timeline-middle">
             </div>
             <div class="timeline-start">
-              <time class="font-mono italic"> Venerdì (18:00 - 20:00)</time>
-              <div class="text-lg font-black">Cassa</div>
+              <time class="font-mono italic">{{ association.shift.location.day.name }} ({{ association.shift.startTime }} - {{ association.shift.endTime }})</time>
+              <div class="text-lg font-black">{{ association.shift.location.name }}</div>
               <div class="flex flex-col gap-3">
-                turno 1
-                <span class="text-success">Accettato</span>
+                {{ association.shift.name }}
+                <span *ngIf="association.status==='ACCEPTED'" class="text-success">Accettato</span>
+                <span *ngIf="association.status==='PENDING'" class="text-warning">Sotto revisione</span>
+                <span *ngIf="association.status==='REJECTED'" class="text-error">Rifiutato</span>
               </div>
             </div>
             <hr class="my-2"/>
-          </li>
-          <li>
-            <div class="timeline-middle">
-            </div>
-            <div class="timeline-start">
-              <time class="font-mono italic"> Sabato (22:00 - 00:00)</time>
-              <div class="text-lg font-black">Bar</div>
-              <div class="flex flex-col gap-3">
-                turno 1
-                <span class="text-error">Rifiutato</span>
-              </div>
-            </div>
-            <hr/>
           </li>
         </ul>
       </div>
