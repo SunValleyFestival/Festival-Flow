@@ -113,6 +113,8 @@ export class LocationDetailComponent implements OnInit {
             this.showNotice("Iscrizione effettuata con successo", 0);
           } else if (response.status === 208) {
             this.showNotice("Ti sei già iscritto a questo turno", 1);
+          } else if (response.status === 403) {
+            this.showNotice("Non puoi iscriverti a questo turno", 1);
           } else {
             this.showNotice("Errore durante la registrazione", 2);
           }
