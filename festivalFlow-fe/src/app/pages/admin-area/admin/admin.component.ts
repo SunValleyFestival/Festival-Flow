@@ -2,13 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {Day} from "../../../interfaces/DayEntity";
 import {Location, LocationClient} from "../../../interfaces/LocationEntity";
 import {ActivatedRoute, Router} from "@angular/router";
-import {DayService} from "../../../services/http/day.service";
-import {LocationService} from "../../../services/http/location.service";
-import {ShiftAvailabilityService} from "../../../services/http/shift-availability.service";
+import {DayService} from "../../../services/http/admin/day.service";
+import {LocationService} from "../../../services/http/admin/location.service";
+import {ShiftAvailabilityService} from "../../../services/http/admin/shift-availability.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AdminService} from "../../../services/http/admin.service";
 import {EmailRequest} from "../../../interfaces/EmailRequestEntity";
 import {SanitizerService} from "../../../services/utility/sanitizer.service";
+import {AdminService} from "../../../services/http/admin/admin.service";
 
 @Component({
   selector: 'app-admin',

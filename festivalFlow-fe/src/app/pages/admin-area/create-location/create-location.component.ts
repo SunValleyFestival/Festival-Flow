@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Location} from "../../../interfaces/LocationEntity";
 import {Day} from "../../../interfaces/DayEntity";
-import {LocationService} from "../../../services/http/location.service";
+import {LocationService} from "../../../services/http/admin/location.service";
 import {Router} from "@angular/router";
-import {DayService} from "../../../services/http/day.service";
+import {DayService} from "../../../services/http/admin/day.service";
 import {FormBuilder, Validators} from "@angular/forms";
 
 @Component({

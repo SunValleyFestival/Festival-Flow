@@ -1,12 +1,9 @@
 package com.sunvalley.festivalFlowbe.controller;
 
+import com.sunvalley.festivalFlowbe.entity.utility.AssociationAdmin;
 import com.sunvalley.festivalFlowbe.entity.AssociationEntity;
 import com.sunvalley.festivalFlowbe.entity.Status;
-import com.sunvalley.festivalFlowbe.entity.utility.AssociationAdmin;
-import com.sunvalley.festivalFlowbe.service.AssociationService;
-import com.sunvalley.festivalFlowbe.service.CollaboratorService;
-import com.sunvalley.festivalFlowbe.service.ShiftAvailabilityService;
-import com.sunvalley.festivalFlowbe.service.ShiftService;
+import com.sunvalley.festivalFlowbe.service.*;
 import com.sunvalley.festivalFlowbe.service.utility.ConfigurationService;
 import com.sunvalley.festivalFlowbe.service.utility.EmailService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
@@ -31,8 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/festival-flow/")
 public class AssociationController {
-
-    private static final String ADMIN = "admin/association/";
     private static final String ASSOCIATION = "user/association/";
 
     private final AssociationService associationService;
@@ -46,7 +41,7 @@ public class AssociationController {
 
     @CrossOrigin
     @GetMapping(ASSOCIATION + "collaborator-id/{id}")
-    public ResponseEntity<List<AssociationEntity>> getById(@PathVariable Integer id, @RequestHeader("Authorization") String token) throws ParseException {
+    public ResponseEntity<List<AssociationEntity>> getByTypeAndId(int id, @RequestHeader("Authorization") String token) throws ParseException {
         if (!jwtTokenProviderService.getUserIdFromToken(token).equals(id)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } else {
@@ -56,13 +51,6 @@ public class AssociationController {
         }
     }
 
-
-    @CrossOrigin
-    @GetMapping(ADMIN + "shift/{shiftId}")
-    public ResponseEntity<List<AssociationAdmin>> getCollaboratorsByShiftId(@PathVariable int shiftId) {
-        List<AssociationAdmin> associations = associationService.getAssociationAdminByShiftId(shiftId);
-        return new ResponseEntity<>(associations, HttpStatus.OK);
-    }
 
     @CrossOrigin
     @PostMapping(ASSOCIATION + "create")
@@ -86,48 +74,6 @@ public class AssociationController {
                 return new ResponseEntity<>(associationEntity, HttpStatus.OK);
             }
         }
-    }
-
-    @CrossOrigin
-    @PutMapping(ADMIN + "accept")
-    public ResponseEntity<AssociationEntity> accept(@RequestBody AssociationEntity associationEntity) {
-        AssociationEntity association = associationService.getByCollaboratorIdAndShiftId(associationEntity.getId().getCollaboratorId(), associationEntity.getId().getShiftId());
-
-        if (association == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else if (association.getStatus() == Status.ACCEPTED) {
-            return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
-        } else if (association.getStatus() == Status.PENDING || association.getStatus() == Status.REJECTED) {
-            if (shiftAvailabilityService.getByShiftId(associationEntity.getId().getShiftId()).getAvailableSlots() <= 0) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            } else {
-                association.setStatus(Status.ACCEPTED);
-                associationService.save(association);
-                emailService.sendNotificationViaEmail(associationEntity.getId().getCollaboratorId(), Status.ACCEPTED, associationEntity.getId().getShiftId());
-                return new ResponseEntity<>(association, HttpStatus.OK);
-            }
-        }
-
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    }
-
-    @CrossOrigin
-    @PutMapping(ADMIN + "reject")
-    public ResponseEntity<AssociationEntity> reject(@RequestBody AssociationEntity associationEntity) {
-        AssociationEntity association = associationService.getByCollaboratorIdAndShiftId(associationEntity.getId().getCollaboratorId(), associationEntity.getId().getShiftId());
-
-        if (association == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else if (association.getStatus() == Status.REJECTED) {
-            return new ResponseEntity<>(association, HttpStatus.ALREADY_REPORTED);
-        } else if (association.getStatus() == Status.PENDING || association.getStatus() == Status.ACCEPTED) {
-            association.setStatus(Status.REJECTED);
-            associationService.save(association);
-            emailService.sendNotificationViaEmail(associationEntity.getId().getCollaboratorId(), Status.REJECTED, associationEntity.getId().getShiftId());
-            return new ResponseEntity<>(association, HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 

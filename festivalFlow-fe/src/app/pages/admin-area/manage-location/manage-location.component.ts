@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Shift} from "../../../interfaces/ShiftEntity";
-import {ShiftService} from "../../../services/http/shift.service";
+import {ShiftService} from "../../../services/http/admin/shift.service";
 import {ActivatedRoute} from "@angular/router";
-import {Association, AssociationAdmin} from "../../../interfaces/AssociationEntity";
-import {AssociationService} from "../../../services/http/association.service";
+import {Association} from "../../../interfaces/AssociationEntity";
+import {AssociationService} from "../../../services/http/admin/association.service";
+import {AssociationAdmin} from "../../../interfaces/AssociationAdminEntity";
 import {FormBuilder, Validators} from "@angular/forms";
-import {LocationService} from "../../../services/http/location.service";
+import {LocationService} from "../../../services/http/admin/location.service";
 import {Location} from "../../../interfaces/LocationEntity";
 
 @Component({
