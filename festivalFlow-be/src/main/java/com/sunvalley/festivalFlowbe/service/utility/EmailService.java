@@ -4,6 +4,8 @@ import com.sunvalley.festivalFlowbe.entity.Status;
 import com.sunvalley.festivalFlowbe.entity.utility.Attachment;
 import com.sunvalley.festivalFlowbe.entity.utility.EmailRequest;
 import com.sunvalley.festivalFlowbe.service.CollaboratorService;
+import com.sunvalley.festivalFlowbe.service.DayService;
+import com.sunvalley.festivalFlowbe.service.LocationService;
 import com.sunvalley.festivalFlowbe.service.ShiftService;
 import io.micrometer.common.util.StringUtils;
 import jakarta.mail.MessagingException;
@@ -24,6 +26,8 @@ public class EmailService {
     private final JavaMailSender mailSender;
     private final CollaboratorService collaboratorService;
     private final ShiftService shiftService;
+    private final DayService dayService;
+    private final LocationService locationService;
 
     @Value("${spring.mail.properties.mail.smtp.from}")
     private String senderAddress;
@@ -83,15 +87,15 @@ public class EmailService {
         switch (status) {
             case ACCEPTED:
                 emailRequest.setSubject("Turno accettato!");
-                emailRequest.setMessage("Il tuo turno: " + shiftService.getById(shiftId).getName() + " è stato accettato <br> Il tuo turno inizia alle: " + shiftService.getById(shiftId).getStartTime() + " e finisce alle: " + shiftService.getById(shiftId).getEndTime() + "<br> localhost:4200/collaborator <br><br> Grazie per la tua collaborazione <br> Il team di SVF");
+                emailRequest.setMessage("Il tuo turno: " + shiftService.getById(shiftId).getName() + " alla postazione: " + locationService.getByShiftId(shiftId).getName() + " al: " + dayService.getByShiftId(shiftId).getName() + " è stato accettato <br> Il tuo turno inizia alle: " + shiftService.getById(shiftId).getStartTime() + " e finisce alle: " + shiftService.getById(shiftId).getEndTime() + " <br><br>" + collaboratorService.getDataForEmail(userId) + " <br><br> Grazie per la tua collaborazione! <br> Il team di SVF!");
                 break;
             case REJECTED:
                 emailRequest.setSubject("Turno rifiutato!");
-                emailRequest.setMessage("Il tuo turno: " + shiftService.getById(shiftId).getName() + " è stato rifiutato <br> Il tuo turno sarebbe iniziato alle: " + shiftService.getById(shiftId).getStartTime() + " e finito alle: " + shiftService.getById(shiftId).getEndTime() + "<br> localhost:4200/collaborator <br><br> Grazie per la tua collaborazione <br> Il team di SVF");
+                emailRequest.setMessage("Il tuo turno: " + shiftService.getById(shiftId).getName() + " alla postazione: " + locationService.getByShiftId(shiftId).getName() + " al: " + dayService.getByShiftId(shiftId).getName() + "è stato rifiutato <br> Il tuo turno sarebbe iniziato alle: " + shiftService.getById(shiftId).getStartTime() + " e finito alle: " + shiftService.getById(shiftId).getEndTime() + " <br><br>" + collaboratorService.getDataForEmail(userId) + "<br><br> Grazie per la tua collaborazione <br> Il team di SVF");
                 break;
             case PENDING:
                 emailRequest.setSubject("Turno in attesa!");
-                emailRequest.setMessage("Il tuo turno: " + shiftService.getById(shiftId).getName() + " è in attesa di approvazione \n Il tuo turno inizia alle: " + shiftService.getById(shiftId).getStartTime() + " e finisce alle: " + shiftService.getById(shiftId).getEndTime() + "<br> localhost:4200/collaborator <br> Grazie per la tua collaborazione <br> Il team di SVF");
+                emailRequest.setMessage("Il tuo turno: " + shiftService.getById(shiftId).getName() + " alla postazione: " + locationService.getByShiftId(shiftId).getName() + " al: " + dayService.getByShiftId(shiftId).getName() + " è in attesa di approvazione \n Il tuo turno inizia alle: " + shiftService.getById(shiftId).getStartTime() + " e finisce alle: " + shiftService.getById(shiftId).getEndTime()  + " <br><br>" + collaboratorService.getDataForEmail(userId) +" <br><br>  Grazie per la tua collaborazione <br> Il team di SVF");
                 break;
             default:
                 log.error("Invalid status");
