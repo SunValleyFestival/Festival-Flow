@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../../../../environments/environment";
-import {HttpAuthClient} from "../token/http-auth-client";
 import {EmailRequest} from "../../../interfaces/EmailRequestEntity";
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
 
 const ADMIN_BASE_URL = environment.adminBaseUrl;
 
@@ -10,7 +11,7 @@ const ADMIN_BASE_URL = environment.adminBaseUrl;
 })
 export class AdminService {
 
-  constructor(private http: HttpAuthClient) {
+  constructor(private http: HttpClient) {
   }
 
   exportByMail(email: EmailRequest){
@@ -18,11 +19,11 @@ export class AdminService {
   }
 
   getLockStatus(){
-    return this.http.get(ADMIN_BASE_URL + "/lock/get");
+    return this.http.get(ADMIN_BASE_URL + "/lock/get") as Observable<boolean>;
   }
 
   setLockStatus(status: boolean){
-    return this.http.post(ADMIN_BASE_URL + "/lock", status);
+    return this.http.post(ADMIN_BASE_URL + "/lock", status) as Observable<boolean>;
   }
 
 }

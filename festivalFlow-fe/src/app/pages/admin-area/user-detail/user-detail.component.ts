@@ -37,7 +37,7 @@ export class UserDetailComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.collaboratorService.getCollaboratorById(params['id']).subscribe((collaborator: Collaborator) => {
-          this.collaborator = collaborator;
+          this.collaborator = collaborator as Collaborator;
           this.initForm();
         });
       }

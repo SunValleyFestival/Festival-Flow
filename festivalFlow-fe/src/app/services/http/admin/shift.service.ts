@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../../../environments/environment';
 import {Observable} from "rxjs";
 import {Shift} from "../../../interfaces/ShiftEntity";
-import {HttpAuthClient} from "../token/http-auth-client";
+import {HttpClient} from "@angular/common/http";
 
 const ADMIN_BASE_URL = environment.adminBaseUrl + "/shift/";
 
@@ -11,15 +11,17 @@ const ADMIN_BASE_URL = environment.adminBaseUrl + "/shift/";
 })
 export class ShiftService {
 
-  constructor(private http: HttpAuthClient) {
+  constructor(private http: HttpClient) {
   }
 
-  getShiftsByLocationId(locationId: number): Observable<Shift[]> {
-    return this.http.get(ADMIN_BASE_URL + "location/" + locationId);
+  getShiftsByLocationId(locationId: number) {
+    return this.http.get(ADMIN_BASE_URL + "location/" + locationId) as Observable<Shift[]>;
   }
 
   deleteShift(shift: Shift) {
-    return this.http.delete(ADMIN_BASE_URL, shift);
+    return this.http.delete(ADMIN_BASE_URL, {
+      body: shift
+    });
   }
 
   createShift(shift: Shift) {

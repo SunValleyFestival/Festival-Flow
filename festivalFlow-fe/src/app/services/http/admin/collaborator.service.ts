@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../../../environments/environment';
 import {Collaborator} from "../../../interfaces/CollaboratorEntity";
-import {HttpAuthClient} from "../token/http-auth-client";
 import {Observable} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 
 const ADMIN_BASE_URL = environment.adminBaseUrl + "/collaborator/";
 
@@ -11,23 +11,25 @@ const ADMIN_BASE_URL = environment.adminBaseUrl + "/collaborator/";
 })
 export class CollaboratorService {
 
-  constructor(private http: HttpAuthClient) {
+  constructor(private http: HttpClient) {
   }
 
 
-  getCollaborators(): Observable<Collaborator[]> {
-    return this.http.get(ADMIN_BASE_URL);
+  getCollaborators() {
+    return this.http.get(ADMIN_BASE_URL) as Observable<Collaborator[]>;
   }
 
   updateCollaboratorFromAdmin(collaborator: Collaborator) {
     return this.http.put(ADMIN_BASE_URL + "update", collaborator);
   }
 
-  getCollaboratorById(id: number): Observable<Collaborator> {
-    return this.http.get(ADMIN_BASE_URL + id);
+  getCollaboratorById(id: number) {
+    return this.http.get(ADMIN_BASE_URL + id) as Observable<Collaborator>;
   }
 
   deleteCollaborator(collaborator: Collaborator) {
-    return this.http.delete(ADMIN_BASE_URL, collaborator);
+    return this.http.delete(ADMIN_BASE_URL, {
+      body: collaborator
+    });
   }
 }

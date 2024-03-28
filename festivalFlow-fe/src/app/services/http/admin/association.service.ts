@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpAuthClient} from "../token/http-auth-client";
 import {environment} from '../../../../environments/environment';
-import {Association} from "../../../interfaces/AssociationEntity";
+import {Association, AssociationAdmin} from "../../../interfaces/AssociationEntity";
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
 
 const ADMIN_BASE_URL = environment.adminBaseUrl + "/association/";
 
@@ -11,12 +12,12 @@ const ADMIN_BASE_URL = environment.adminBaseUrl + "/association/";
 export class AssociationService {
 
   constructor(
-    private http: HttpAuthClient,
+    private http: HttpClient,
   ) {
   }
 
   getAdminAssociationByShiftId(shiftId: number) {
-    return this.http.get(ADMIN_BASE_URL + "shift/" + shiftId);
+    return this.http.get(ADMIN_BASE_URL + "shift/" + shiftId) as Observable<AssociationAdmin[]>;
   }
 
   rejectAssociation(association: Association) {
