@@ -2,6 +2,7 @@ package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
 import com.sunvalley.festivalFlowbe.service.CollaboratorService;
+import com.sunvalley.festivalFlowbe.service.utility.EmailService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,7 @@ public class CollaboratorController {
 
     private final CollaboratorService collaboratorService;
     private final JWTTokenProviderService jwtTokenProviderService;
+    private final EmailService emailService;
 
     @GetMapping(COLLABORATOR)
     public ResponseEntity<CollaboratorEntity> get(@RequestHeader("Authorization") String token) throws ParseException {
@@ -53,6 +55,7 @@ public class CollaboratorController {
         } else {
             if (collaboratorService.phoneIsValid(collaborator.getPhone())) {
                 CollaboratorEntity newCollaborator = collaboratorService.update(collaborator);
+                emailService.sendCollabortorInfo(newCollaborator.getId());
                 return new ResponseEntity<>(newCollaborator, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);

@@ -4,8 +4,10 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
 import com.sunvalley.festivalFlowbe.entity.utility.AuthEntity;
 import com.sunvalley.festivalFlowbe.repository.CollaboratorRepository;
+
 import java.util.Date;
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -80,6 +82,7 @@ public class CollaboratorService {
     public boolean existsByEmail(final String email) {
         return collaboratorRepository.existsByEmail(email);
     }
+
     public boolean isMinor(int id) {
         try {
             Date dataNascita = collaboratorRepository.findById(id).get().getAge();
@@ -94,5 +97,16 @@ public class CollaboratorService {
 
     public Date getDateByEmail(final String email) {
         return collaboratorRepository.findByEmail(email).getAge();
+    }
+
+    public String getDataForEmail(int id) {
+        CollaboratorEntity collaborator = collaboratorRepository.findById(id).orElse(null);
+        if (collaborator == null) {
+            return null;
+        }
+        return "I tuoi dati: <br>Nome:" + collaborator.getFirstName() + " <br>Cognome: " + collaborator.getLastName()
+                + " <br>Email: " + collaborator.getEmail() + " <br>Telefono: " + collaborator.getPhone()
+                + " <br>Data di nascita: " + collaborator.getAge() + "<br>Città: " + collaborator.getTown()
+                + "<br>Taglia: " + collaborator.getSize() + "<br>Esperienza: " + collaborator.getYearsExperience();
     }
 }
