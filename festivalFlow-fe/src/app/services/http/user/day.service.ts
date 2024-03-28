@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpAuthClient} from "./token/http-auth-client";
-import {environment} from '../../../environments/environment';
+import {HttpAuthClient} from "../token/http-auth-client";
+import {environment} from '../../../../environments/environment';
 import {Observable} from "rxjs";
-import {Day} from "../../interfaces/DayEntity";
+import {Day} from "../../../interfaces/DayEntity";
 
 const BASE_URL = environment.userBaseUrl + "/day/";
 const ADMIN_BASE_URL = environment.adminBaseUrl + "/day/";
@@ -17,13 +17,5 @@ export class DayService {
 
   getAllDays(): Observable<Day[]> {
     return this.http.get(BASE_URL);
-  }
-
-  saveDay(day: Day) {
-    return this.http.post(ADMIN_BASE_URL + 'create', day);
-  }
-
-  deleteDayById(currentDayId: number) {
-    return this.http.delete(ADMIN_BASE_URL + currentDayId, null);
   }
 }

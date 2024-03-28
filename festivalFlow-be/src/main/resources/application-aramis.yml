@@ -73,5 +73,8 @@ spring:
       issuer: localhost:8080
       algorithm: RS256
       expirationTime: 10m
-
+image:
+  upload:
+    url: https://festivalflowcdn.thunderhosting.cloud/api.php
+    token: 98349239582392382846
 # The RSA algorithm is being used here.

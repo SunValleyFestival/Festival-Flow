@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpAuthClient} from "./token/http-auth-client";
-import {environment} from '../../../environments/environment';
+import {HttpAuthClient} from "../token/http-auth-client";
+import {environment} from '../../../../environments/environment';
 import {Observable} from "rxjs";
-import {Location} from "../../interfaces/LocationEntity";
+import {Location} from "../../../interfaces/LocationEntity";
 
 const BASE_URL = environment.userBaseUrl + "/location/";
 const ADMIN_BASE_URL = environment.adminBaseUrl + "/location/";
@@ -21,17 +21,5 @@ export class LocationService {
 
   getLocationById(param: any): Observable<Location> {
     return this.http.get(BASE_URL + param);
-  }
-
-  deleteLocation(location: Location) {
-    return this.http.delete(ADMIN_BASE_URL, location);
-  }
-
-  createLocation(formData: Location) {
-    return this.http.post(ADMIN_BASE_URL + 'create', formData);
-  }
-
-  updateLocation(location: Location) {
-    return this.http.put(ADMIN_BASE_URL + 'update', location);
   }
 }

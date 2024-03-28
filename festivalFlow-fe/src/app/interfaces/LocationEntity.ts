@@ -5,7 +5,9 @@ export interface Location {
   name: string;
   description?: string | null;
   day: Day;
+  adultsOnly?: boolean;
   manager?: string;
+  image?: string;
 }
 
 export interface LocationClient {
@@ -13,7 +15,9 @@ export interface LocationClient {
   name: string;
   description?: string | null;
   day: Day;
-  shiftAvailability: number;
+  adultsOnly?: boolean;
   manager?: string;
+  image?: string;
+  shiftAvailability: number;
 }
 

@@ -26,6 +26,10 @@ public class LocationService {
         return locationRepository.save(location);
     }
 
+    public LocationEntity getByShiftId(int shiftId) {
+        return locationRepository.findByShiftId(shiftId);
+    }
+
     public List<LocationEntity> getLocationsByDayId(int id, boolean minor) {
         DayEntity day = dayService.getDayById(id);
         if (minor) {

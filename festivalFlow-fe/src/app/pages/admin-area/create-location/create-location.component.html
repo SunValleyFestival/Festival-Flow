@@ -15,7 +15,8 @@
           <div class="label">
             <span class="label-text">Nome</span>
           </div>
-          <input [ngClass]="{'input-error': locationForm.get('name')?.invalid && locationForm.get('name')?.touched}" class="input input-bordered" formControlName="name" name="name" placeholder="Nome" required
+          <input [ngClass]="{'input-error': locationForm.get('name')?.invalid && locationForm.get('name')?.touched}" class="input input-bordered" formControlName="name" name="name"
+                 placeholder="Nome" required
                  type="text"/>
         </label>
 
@@ -23,7 +24,8 @@
           <div class="label">
             <span class="label-text">Immagine</span>
           </div>
-          <input class="file-input file-input-bordered" required type="file"/>
+          <input (change)="onFileSelected($event)" [ngClass]="{'file-input-error': locationForm.get('image')?.invalid && locationForm.get('image')?.touched}"
+                 accept="image/*" class="file-input file-input-bordered" formControlName="image" required type="file"/>
         </label>
 
         <label class="form-control w-1/3">
@@ -37,7 +39,30 @@
           </select>
         </label>
       </div>
-      <div>
+
+      <div class="flex w-full mt-2">
+        <label class="form-control w-1/3 mr-10">
+          <div class="label">
+            <span class="label-text">Manager</span>
+          </div>
+          <input class="input input-bordered" formControlName="manager" name="name" placeholder="Manager"
+                 type="text"/>
+        </label>
+
+        <label class="form-control w-1/3 mr-10">
+          <div class="label">
+            <span class="label-text">18+</span>
+          </div>
+          <input class="checkbox" formControlName="adultsOnly" type="checkbox"/>
+        </label>
+
+        <label class="form-control w-1/3">
+
+        </label>
+
+      </div>
+
+      <div class="mt-2">
         <label class="form-control">
           <div class="label">
             <span class="label-text">Descrizione</span>

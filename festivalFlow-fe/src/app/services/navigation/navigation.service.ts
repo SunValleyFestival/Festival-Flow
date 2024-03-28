@@ -20,4 +20,8 @@ export class NavigationService {
   goToLogin() {
     this.router.navigate(['/user/login']);
   }
+
+  goToUserPage() {
+    this.router.navigate(['/user/user']);
+  }
 }

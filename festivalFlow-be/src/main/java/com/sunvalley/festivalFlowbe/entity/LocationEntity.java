@@ -20,23 +20,28 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "location", schema = "FestivalFlow")
 public class LocationEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
 
-    @Column(name = "description")
-    private String description;
+  @Column(name = "name", nullable = false)
+  private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "day_id", referencedColumnName = "id")
-    private DayEntity day;
+  @Column(name = "description")
+  private String description;
 
-    @Column(name = "adultsOnly", nullable = false)
-    private boolean adultsOnly;
+  @ManyToOne
+  @JoinColumn(name = "day_id", referencedColumnName = "id")
+  private DayEntity day;
+
+  @Column(name = "adultsOnly", nullable = false)
+  private boolean adultsOnly;
 
   @Column(name = "manager")
   private String manager;
+
+  @Column(name = "image")
+  private String image;
+
 }

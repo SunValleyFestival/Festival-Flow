@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CollaboratorService} from "../../../services/http/collaborator.service";
+import {CollaboratorService} from "../../../services/http/admin/collaborator.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Collaborator} from "../../../interfaces/CollaboratorEntity";
 import {FormBuilder, Validators} from "@angular/forms";
@@ -37,7 +37,7 @@ export class UserDetailComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.collaboratorService.getCollaboratorById(params['id']).subscribe((collaborator: Collaborator) => {
-          this.collaborator = collaborator;
+          this.collaborator = collaborator as Collaborator;
           this.initForm();
         });
       }

@@ -10,6 +10,6 @@ public interface ConfigurationRepository extends JpaRepository<ConfigurationEnti
     ConfigurationEntity getByName(String name);
 
     @Modifying
-    @Query("update ConfigurationEntity c set c.value = ?2 where c.name = ?1")
+    @Query("update ConfigurationEntity c set c.value = :value where c.name = :name")
     void updateByName(String name, boolean value);
 }

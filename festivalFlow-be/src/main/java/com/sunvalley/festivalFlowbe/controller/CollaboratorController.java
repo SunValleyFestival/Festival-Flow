@@ -2,6 +2,7 @@ package com.sunvalley.festivalFlowbe.controller;
 
 import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
 import com.sunvalley.festivalFlowbe.service.CollaboratorService;
+import com.sunvalley.festivalFlowbe.service.utility.EmailService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +22,11 @@ import java.util.List;
 @RequestMapping("/festival-flow/")
 public class CollaboratorController {
 
-    private static final String ADMIN = "admin/collaborator/";
     private static final String COLLABORATOR = "user/collaborator/";
 
     private final CollaboratorService collaboratorService;
     private final JWTTokenProviderService jwtTokenProviderService;
+    private final EmailService emailService;
 
     @GetMapping(COLLABORATOR)
     public ResponseEntity<CollaboratorEntity> get(@RequestHeader("Authorization") String token) throws ParseException {
@@ -54,38 +55,12 @@ public class CollaboratorController {
         } else {
             if (collaboratorService.phoneIsValid(collaborator.getPhone())) {
                 CollaboratorEntity newCollaborator = collaboratorService.update(collaborator);
+                emailService.sendCollabortorInfo(newCollaborator.getId());
                 return new ResponseEntity<>(newCollaborator, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
         }
     }
-
-  @CrossOrigin
-  @PutMapping(ADMIN + "update")
-  public ResponseEntity<CollaboratorEntity> updateAdmin(@RequestBody CollaboratorEntity collaborator) {
-    CollaboratorEntity newCollaborator = collaboratorService.update(collaborator);
-    return new ResponseEntity<>(newCollaborator, HttpStatus.OK);
-  }
-
-    @GetMapping(ADMIN)
-    public ResponseEntity<List<CollaboratorEntity>> getAllAdmin() {
-        List<CollaboratorEntity> collaborators = collaboratorService.findCollaboratorEntitiesWhereIsPopulated();
-        return new ResponseEntity<>(collaborators, HttpStatus.OK);
-    }
-
-    @GetMapping(ADMIN + "shift/{shiftId}")
-    public ResponseEntity<List<CollaboratorEntity>> getByShiftId(@PathVariable int shiftId) {
-        List<CollaboratorEntity> collaborators = collaboratorService.getByShiftId(shiftId);
-        return new ResponseEntity<>(collaborators, HttpStatus.OK);
-    }
-
-
-    @DeleteMapping(ADMIN)
-    public ResponseEntity<CollaboratorEntity> deleteById(@RequestBody CollaboratorEntity collaboratorEntity) {
-        collaboratorService.deleteById(collaboratorEntity.getId());
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
 
 }

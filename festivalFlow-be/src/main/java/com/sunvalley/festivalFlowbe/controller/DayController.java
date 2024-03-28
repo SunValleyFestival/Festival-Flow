@@ -17,8 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/festival-flow/")
 public class DayController {
-
-    private static final String ADMIN = "admin/day/";
     private static final String DAY = "user/day/";
 
     private final DayService dayService;
@@ -33,19 +31,6 @@ public class DayController {
     public ResponseEntity<DayEntity> getById(@PathVariable int id) {
         DayEntity day = dayService.getById(id);
         return new ResponseEntity<>(day, HttpStatus.OK);
-    }
-
-    @DeleteMapping(ADMIN + "{id}")
-    public ResponseEntity<DayEntity> deleteById(@PathVariable int id) {
-        dayService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping(ADMIN + "create")
-    public ResponseEntity<DayEntity> create(@RequestBody DayEntity day) {
-        day.setId(null);
-        DayEntity newDay = dayService.create(day);
-        return new ResponseEntity<>(newDay, HttpStatus.CREATED);
     }
 
 }
