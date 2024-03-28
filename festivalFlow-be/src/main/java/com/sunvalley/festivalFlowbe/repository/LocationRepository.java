@@ -15,4 +15,7 @@ public interface LocationRepository extends JpaRepository<LocationEntity, Intege
 
     LocationEntity findByIdAndAdultsOnly(int id, boolean adultsOnly);
 
+    @Query("SELECT l FROM LocationEntity l inner join ShiftEntity s where s.id= :shiftId and l = s.location")
+    LocationEntity findByShiftId(int shiftId);
+
 }

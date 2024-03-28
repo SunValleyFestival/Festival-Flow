@@ -26,6 +26,10 @@ public class DayService {
         return dayRepository.findById(id).orElse(null);
     }
 
+    public DayEntity getByShiftId(final int shiftId) {
+        return dayRepository.findByShiftId(shiftId);
+    }
+
     public void deleteById(final int id) {
         dayRepository.delete(Objects.requireNonNull(dayRepository.findById(id).orElse(null)));
     }

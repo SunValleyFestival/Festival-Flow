@@ -1,9 +1,12 @@
 package com.sunvalley.festivalFlowbe.service.utility;
 
+import com.sunvalley.festivalFlowbe.entity.ShiftEntity;
 import com.sunvalley.festivalFlowbe.entity.Status;
 import com.sunvalley.festivalFlowbe.entity.utility.Attachment;
 import com.sunvalley.festivalFlowbe.entity.utility.EmailRequest;
 import com.sunvalley.festivalFlowbe.service.CollaboratorService;
+import com.sunvalley.festivalFlowbe.service.DayService;
+import com.sunvalley.festivalFlowbe.service.LocationService;
 import com.sunvalley.festivalFlowbe.service.ShiftService;
 import io.micrometer.common.util.StringUtils;
 import jakarta.mail.MessagingException;
@@ -24,6 +27,8 @@ public class EmailService {
     private final JavaMailSender mailSender;
     private final CollaboratorService collaboratorService;
     private final ShiftService shiftService;
+    private final DayService dayService;
+    private final LocationService locationService;
 
     @Value("${spring.mail.properties.mail.smtp.from}")
     private String senderAddress;
@@ -40,7 +45,6 @@ public class EmailService {
             return false;
         }
 
-//        addTestReceiverIfConfigured(emailRequest);
         return sendMimeMessage(emailRequest);
     }
 
@@ -79,25 +83,35 @@ public class EmailService {
     public void sendNotificationViaEmail(int userId, Status status, int shiftId) {
         EmailRequest emailRequest = new EmailRequest();
         emailRequest.setTo(collaboratorService.getEmailById(userId));
-        // add switch for Status
+        ShiftEntity shiftEntity;
         switch (status) {
             case ACCEPTED:
+                shiftEntity = shiftService.getById(shiftId);
                 emailRequest.setSubject("Turno accettato!");
-                emailRequest.setMessage("Il tuo turno: " + shiftService.getById(shiftId).getName() + " è stato accettato <br> Il tuo turno inizia alle: " + shiftService.getById(shiftId).getStartTime() + " e finisce alle: " + shiftService.getById(shiftId).getEndTime() + "<br> localhost:4200/collaborator <br><br> Grazie per la tua collaborazione <br> Il team di SVF");
+                emailRequest.setMessage("Il tuo turno: " + shiftEntity.getName() + " alla postazione: " + shiftEntity.getLocation().getName() + " al: " + shiftEntity.getLocation().getDay().getName() + " è stato accettato <br> Il tuo turno inizia alle: " + shiftEntity.getStartTime() + " e finisce alle: " + shiftEntity.getEndTime() + " <br><br>" + collaboratorService.getDataForEmail(userId) + " <br><br> Grazie per la tua collaborazione! <br> Il team di SVF!");
                 break;
             case REJECTED:
+                shiftEntity = shiftService.getById(shiftId);
                 emailRequest.setSubject("Turno rifiutato!");
-                emailRequest.setMessage("Il tuo turno: " + shiftService.getById(shiftId).getName() + " è stato rifiutato <br> Il tuo turno sarebbe iniziato alle: " + shiftService.getById(shiftId).getStartTime() + " e finito alle: " + shiftService.getById(shiftId).getEndTime() + "<br> localhost:4200/collaborator <br><br> Grazie per la tua collaborazione <br> Il team di SVF");
+                emailRequest.setMessage("Il tuo turno: " + shiftEntity.getName() + " alla postazione: " + shiftEntity.getLocation().getName() + " al: " + shiftEntity.getLocation().getDay().getName() + "è stato rifiutato <br> Il tuo turno sarebbe iniziato alle: " + shiftEntity.getStartTime() + " e finito alle: " + shiftService.getById(shiftId).getEndTime() + " <br><br>" + collaboratorService.getDataForEmail(userId) + "<br><br> Grazie per la tua collaborazione <br> Il team di SVF");
                 break;
             case PENDING:
+                shiftEntity = shiftService.getById(shiftId);
                 emailRequest.setSubject("Turno in attesa!");
-                emailRequest.setMessage("Il tuo turno: " + shiftService.getById(shiftId).getName() + " è in attesa di approvazione \n Il tuo turno inizia alle: " + shiftService.getById(shiftId).getStartTime() + " e finisce alle: " + shiftService.getById(shiftId).getEndTime() + "<br> localhost:4200/collaborator <br> Grazie per la tua collaborazione <br> Il team di SVF");
+                emailRequest.setMessage("Il tuo turno: " + shiftEntity.getName() + " alla postazione: " + shiftEntity.getLocation().getName() + " al: " +shiftEntity.getLocation().getDay().getName() + " è in attesa di approvazione \n Il tuo turno inizia alle: " + shiftEntity.getStartTime() + " e finisce alle: " + shiftService.getById(shiftId).getEndTime()  + " <br><br>" + collaboratorService.getDataForEmail(userId) +" <br><br>  Grazie per la tua collaborazione <br> Il team di SVF");
                 break;
             default:
                 log.error("Invalid status");
                 return;
         }
-        log.info("Sending notification to <{}> with subject<{}>...", emailRequest.getTo(), emailRequest.getSubject());
+        sendEmail(emailRequest);
+    }
+
+    public void sendCollabortorInfo(int userId) {
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setTo(collaboratorService.getEmailById(userId));
+        emailRequest.setSubject("Info personali");
+        emailRequest.setMessage(collaboratorService.getDataForEmail(userId)+" <br> Il team di SVF!");
         sendEmail(emailRequest);
     }
 
