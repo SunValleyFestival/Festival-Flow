@@ -1,8 +1,0 @@
-{
-  "/festival-flow/*": {
-    "target": "https://festivalflow.web.inetsolutions.cloud",
-    "secure": false,
-    "logLevel": "debug",
-    "changeOrigin": true
-  }
-}
