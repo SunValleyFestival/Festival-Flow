@@ -1,4 +1,4 @@
 export const environment = {
-  adminBaseUrl: "festival-flow/admin",
-  userBaseUrl: "festival-flow/user",
+  adminBaseUrl: "https://flow.sunvalleyfestival.com/festival-flow/admin",
+  userBaseUrl: "https://flow.sunvalleyfestival.com/festival-flow/user",
 };
