@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpAuthClient} from "../token/http-auth-client";
 import {environment} from '../../../../environments/environment';
 import {Observable} from "rxjs";
 import {Location} from "../../../interfaces/LocationEntity";
+import {HttpClient} from "@angular/common/http";
 
 const ADMIN_BASE_URL = environment.adminBaseUrl + "/location/";
 
@@ -11,23 +11,25 @@ const ADMIN_BASE_URL = environment.adminBaseUrl + "/location/";
 })
 export class LocationService {
 
-  constructor(private http: HttpAuthClient) {
+  constructor(private http: HttpClient) {
   }
 
-  getLocationsByDayId(dayId: number): Observable<Location[]> {
+  getLocationsByDayId(dayId: number) {
     return this.http.get(ADMIN_BASE_URL + "day/" + dayId);
   }
 
-  getLocationById(param: any): Observable<Location> {
-    return this.http.get(ADMIN_BASE_URL + param);
+  getLocationById(param: any) {
+    return this.http.get(ADMIN_BASE_URL + param) as Observable<Location>;
   }
 
   deleteLocation(location: Location) {
-    return this.http.delete(ADMIN_BASE_URL, location);
+    return this.http.delete(ADMIN_BASE_URL, {
+      body: location
+    });
   }
 
   createLocation(formData: Location) {
-    return this.http.post(ADMIN_BASE_URL + 'create', formData);
+    return this.http.post(ADMIN_BASE_URL + 'create', formData) as Observable<Location>;
   }
 
   uploadImage(image: File, locationId: number) {

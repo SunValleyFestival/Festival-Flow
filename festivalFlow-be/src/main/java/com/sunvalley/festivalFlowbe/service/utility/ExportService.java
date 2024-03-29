@@ -41,7 +41,7 @@ public class ExportService {
         List<CollaboratorEntity> collaboratorEntities = collaboratorService.findCollaboratorEntitiesWhereIsPopulatedAndAssociationAccepted();
 
         for (int i = 0; i < collaboratorEntities.size(); i++) {
-            Row row = sheetCollaboratori.createRow(i + 3);
+            Row row = sheetCollaboratori.createRow(i + 4);
             Cell indice = row.createCell(0);
             indice.setCellValue(i + 1);
             Cell id = row.createCell(1);
@@ -104,7 +104,8 @@ public class ExportService {
 
         Row rowDayCollaboratori = sheetCollaboratori.createRow(0);
         Row rowLocationCollaboratori = sheetCollaboratori.createRow(1);
-        Row rowShiftCollaboratori = sheetCollaboratori.createRow(2);
+        Row rowManagerCollaboratori = sheetCollaboratori.createRow(2);
+        Row rowShiftCollaboratori = sheetCollaboratori.createRow(3);
 
         Cell indice = rowShiftCollaboratori.createCell(0);
         indice.setCellValue("Indice");
@@ -161,24 +162,29 @@ public class ExportService {
         int h = 15;
         for (DayEntity dayEntity : dayService.getAll()) {
 
-
             Cell cellDay = rowDayCollaboratori.createCell(h);
             cellDay.setCellValue(dayEntity.getName());
             cellDay.setCellStyle(shiftNameStyle);
+
             int firstCol = h;
             for (LocationEntity locationEntity : locationService.getLocationsByDayId(dayEntity.getId(), false)) {
                 Cell cellLocation = rowLocationCollaboratori.createCell(h);
                 cellLocation.setCellValue(locationEntity.getName());
                 cellLocation.setCellStyle(shiftNameStyle);
+                Cell cellManager = rowManagerCollaboratori.createCell(h);
+                cellManager.setCellValue(locationEntity.getManager());
+                cellManager.setCellStyle(shiftNameStyle);
+
                 int firstColLocation = h;
                 for (ShiftEntity shiftEntity : shiftService.getShiftsByLocationId(locationEntity.getId())) {
                     Cell cell = rowShiftCollaboratori.createCell(h);
                     cell.setCellValue(shiftEntity.getName());
                     cell.setCellStyle(shiftNameStyle);
+
                     int o;
                     for (o = 0; o < collaboratorEntities.size(); o++) {
                         if (associationService.existsByCollaboratorIdAndShiftIdAndAccepted(collaboratorEntities.get(o).getId(), shiftEntity.getId())) {
-                            Row rowCollaborator = sheetCollaboratori.getRow(o + 3);
+                            Row rowCollaborator = sheetCollaboratori.getRow(o + 4);
                             Cell cellCollaborator = rowCollaborator.createCell(h);
                             cellCollaborator.setCellValue("X");
                         }
@@ -193,6 +199,7 @@ public class ExportService {
                 }
                 if (firstColLocation != h) {
                     sheetCollaboratori.addMergedRegion(new CellRangeAddress(1, 1, firstColLocation, h - 1));
+                    sheetCollaboratori.addMergedRegion(new CellRangeAddress(2, 2, firstColLocation, h - 1));
                 }
 
             }
@@ -206,16 +213,17 @@ public class ExportService {
         Sheet bylocationSheet = workbook.createSheet("CollaboratoriPerTurno");
 
 
-        for (int i = 3; i < 100; i++) {
+        for (int i = 4; i < 100; i++) {
             Row row1 = bylocationSheet.createRow(i);
             Cell cell = row1.createCell(0);
-            cell.setCellValue(i - 2);
+            cell.setCellValue(i - 3);
         }
 
 
         Row rowDay = bylocationSheet.createRow(0);
         Row rowLocation = bylocationSheet.createRow(1);
-        Row rowShift = bylocationSheet.createRow(2);
+        Row rowManager = bylocationSheet.createRow(2);
+        Row rowShift = bylocationSheet.createRow(3);
         h = 1;
         for (DayEntity dayEntity : dayService.getAll()) {
             Cell cellDay = rowDay.createCell(h);
@@ -226,12 +234,16 @@ public class ExportService {
                 Cell cellLocation = rowLocation.createCell(h);
                 cellLocation.setCellValue(locationEntity.getName());
                 cellLocation.setCellStyle(shiftNameStyle);
+
+                Cell cellManager = rowManager.createCell(h);
+                cellManager.setCellValue(locationEntity.getManager());
+                cellManager.setCellStyle(shiftNameStyle);
                 int firstColLocation = h;
                 for (ShiftEntity shiftEntity : shiftService.getShiftsByLocationId(locationEntity.getId())) {
                     Cell cell = rowShift.createCell(h);
                     cell.setCellValue(shiftEntity.getName());
                     cell.setCellStyle(shiftNameStyle);
-                    int k = 3;
+                    int k = 4;
                     for (CollaboratorEntity collaboratorEntity : collaboratorService.findCollaboratorEntitiesWhereIsPopulatedAndAssociationAcceptedByShiftId(shiftEntity.getId())) {
                         Row rowCollaborator = bylocationSheet.getRow(k);
                         Cell cellCollaborator = rowCollaborator.createCell(h);
@@ -242,6 +254,8 @@ public class ExportService {
                 }
                 if (firstColLocation != h) {
                     bylocationSheet.addMergedRegion(new CellRangeAddress(1, 1, firstColLocation, h - 1));
+                    bylocationSheet.addMergedRegion(new CellRangeAddress(2, 2, firstColLocation, h - 1));
+
                 }
 
             }

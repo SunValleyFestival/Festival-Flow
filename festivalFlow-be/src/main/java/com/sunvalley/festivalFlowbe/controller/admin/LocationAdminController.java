@@ -4,19 +4,32 @@ import com.sunvalley.festivalFlowbe.entity.LocationEntity;
 import com.sunvalley.festivalFlowbe.service.CollaboratorService;
 import com.sunvalley.festivalFlowbe.service.LocationService;
 import com.sunvalley.festivalFlowbe.service.utility.JWTTokenProviderService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @CrossOrigin
@@ -38,14 +51,14 @@ public class LocationAdminController {
   private final JWTTokenProviderService jwtTokenProviderService;
 
   @GetMapping(ADMIN + "{id}")
-  public ResponseEntity<LocationEntity> getById(@RequestHeader("Authorization") String token, @PathVariable int id) throws ParseException {
-    LocationEntity location = locationService.getById(id, isMinor(token));
+  public ResponseEntity<LocationEntity> getById(@PathVariable int id) throws ParseException {
+    LocationEntity location = locationService.getById(id, false);
     return new ResponseEntity<>(location, HttpStatus.OK);
   }
 
   @GetMapping( ADMIN+ "day/{day}")
-  public ResponseEntity<List<LocationEntity>> getByDayId(@RequestHeader("Authorization") String token, @PathVariable int day) throws ParseException {
-    List<LocationEntity> locations = locationService.getLocationsByDayId(day, isMinor(token));
+  public ResponseEntity<List<LocationEntity>> getByDayId(@PathVariable int day) throws ParseException {
+    List<LocationEntity> locations = locationService.getLocationsByDayId(day, false);
     return new ResponseEntity<>(locations, HttpStatus.OK);
   }
 
@@ -93,10 +106,6 @@ public class LocationAdminController {
   public ResponseEntity<LocationEntity> update(@RequestBody LocationEntity location) {
     LocationEntity updatedLocation = locationService.update(location);
     return new ResponseEntity<>(updatedLocation, HttpStatus.OK);
-  }
-
-  private boolean isMinor(String token) throws ParseException {
-    return collaboratorService.isMinor(jwtTokenProviderService.getUserIdFromToken(token));
   }
 
 }
