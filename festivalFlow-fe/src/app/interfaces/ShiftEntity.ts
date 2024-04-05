@@ -21,7 +21,6 @@ export interface ShiftClient {
   startTime: string;
   endTime: string;
   maxCollaborator: number;
-  collaboratorName?: string[];
-  collaboratorEntityList?: Collaborator[];
+  collaboratorName?: string;
   shiftAvailability: number;
 }

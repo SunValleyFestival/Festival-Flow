@@ -27,7 +27,8 @@
             <time class="font-mono italic">{{ shift.startTime }} - {{ shift.endTime }}</time>
             <div class="text-lg font-black">{{ shift.name }}</div>
             <div class="flex flex-col gap-3">
-              {{ shift.description }}
+              <p>{{ shift.description }}</p>
+              <p>{{ shift.collaboratorName }}</p>
               <p>{{ shift.shiftAvailability }} posti rimanenti</p>
               <progress class="progress progress-error w-1/2" value="{{shift.maxCollaborator - (shift.shiftAvailability)}}"
                         max="{{shift.maxCollaborator}}"></progress>
