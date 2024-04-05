@@ -88,14 +88,12 @@ export class UserComponent implements OnInit {
       let collaborator = this.getCollaboratorFromFormData();
       collaborator.id = this.activeCollaborator.id
       this.collaboratorService.updateCollaborator(collaborator).pipe().subscribe(() => {
-        this.ngOnInit();
+        window.location.reload();
       });
     }
   }
 
-  getCollaboratorFromFormData()
-    :
-    Collaborator {
+  getCollaboratorFromFormData(): Collaborator {
     return {
       email: this.formData.get('email')?.value,
       phone: this.formData.get('countryCode')?.value + this.formData.get('phone')?.value,

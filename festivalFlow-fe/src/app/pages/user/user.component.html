@@ -9,7 +9,7 @@
             <label [ngClass]="{'input-error': formData.get('email')?.invalid && formData.get('email')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
               Email:
               <input class="grow bg-base-100" formControlName="email" name="email"
-                     placeholder="max.carota@gmail.com" type="email"/>
+                     [readOnly]="activeCollaborator?.email" placeholder="max.carota@gmail.com" type="email"/>
             </label>
 
             <label [ngClass]="{'input-error': formData.get('phone')?.invalid && formData.get('phone')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
@@ -36,14 +36,14 @@
             <label [ngClass]="{'input-error': formData.get('age')?.invalid && formData.get('age')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
               Età:
               <input class="grow bg-base-100" formControlName="age" name="age" placeholder="22"
-                     required type="date"/>
+                     [readOnly]="activeCollaborator?.age" required type="date"/>
             </label>
 
             <label [ngClass]="{'input-error': formData.get('yearsExperience')?.invalid && formData.get('yearsExperience')?.touched}"
                    class="input input-bordered flex items-center mt-2 gap-2">
               Anni di esperienza:
               <input class="grow bg-base-100" formControlName="yearsExperience" name="yearsExperience" placeholder="0"
-                     required type="number"/>
+                     [readOnly]="activeCollaborator?.yearsExperience" required type="number"/>
             </label>
 
             <label [ngClass]="{'input-error': formData.get('town')?.invalid && formData.get('town')?.touched}" class="input input-bordered flex items-center mt-2 gap-2">
