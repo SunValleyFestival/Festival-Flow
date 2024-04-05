@@ -64,4 +64,13 @@ public class AssociationService {
     public boolean existsByCollaboratorIdAndShiftIdAndAccepted(int collaboratorId, int shiftId) {
       return !associationRepository.existsByCollaboratorIdAndShiftIdAndAccepted(collaboratorId, shiftId).isEmpty();
     }
+
+    public List<String> getCollaboratorsNameByShiftId(int shiftId) {
+        var collaboratorEntities = associationRepository.getCollaboratorsNameByShiftId(shiftId);
+        var collaboratorsName = new ArrayList<String>();
+        for (CollaboratorEntity collaboratorEntity : collaboratorEntities) {
+            collaboratorsName.add(collaboratorEntity.getLastName().charAt(0) + ". " + collaboratorEntity.getFirstName());
+        }
+        return collaboratorsName;
+    }
 }

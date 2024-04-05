@@ -77,5 +77,10 @@ public class AssociationController {
         }
     }
 
-
+    @CrossOrigin
+    @GetMapping(ASSOCIATION + "collaborators/{shiftId}")
+    public ResponseEntity<List<String>> getCollaboratorsNameByShiftId(@PathVariable int shiftId) {
+        List<String> collaboratorsName = associationService.getCollaboratorsNameByShiftId(shiftId);
+        return new ResponseEntity<>(collaboratorsName, HttpStatus.OK);
+    }
 }
