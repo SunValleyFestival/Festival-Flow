@@ -30,4 +30,14 @@ export class CookiesService {
   getToken() {
     return this.cookieService.get('token');
   }
+
+  setHasViewedWelcomeBanner(hasViewed: boolean) {
+    this.cookieService.set('hasViewedWelcomeBanner', hasViewed.toString(), {
+      path: '/'
+    });
+  }
+
+  getHasViewedWelcomeBanner(): boolean {
+    return this.cookieService.get('hasViewedWelcomeBanner') === 'true';
+  }
 }

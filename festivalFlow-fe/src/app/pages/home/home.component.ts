@@ -6,8 +6,7 @@ import {LocationService} from "../../services/http/user/location.service";
 import {LocationClient} from "../../interfaces/LocationEntity";
 import {ShiftAvailabilityService} from "../../services/http/user/shift-availability.service";
 import {SanitizerService} from "../../services/utility/sanitizer.service";
-import {Collaborator} from "../../interfaces/CollaboratorEntity";
-import {CollaboratorService} from "../../services/http/user/collaborator.service";
+import {CookiesService} from "../../services/token/cookies.service";
 
 
 @Component({
@@ -21,7 +20,6 @@ export class HomeComponent implements OnInit {
   protected filteredLocations: LocationClient[] = [];
   protected currentDayId: number = 0;
   protected nameToFilter: string = '';
-  protected activeCollaborator: Collaborator = {} as Collaborator;
 
   constructor(
     private router: Router,
@@ -30,7 +28,7 @@ export class HomeComponent implements OnInit {
     private shiftAvailabilityService: ShiftAvailabilityService,
     private route: ActivatedRoute,
     private sanitizerService: SanitizerService,
-    private collaboratorService: CollaboratorService
+    private cookieService: CookiesService
   ) {
   }
 
@@ -49,18 +47,13 @@ export class HomeComponent implements OnInit {
       });
     });
 
-    this.collaboratorService.getCollaboratorFromToken().pipe().subscribe((collaborator: Collaborator) => {
-      this.activeCollaborator = collaborator;
-
-      console.log(this.activeCollaborator)
-
-      if (this.activeCollaborator.firstName == undefined || this.activeCollaborator.firstName == '') {
-        const dialog = document.getElementById('welcomeBanner') as HTMLDialogElement;
-        if (dialog) {
-          dialog.showModal();
-        }
+    if (!this.cookieService.getHasViewedWelcomeBanner()) {
+      const dialog = document.getElementById('welcomeBanner') as HTMLDialogElement;
+      if (dialog) {
+        dialog.showModal();
       }
-    });
+      this.cookieService.setHasViewedWelcomeBanner(true);
+    }
   }
 
   changeDay(value: string) {
