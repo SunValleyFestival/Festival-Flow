@@ -52,6 +52,14 @@ export class LocationDetailComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.locationService.getLocationById(params['location']).pipe().subscribe((location: any) => {
         this.selectedLocation = location
+
+        if (this.selectedLocation?.name.toLowerCase().includes('bar') && !this.selectedLocation?.name.toLowerCase().includes('preparazione')) {
+          const dialog = document.getElementById('barBanner') as HTMLDialogElement;
+          if (dialog) {
+            dialog.showModal();
+          }
+        }
+
       });
 
       this.shiftService.getShiftsByLocationId(params['location']).pipe().subscribe((shifts: any) => {
