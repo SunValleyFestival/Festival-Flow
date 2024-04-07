@@ -11,6 +11,7 @@ import {ManageUserComponent} from "./pages/admin-area/manage-user/manage-user.co
 import {CreateLocationComponent} from "./pages/admin-area/create-location/create-location.component";
 import {UserDetailComponent} from "./pages/admin-area/user-detail/user-detail.component";
 import {UserComponent} from "./pages/user/user.component";
+import {AboutComponent} from "./pages/about/about.component";
 
 const routes: Routes = [
   {path: 'user/login', component: LoginComponent},
@@ -20,6 +21,7 @@ const routes: Routes = [
   {path: 'admin/create', component: CreateLocationComponent},
   {path: 'admin', component: AdminComponent},
   {path: 'admin/:day', component: AdminComponent},
+  {path: 'user/about', component: AboutComponent},
   {path: 'user/location/:location', component: LocationDetailComponent, canActivate: [authGuard]},
   {path: 'user/user', component: UserComponent, canActivate: [authGuard]},
   {path: 'user', component: HomeComponent, canActivate: [authGuard]},
