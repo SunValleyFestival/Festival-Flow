@@ -51,13 +51,13 @@ public class LocationAdminController {
   private final JWTTokenProviderService jwtTokenProviderService;
 
   @GetMapping(ADMIN + "{id}")
-  public ResponseEntity<LocationEntity> getById(@PathVariable int id) throws ParseException {
+  public ResponseEntity<LocationEntity> getById(@PathVariable int id) {
     LocationEntity location = locationService.getById(id, false);
     return new ResponseEntity<>(location, HttpStatus.OK);
   }
 
   @GetMapping( ADMIN+ "day/{day}")
-  public ResponseEntity<List<LocationEntity>> getByDayId(@PathVariable int day) throws ParseException {
+  public ResponseEntity<List<LocationEntity>> getByDayId(@PathVariable int day) {
     List<LocationEntity> locations = locationService.getLocationsByDayId(day, false);
     return new ResponseEntity<>(locations, HttpStatus.OK);
   }

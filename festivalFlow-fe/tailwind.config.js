@@ -11,11 +11,11 @@ module.exports = {
     themes: [
       {
         dawn: {
-          primary: '#e63946',
-          secondary: '#1d3557',
-          accent: '#457b9d',
-          neutral: '#f2e9e1',
-          'base-100': '#f3f3f3',
+          primary: '#f0ce5f',
+          secondary: '#bbd853',
+          accent: '#1d4ea9',
+          neutral: '#c4d8ff',
+          'base-100': '#add7ff',
           info: '#a8dadc',
           success: '#22913c',
           warning: '#ea9d34',
