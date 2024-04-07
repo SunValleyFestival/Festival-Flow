@@ -33,7 +33,7 @@
               <p>{{ shift.shiftAvailability }} posti rimanenti</p>
               <progress class="progress progress-error w-1/2" value="{{shift.maxCollaborator - (shift.shiftAvailability)}}"
                         max="{{shift.maxCollaborator}}"></progress>
-              <button class="btn btn-outline btn-accent" (click)="showDialog(shift.id)">Iscriviti</button>
+              <button class="btn btn-primary" (click)="showDialog(shift.id)">Iscriviti</button>
             </div>
           </div>
           <hr/>
@@ -114,7 +114,7 @@
             </label>
 
             <div class="mt-2 w-full flex justify-end">
-              <button (click)="submitData(shift.id)" [disabled]="formData.invalid" class="btn" type="submit">Conferma</button>
+              <button (click)="submitData(shift.id)" [disabled]="formData.invalid" class="btn btn-secondary" type="submit">Conferma</button>
             </div>
           </form>
         </div>

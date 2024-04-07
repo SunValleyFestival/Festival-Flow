@@ -16,7 +16,7 @@
             <input (keyup)="filterLocation()" [(ngModel)]="nameToFilter" class="input input-bordered w-full max-w-xs" placeholder="Inserisci postazione..." type="text"/>
           </label>
 
-          <button (click)="filterLocation()" class="btn btn-primary">
+          <button (click)="filterLocation()" class="btn btn-secondary">
             Cerca
           </button>
 
@@ -41,7 +41,7 @@
             </div>
             <p>{{ location.description }}</p>
             <div class="card-actions justify-end">
-              <button class="btn btn-primary text-white" (click)="openDetail(location.id)">Iscriviti</button>
+              <button class="btn btn-primary" (click)="openDetail(location.id)">Iscriviti</button>
             </div>
           </div>
         </div>

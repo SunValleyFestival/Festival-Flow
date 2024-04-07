@@ -46,16 +46,17 @@
 
           <br>
 
-          <button class="btn" (click)="goToUserPage()">Gestisci Utenti</button>
+          <button class="btn btn-primary" (click)="goToUserPage()">Gestisci Utenti</button>
+
+          <br>
+
+          <button class="btn btn-primary" (click)="dialogExport.showModal()">Esporta Excel</button>
 
           <br>
 
           <button class="btn" (click)="dialogDay.showModal()">Crea Giorno</button>
           <button class="btn" (click)="goToCreateLocationPage()">Crea postazione</button>
 
-          <br>
-
-          <button class="btn" (click)="dialogExport.showModal()">Esporta Excel</button>
 
           <br>
 
@@ -94,7 +95,7 @@
             <p>{{ location.description }}</p>
             <div class="card-actions justify-end">
               <button class="btn btn-error text-white" (click)="deleteLocation(location)">Elimina</button>
-              <button class="btn btn-secondary text-white" (click)="openDetail(location)">Gestisci</button>
+              <button class="btn btn-secondary" (click)="openDetail(location)">Gestisci</button>
             </div>
           </div>
         </div>
@@ -123,7 +124,7 @@
                  placeholder="Descrizione del giorno" required type="text"/>
         </label>
         <div class="mt-2 w-full flex justify-end">
-          <button (click)="submitData()" [disabled]="buttonDisabled ||dayForm.invalid" class="btn">Conferma</button>
+          <button (click)="submitData()" [disabled]="buttonDisabled ||dayForm.invalid" class="btn btn-secondary">Conferma</button>
         </div>
       </form>
     </div>
@@ -146,7 +147,7 @@
         </label>
 
         <div class="mt-2 w-full flex justify-end">
-          <button (click)="submitEmailToExport()" [disabled]="exportForm.invalid" class="btn">Conferma</button>
+          <button (click)="submitEmailToExport()" [disabled]="exportForm.invalid" class="btn btn-secondaryn">Conferma</button>
         </div>
       </form>
     </div>
