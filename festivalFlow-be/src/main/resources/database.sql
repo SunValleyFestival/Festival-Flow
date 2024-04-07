@@ -15,7 +15,7 @@ insert into configuration (name, value) value ('lock', false);
 create table day
 (
     id          int auto_increment,
-    name        varchar(10),
+    name varchar(255),
     description varchar(200),
     primary key (id)
 );
@@ -23,12 +23,12 @@ create table day
 create table location
 (
     id          int auto_increment not null,
-    name        varchar(20)        not null,
+    name    varchar(255) not null,
     description varchar(1000),
     image  blob,
     day_id int,
     adults_only boolean not null,
-    manager varchar(20),
+    manager varchar(255),
     primary key (id),
     foreign key (day_id) references day (id)
 );
@@ -37,7 +37,7 @@ create table shift
 (
     id              int auto_increment not null,
     description     varchar(1000),
-    name            varchar(20)        not null,
+    name varchar(255) not null,
     location_id     int,
     start_time       time               not null,
     end_time         time               not null,

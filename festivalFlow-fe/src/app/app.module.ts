@@ -17,6 +17,7 @@ import {CreateLocationComponent} from "./pages/admin-area/create-location/create
 import {HttpAuthClient} from "./services/http/token/http-auth-client";
 import {UserDetailComponent} from './pages/admin-area/user-detail/user-detail.component';
 import {UserComponent} from './pages/user/user.component';
+import {AboutComponent} from './pages/about/about.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {UserComponent} from './pages/user/user.component';
     ManageUserComponent,
     CreateLocationComponent,
     UserDetailComponent,
-    UserComponent
+    UserComponent,
+    AboutComponent
   ],
     imports: [
         BrowserModule,

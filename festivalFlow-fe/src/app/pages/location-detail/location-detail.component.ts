@@ -52,6 +52,14 @@ export class LocationDetailComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.locationService.getLocationById(params['location']).pipe().subscribe((location: any) => {
         this.selectedLocation = location
+
+        if (this.selectedLocation?.name.toLowerCase().includes('bar') && !this.selectedLocation?.name.toLowerCase().includes('preparazione')) {
+          const dialog = document.getElementById('barBanner') as HTMLDialogElement;
+          if (dialog) {
+            dialog.showModal();
+          }
+        }
+
       });
 
       this.shiftService.getShiftsByLocationId(params['location']).pipe().subscribe((shifts: any) => {
@@ -71,6 +79,18 @@ export class LocationDetailComponent implements OnInit {
           this.shiftAvailabilityService.getShiftAvailability(shift.id).pipe().subscribe((shiftAvailability: any) => {
             shift.shiftAvailability = shiftAvailability.availableSlots
           });
+
+          this.associationService.getCollaboratorsNames(shift.id).pipe().subscribe((collaborators: any) => {
+            for (let collaborator of collaborators) {
+              if (!shift.collaboratorName) {
+                shift.collaboratorName = '';
+              }
+              shift.collaboratorName += collaborator + ', ';
+            }
+            if (shift.collaboratorName) {
+              shift.collaboratorName = shift.collaboratorName.substring(0, shift.collaboratorName.length - 2);
+            }
+          })
         }
       });
     });

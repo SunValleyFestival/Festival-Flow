@@ -16,7 +16,7 @@
             <input (keyup)="filterLocation()" [(ngModel)]="nameToFilter" class="input input-bordered w-full max-w-xs" placeholder="Inserisci postazione..." type="text"/>
           </label>
 
-          <button (click)="filterLocation()" class="btn btn-primary">
+          <button (click)="filterLocation()" class="btn btn-secondary">
             Cerca
           </button>
 
@@ -41,11 +41,40 @@
             </div>
             <p>{{ location.description }}</p>
             <div class="card-actions justify-end">
-              <button class="btn btn-primary text-white" (click)="openDetail(location.id)">Iscriviti</button>
+              <button class="btn btn-primary" (click)="openDetail(location.id)">Iscriviti</button>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <dialog class="modal" id="welcomeBanner">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg">Ciao!</h3>
+      <p class="py-4">
+        Welcome nel magico mondo del Sun Valley Festival e grazie per il tuo
+        contributo nella community più cool del Ticino.
+      </p>
+      <p class="py-4">Per realizzare questo fantastico
+        evento, è importante che ognuno di noi dia il suo contributo, perché l’unione fa la
+        forza.
+      </p>
+      <p class="py-4">
+        Contiamo sulla tua parola: se ci dai la tua disponibilità, ci aspettiamo che ti
+        presenterai ai turni.
+      </p>
+      <p class="py-4">
+        Con 2 turni ti offriamo un 3DayPass, Badge SVF e T-shirt
+      </p>
+      <p class="py-4">
+        Con 1 turno avrai accesso al festival gratuito per la serata in questione.
+      </p>
+      <div class="modal-action">
+        <form method="dialog">
+          <button class="btn">Chiudi</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
 </div>

@@ -6,6 +6,7 @@ import {LocationService} from "../../services/http/user/location.service";
 import {LocationClient} from "../../interfaces/LocationEntity";
 import {ShiftAvailabilityService} from "../../services/http/user/shift-availability.service";
 import {SanitizerService} from "../../services/utility/sanitizer.service";
+import {CookiesService} from "../../services/token/cookies.service";
 
 
 @Component({
@@ -26,7 +27,8 @@ export class HomeComponent implements OnInit {
     private locationService: LocationService,
     private shiftAvailabilityService: ShiftAvailabilityService,
     private route: ActivatedRoute,
-    private sanitizerService: SanitizerService
+    private sanitizerService: SanitizerService,
+    private cookieService: CookiesService
   ) {
   }
 
@@ -45,6 +47,13 @@ export class HomeComponent implements OnInit {
       });
     });
 
+    if (!this.cookieService.getHasViewedWelcomeBanner()) {
+      const dialog = document.getElementById('welcomeBanner') as HTMLDialogElement;
+      if (dialog) {
+        dialog.showModal();
+      }
+      this.cookieService.setHasViewedWelcomeBanner(true);
+    }
   }
 
   changeDay(value: string) {
