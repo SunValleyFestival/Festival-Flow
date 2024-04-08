@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ShiftService} from "../../services/http/user/shift.service";
 import {ActivatedRoute} from "@angular/router";
-import {Shift, ShiftClient} from "../../interfaces/ShiftEntity";
+import {ShiftClient} from "../../interfaces/ShiftEntity";
 import {AssociationService} from "../../services/http/user/association.service";
 import {CollaboratorService} from "../../services/http/user/collaborator.service";
 import {Collaborator} from "../../interfaces/CollaboratorEntity";
@@ -65,6 +65,7 @@ export class LocationDetailComponent implements OnInit {
       this.shiftService.getShiftsByLocationId(params['location']).pipe().subscribe((shifts: any) => {
         this.shifts = shifts;
 
+        /*
         shifts.sort((a: Shift, b: Shift) => {
           if (this.parseTime(a.startTime) < this.parseTime(b.startTime)) {
             return -1;
@@ -73,7 +74,8 @@ export class LocationDetailComponent implements OnInit {
           } else {
             return 0;
           }
-        })
+        })io
+         */
 
         for (let shift of shifts) {
           this.shiftAvailabilityService.getShiftAvailability(shift.id).pipe().subscribe((shiftAvailability: any) => {
