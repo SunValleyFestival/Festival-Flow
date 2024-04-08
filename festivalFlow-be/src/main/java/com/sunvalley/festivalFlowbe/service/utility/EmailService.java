@@ -75,7 +75,7 @@ public class EmailService {
     emailRequest.setSubject("Codice di verifica");
 
     //add message with link
-    emailRequest.setMessage("Il tuo codice di verifica é: " + code + "<br><br> Il team di SVF");
+    emailRequest.setMessage("Il tuo codice di verifica è: " + code + "<br><br> Il team SVF");
     return sendEmail(emailRequest);
 
   }
@@ -138,7 +138,7 @@ public class EmailService {
     EmailRequest emailRequest = new EmailRequest();
     emailRequest.setTo(collaboratorService.getEmailById(userId));
     emailRequest.setSubject("Info personali");
-    emailRequest.setMessage(collaboratorService.getDataForEmail(userId) + " <br> Il team di SVF!");
+    emailRequest.setMessage(collaboratorService.getDataForEmail(userId) + " <br> Il team SVF!");
     sendEmail(emailRequest);
   }
 
