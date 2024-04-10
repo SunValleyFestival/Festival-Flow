@@ -49,11 +49,7 @@
               <div class="divider divider-start"></div>
             </div>
           </div>
-          <button (click)="deleteShift(shift)" class="btn btn-circle self-end">
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-            </svg>
-          </button>
+          <button (click)="openDeleteModal(shift)" class="btn btn-error b self-end"> Elimina</button>
         </div>
       </div>
       <button class="btn btn-success" (click)="dialog.showModal()">Aggiungi Turno</button>
@@ -99,6 +95,19 @@
         <div class="mt-2 w-full flex justify-end">
           <button (click)="submitData()" [disabled]="shiftForm.invalid" class="btn btn-secondary">Conferma</button>
         </div>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+<dialog class="modal" id="deleteDialog">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Attenzione!</h3>
+    <p class="py-4">Sicuro di voler eliminare questo turno?</p>
+    <div class="modal-action">
+      <form class="flex gap-2" method="dialog">
+        <button (click)="undoDelete()" class="btn">Annulla</button>
+        <button (click)="deleteShift()" class="btn btn-error">Elimina</button>
       </form>
     </div>
   </div>

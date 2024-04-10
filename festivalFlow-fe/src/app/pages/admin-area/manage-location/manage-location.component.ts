@@ -18,6 +18,7 @@ export class ManageLocationComponent implements OnInit {
   protected locationId!: number;
   protected adminAssociations: AssociationAdmin[] = [];
   protected location!: Location;
+  protected shiftToDel: Shift | undefined;
 
 
   protected shiftForm = this.fb.group({
@@ -58,16 +59,28 @@ export class ManageLocationComponent implements OnInit {
     this.shiftService.createShift(this.getShiftFromFormData()).pipe().subscribe(() => {
       this.ngOnInit();
     });
-
   }
 
-  deleteShift(shift: Shift | undefined) {
+  openDeleteModal(shift: Shift) {
+    this.shiftToDel = shift;
+    const dialog = document.getElementById('deleteDialog') as HTMLDialogElement;
+    if (dialog) {
+      dialog.showModal();
+    }
+  }
+
+  undoDelete() {
+    this.shiftToDel = undefined;
+  }
+
+  deleteShift() {
     console.log('delete shift');
-    if (shift !== undefined) {
-      this.shiftService.deleteShift(shift).pipe().subscribe(() => {
+    if (this.shiftToDel !== undefined) {
+      this.shiftService.deleteShift(this.shiftToDel).pipe().subscribe(() => {
         window.location.reload();
       });
     }
+    this.shiftToDel = undefined;
   }
 
   rejectAssociation(collaborator_id: number | undefined, shift_id: number | undefined) {
