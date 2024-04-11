@@ -113,13 +113,15 @@ public class EmailService {
         break;
       case REJECTED:
         emailRequest.setSubject("Turno rifiutato!");
-        message = "Il tuo turno: " + shiftEntity.getName() + " alla postazione: " + shiftEntity.getLocation().getName() + " al: " + shiftEntity.getLocation().getDay().getName()
-            + "è stato rifiutato <br> Il tuo turno sarebbe iniziato alle: " + shiftEntity.getStartTime() + " e finito alle: " + shiftService.getById(shiftId).getEndTime() + " <br><br>"
+        message =
+            "Turno rifiutato!<br><br>Turno: <br>Nome: " + shiftEntity.getName() + "<br>Postazione: " + shiftEntity.getLocation().getName() + "<br>Giorno: " + shiftEntity.getLocation().getDay()
+                .getName()
+                + "<br>Inizio: " + shiftEntity.getStartTime() + "<br>Termine: " + shiftService.getById(shiftId).getEndTime() + " <br><br>"
             + collaboratorService.getDataForEmail(userId);
         break;
       case PENDING:
         emailRequest.setSubject("Turno in attesa!");
-        message = "Il tuo turno: " + shiftEntity.getName() + " alla postazione: " + shiftEntity.getLocation().getName() + " al: " + shiftEntity.getLocation().getDay().getName()
+        message = "Il tuo turno: " + shiftEntity.getName() + " della postazione: " + shiftEntity.getLocation().getName() + " di: " + shiftEntity.getLocation().getDay().getName()
             + " è in attesa di approvazione \n Il tuo turno inizia alle: " + shiftEntity.getStartTime() + " e finisce alle: " + shiftService.getById(shiftId).getEndTime() + " <br><br>"
             + collaboratorService.getDataForEmail(userId);
         break;
