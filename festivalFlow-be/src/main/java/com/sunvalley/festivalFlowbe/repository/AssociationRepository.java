@@ -26,7 +26,7 @@ public interface AssociationRepository extends JpaRepository<AssociationEntity, 
   @Query("select c from CollaboratorEntity c join AssociationEntity a on c.id = a.id.collaboratorId where a.id.shiftId = ?1")
   List<CollaboratorEntity> getCollaboratorsByShiftId(int shiftId);
 
-  @Query("SELECT a FROM AssociationEntity a WHERE a.id.collaboratorId = ?1 AND a.id.shiftId = ?2 AND a.status = 2")
+  @Query("SELECT a FROM AssociationEntity a WHERE a.id.collaboratorId = ?1 AND a.id.shiftId = ?2 AND a.status = 1")
   List<AssociationEntity> existsByCollaboratorIdAndShiftIdAndAccepted(int collaboratorId, int shiftId);
 
   @Query("SELECT c FROM CollaboratorEntity c join AssociationEntity a on c.id = a.id.collaboratorId where a.id.shiftId = ?1 and a.status != 2")
