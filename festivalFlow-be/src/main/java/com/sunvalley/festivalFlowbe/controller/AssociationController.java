@@ -56,7 +56,7 @@ public class AssociationController {
     @CrossOrigin
     @PostMapping(ASSOCIATION + "create")
     public ResponseEntity<AssociationEntity> create(@RequestBody AssociationEntity associationEntity, @RequestHeader("Authorization") String token) throws ParseException {
-        if (!jwtTokenProviderService.getUserIdFromToken(token).equals(associationEntity.getId().getCollaboratorId()) || configurationService.getByName("lock")) {
+      if (!jwtTokenProviderService.getUserIdFromToken(token).equals(associationEntity.getId().getCollaboratorId()) || configurationService.getByName("lock").equals("1")) {
             return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
         } else {
             if (associationService.getByCollaboratorIdAndShiftId(associationEntity.getId().getCollaboratorId(), associationEntity.getId().getShiftId()) != null) {

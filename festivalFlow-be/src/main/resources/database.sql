@@ -6,11 +6,15 @@ create table configuration
 (
     id int auto_increment,
     name varchar(20) not null unique,
-    value boolean not null,
+    value varchar(255) not null,
     primary key (id)
 );
 
-insert into configuration (name, value) value ('lock', false);
+insert into configuration (name, value) value ('lock', 0);
+insert into configuration (name, value0) value ('reminderScheduler', 0);
+insert into configuration (name, value) value ('emailWaitTime', 1000);
+
+values ();
 
 create table day
 (
