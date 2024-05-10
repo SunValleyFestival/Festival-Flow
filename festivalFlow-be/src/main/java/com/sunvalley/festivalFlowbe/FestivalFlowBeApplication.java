@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories("com.sunvalley.festivalFlowbe.*")
 @ComponentScan(basePackages = { "com.sunvalley.festivalFlowbe.*" })
 @EntityScan("com.sunvalley.festivalFlowbe.*")
-@EnableConfigurationProperties(ApplicationJwtConfig.class) // Aggiungi questa riga
+@EnableConfigurationProperties(ApplicationJwtConfig.class)
 public class FestivalFlowBeApplication {
 
 	public static void main(String[] args) {

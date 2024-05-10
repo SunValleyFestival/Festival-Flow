@@ -1,5 +1,6 @@
 package com.sunvalley.festivalFlowbe.service.utility;
 
+import com.sunvalley.festivalFlowbe.entity.CollaboratorEntity;
 import com.sunvalley.festivalFlowbe.entity.ShiftEntity;
 import com.sunvalley.festivalFlowbe.entity.Status;
 import com.sunvalley.festivalFlowbe.entity.utility.Attachment;
@@ -19,6 +20,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -34,8 +37,6 @@ public class EmailService {
   private String senderAddress;
   @Value("${spring.mail.properties.enabled}")
   private boolean enabled;
-  @Value("${spring.mail.properties.test-receiver}")
-  private String testReceiver;
 
   public boolean sendEmail(EmailRequest emailRequest) {
     log.info("Sending email to <{}> with subject<{}>...", emailRequest.getTo(), emailRequest.getSubject());
@@ -77,6 +78,43 @@ public class EmailService {
     //add message with link
     emailRequest.setMessage("Il tuo codice di verifica è: " + code + "<br><br> Il team SVF");
     return sendEmail(emailRequest);
+
+  }
+
+  public void sendReminder(CollaboratorEntity collaboratorEntity) {
+    EmailRequest emailRequest = new EmailRequest();
+    //attenzione cambiare in produzione
+    emailRequest.setTo(collaboratorEntity.getEmail());
+    emailRequest.setSubject("Ricordati del tuo turno!");
+    StringBuilder message= new StringBuilder();
+
+    List<ShiftEntity> shiftEntities = shiftService.getShiftByCollaboratorIdAndShiftAccepted(collaboratorEntity.getId());
+    message.append("I tuoi turni: <br>");
+    for (ShiftEntity shift : shiftEntities){
+      message.append("<br>")
+              .append("Nome: ").append(shift.getName()).append("<br>")
+              .append("Postazione: ").append(shift.getLocation().getName()).append("<br>")
+              .append("Giorno: ").append(shift.getLocation().getDay().getName()).append("<br>")
+              .append("Inizio: ").append(shift.getStartTime()).append("<br>")
+              .append("Fine: ").append(shift.getEndTime()).append("<br>");
+    }
+
+    message.append( "<br><br>Ognuno di noi qui contribuisce volontariamente per il Festival e per l'Associazione Asilo Beach: è semplicemente parte della nostra cultura e della nostra identità. Per far stare in piedi il tutto dobbiamo avere RISPETTO ed evitare comportamenti come:<br>")
+            .append("- Presentarsi in ritardo<br>")
+            .append("- Andare in backstage<br>")
+            .append("- Ubriacarsi durante il turno<br>")
+            .append("- Dare da bere gratis<br>")
+            .append("- Entrare nei bar quando non si è di turno");
+
+    message.append(" <br><br> Non dimenticate di presentarvi 20min in anticipo al vostro turno!  <br> Per domande scrivere a ")
+            .append("Jail(<a href=\"tel:0796588917\">079 658 89 17</a>) o ")
+            .append("Bryan (<a href=\"tel:0796510156\">079 651 01 56</a>).");
+
+    message.append(" <br><br> Grazie per la tua collaborazione! <br> Il team SVF!");
+    emailRequest.setMessage(message.toString());
+     log.info("sending email... to" + emailRequest.getTo());
+     log.info(emailRequest.getMessage());
+    sendEmail(emailRequest);
 
   }
 
@@ -187,12 +225,6 @@ public class EmailService {
     return helper;
   }
 
-  private void addTestReceiverIfConfigured(EmailRequest emailRequest) {
-    if (StringUtils.isNotEmpty(testReceiver)) {
-      log.info("Test receiver configured, email will be forwarded to this address: <{}>", testReceiver);
-      emailRequest.setTo(testReceiver);
-    }
-  }
 
   private void addAttachments(MimeMessageHelper helper, Attachment attachment) {
     addAttachment(helper, attachment);

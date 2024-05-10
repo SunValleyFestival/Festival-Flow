@@ -15,4 +15,7 @@ public interface ShiftRepository extends JpaRepository<ShiftEntity, Integer> {
     @Query("SELECT s FROM ShiftEntity s JOIN LocationEntity l ON s.location.id = l.id WHERE l.id=?1 and l.adultsOnly=false")
     List<ShiftEntity> findAllByLocationIdAndOnlyMinors(int locationId);
 
+    @Query("SELECT s FROM ShiftEntity s join AssociationEntity a ON s.id = a.id.shiftId JOIN CollaboratorEntity c ON c.id = a.id.collaboratorId WHERE a.status = 1 AND c.id= ?1")
+    List<ShiftEntity> findAllByCollaboratorIdAndShiftAccepted(int id);
+
 }

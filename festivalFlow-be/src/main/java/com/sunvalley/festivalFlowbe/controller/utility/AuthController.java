@@ -44,7 +44,7 @@ public class AuthController {
 
     @PostMapping("login")
     public AuthEntity login(@RequestBody AuthEntity authEntity) {
-        collaboratorService.createIfExistByEmail(authEntity);
+        collaboratorService.createIfNotExistByEmail(authEntity);
         int userId = collaboratorService.getIdByEmail(authEntity.getEmail());
         authEntity.setUserId(userId);
         log.info("userId: " + userId);

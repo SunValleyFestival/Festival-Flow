@@ -21,6 +21,10 @@ public class ShiftService {
         return shiftRepository.findAllByLocationIdAndOnlyMinors(id);
     }
 
+    public List<ShiftEntity> getShiftByCollaboratorIdAndShiftAccepted(int id){
+         return shiftRepository.findAllByCollaboratorIdAndShiftAccepted(id);
+    }
+
     public ShiftEntity getById(int id) {
         return shiftRepository.findById(id).orElse(null);
     }

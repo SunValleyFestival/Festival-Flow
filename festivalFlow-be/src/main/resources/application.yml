@@ -4,9 +4,9 @@ spring:
       ddl-auto: update
 
   datasource:
-    url: jdbc:mysql://157.90.97.105:3306/admin_festivalflowv1beta
-    username: admin_festivalflowv1beta
-    password: A93u5?nm8
+    url: jdbc:mysql://wnbgpr5.thunderhosting.cloud:3306/jdqxzldu_festiflow
+    username: jdqxzldu_kuengflow
+    password: 6i6lVg$69
 
   mail:
     host: fotoember.ch

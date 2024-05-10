@@ -24,7 +24,7 @@ public class CollaboratorService {
         return collaboratorRepository.findAll();
     }
 
-    public void createIfExistByEmail(AuthEntity authEntity) {
+    public void createIfNotExistByEmail(AuthEntity authEntity) {
         if (null == collaboratorRepository.getIdByEmail(authEntity.getEmail())) {
             CollaboratorEntity collaborator = new CollaboratorEntity();
             collaborator.setEmail(authEntity.getEmail());
