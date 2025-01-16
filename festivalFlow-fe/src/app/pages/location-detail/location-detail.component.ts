@@ -53,12 +53,14 @@ export class LocationDetailComponent implements OnInit {
       this.locationService.getLocationById(params['location']).pipe().subscribe((location: any) => {
         this.selectedLocation = location
 
+        /*
         if (this.selectedLocation?.name.toLowerCase().includes('bar') && !this.selectedLocation?.name.toLowerCase().includes('preparazione')) {
           const dialog = document.getElementById('barBanner') as HTMLDialogElement;
           if (dialog) {
             dialog.showModal();
           }
         }
+         */
 
       });
 
@@ -127,6 +129,8 @@ export class LocationDetailComponent implements OnInit {
         comment: this.formData.get('comment')?.value
       }
 
+
+      var respons1e;
       this.collaboratorService.updateCollaborator(collaborator).pipe().subscribe(() => {
         this.associationService.saveAssociation(association).subscribe((response: any) => {
 
