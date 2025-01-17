@@ -33,6 +33,7 @@ export class LocationDetailComponent implements OnInit {
     age: ['', Validators.required],
     yearsExperience: ['', Validators.required],
     town: ['', Validators.required],
+    size: ['Taglia Maglietta', Validators.required],
     comment: ['']
   });
 
@@ -168,6 +169,7 @@ export class LocationDetailComponent implements OnInit {
     this.formData.get('age')?.setValue(this.activeCollaborator?.age);
     this.formData.get('yearsExperience')?.setValue(this.activeCollaborator?.yearsExperience);
     this.formData.get('town')?.setValue(this.activeCollaborator?.town);
+    this.formData.get('size')?.setValue(this.activeCollaborator?.size);
   }
 
   getCollaboratorFromFormData(): Collaborator {
@@ -179,6 +181,7 @@ export class LocationDetailComponent implements OnInit {
       age: this.formData.get('age')?.value,
       yearsExperience: this.formData.get('yearsExperience')?.value,
       town: this.formData.get('town')?.value,
+      size: this.formData.get('size')?.value,
     };
   }
 

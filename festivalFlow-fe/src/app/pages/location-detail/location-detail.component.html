@@ -95,6 +95,18 @@
                      type="text"/>
             </label>
 
+            <div class="mt-2">
+              <select [ngClass]="{'select-error': formData.get('size')?.invalid && formData.get('size')?.touched}"
+                      class="select select-bordered w-full" formControlName="size" name="size" required>
+                <option disabled>Taglia Maglietta</option>
+                <option>S</option>
+                <option>M</option>
+                <option>L</option>
+                <option>XL</option>
+                <option>XXL</option>
+              </select>
+            </div>
+
             <label class="form-control">
               <div class="label">
                 <span class="label-text">Note:</span>
