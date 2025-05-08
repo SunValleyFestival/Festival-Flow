@@ -19,6 +19,10 @@ export class CollaboratorService {
     return this.http.get(ADMIN_BASE_URL) as Observable<Collaborator[]>;
   }
 
+  getCollaboratorsByManager(managerName: string) {
+    return this.http.get(ADMIN_BASE_URL + "manager/" + managerName) as Observable<Collaborator[]>;
+  }
+
   updateCollaboratorFromAdmin(collaborator: Collaborator) {
     return this.http.put(ADMIN_BASE_URL + "update", collaborator);
   }

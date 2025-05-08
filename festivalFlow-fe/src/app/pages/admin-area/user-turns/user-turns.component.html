@@ -1,0 +1,90 @@
+<!-- user-turns.component.html -->
+
+<!-- 1) FORM DI "LOGIN" -->
+<div *ngIf="!unlocked" class="h-screen flex items-center justify-center bg-gray-100">
+  <form (ngSubmit)="tryUnlock()" class="card w-96 bg-white p-8 shadow">
+    <h2 class="text-xl font-bold mb-6 text-center">Accesso rapido</h2>
+
+    <label class="form-control w-full mb-4">
+      <span class="label-text">Nome utente</span>
+      <input [(ngModel)]="username"
+             name="username"
+             type="text"
+             class="input input-bordered w-full"
+             required />
+    </label>
+
+    <label class="form-control w-full mb-6">
+      <span class="label-text">Password</span>
+      <input [(ngModel)]="password"
+             name="password"
+             type="password"
+             class="input input-bordered w-full"
+             required />
+    </label>
+
+    <button type="submit" class="btn btn-primary w-full">Entra</button>
+
+    <p *ngIf="error" class="text-error mt-4 text-center">{{ error }}</p>
+  </form>
+</div>
+
+<!-- 2) CONTENUTO ORIGINALE, VISIBILE SOLO DOPO LO SBLOCCO -->
+<div *ngIf="unlocked">
+  <app-header></app-header>
+  <div class="overflow-y-scroll max-w-screen overflow-x-hidden m-3">
+
+    <div class="card bg-white p-5">
+      <label class="form-control w-full">
+        <div class="label">
+          <span class="label-text">Ricerca</span>
+        </div>
+        <div class="flex justify-between">
+          <div class="flex gap-3">
+            <input (keyup)="filterFirstName()"
+                   [(ngModel)]="nameToFilter"
+                   class="input input-bordered w-full max-w-xs"
+                   placeholder="Nome Telefono..."
+                   type="text" />
+            <button (click)="filterFirstName()" class="btn btn-square">
+              <!-- (icona) -->
+              <svg class="svg-icon m-2" viewBox="0 0 20 20">
+                <path d="M18.125,15.804l-4.038-4.037c0.675-1.079..."></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </label>
+    </div>
+
+    <table class="table mt-5">
+      <thead>
+      <tr>
+        <th>Nome e Cognome</th>
+        <th>Telefono</th>
+        <th>Email</th>
+        <th>Data di nascita</th>
+        <th>Taglia</th>
+        <th>Dettagli</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let collaborator of filteredCollaborators">
+        <td>
+          <div class="flex items-center gap-3">
+            <div class="font-bold">{{ collaborator.firstName }} {{ collaborator.lastName }}</div>
+          </div>
+        </td>
+        <td>{{ collaborator.phone }}</td>
+        <td>{{ collaborator.email }}</td>
+        <td>{{ collaborator.age }}</td>
+        <td>{{ collaborator.size }}</td>
+        <th>
+          <button (click)="goToDetailPage(collaborator.id)"
+                  class="btn btn-ghost btn-xs">Dettagli</button>
+        </th>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

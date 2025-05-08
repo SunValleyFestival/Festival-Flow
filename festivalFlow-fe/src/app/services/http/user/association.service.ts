@@ -27,4 +27,8 @@ export class AssociationService {
   getCollaboratorsNames(shiftId: number) {
     return this.http.get(BASE_URL + "collaborators/" + shiftId) as Observable<string[]>;
   }
+
+  getAssociations() {
+    return this.http.get(BASE_URL) as Observable<Association[]>;
+  }
 }

@@ -109,4 +109,8 @@ public class CollaboratorService {
                 + " <br>Data di nascita: " + collaborator.getAge() + "<br>Città: " + collaborator.getTown()
                 + "<br>Taglia: " + collaborator.getSize() + "<br>Esperienza: " + collaborator.getYearsExperience();
     }
+
+    public CollaboratorEntity create(final CollaboratorEntity collaborator) {
+        return collaboratorRepository.save(collaborator);
+    }
 }

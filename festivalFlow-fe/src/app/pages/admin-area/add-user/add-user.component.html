@@ -1,0 +1,116 @@
+<div class="max-h-screen overflow-y-hidden">
+  <app-header></app-header>
+
+  <!-- Avviso di dati mancanti -->
+  <div *ngIf="dataError" class="alert alert-error" role="alert">
+    <svg class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+      <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+    </svg>
+    <span>Errore! Dati inseriti incompleti!</span>
+  </div>
+
+  <div class="max-h-screen overflow-y-scroll max-w-screen m-5 flex flex-col gap-y-5">
+    <h1 class="text-2xl">Nuovo Collaboratore</h1>
+
+    <form [formGroup]="collaboratorForm">
+      <!-- Riga 1 -->
+      <div class="flex w-full">
+        <!-- Email (obbligatoria) -->
+        <label class="form-control w-1/3 mr-10">
+          <div class="label"><span class="label-text">Email</span></div>
+          <input formControlName="email"
+                 type="email"
+                 placeholder="email@esempio.com"
+                 class="input input-bordered"
+                 [ngClass]="{'input-error': isInvalid('email')}" />
+        </label>
+
+        <!-- Nome (obbligatorio) -->
+        <label class="form-control w-1/3 mr-10">
+          <div class="label"><span class="label-text">Nome</span></div>
+          <input formControlName="firstName"
+                 type="text"
+                 placeholder="Nome"
+                 class="input input-bordered"
+                 [ngClass]="{'input-error': isInvalid('firstName')}" />
+        </label>
+
+        <!-- Cognome (obbligatorio) -->
+        <label class="form-control w-1/3">
+          <div class="label"><span class="label-text">Cognome</span></div>
+          <input formControlName="lastName"
+                 type="text"
+                 placeholder="Cognome"
+                 class="input input-bordered"
+                 [ngClass]="{'input-error': isInvalid('lastName')}" />
+        </label>
+      </div>
+
+      <!-- Riga 2 -->
+      <div class="flex w-full mt-2">
+        <label class="form-control w-1/3 mr-10">
+          <div class="label"><span class="label-text">Telefono</span></div>
+          <input formControlName="phone"
+                 type="text"
+                 placeholder="+39 333 1234567"
+                 class="input input-bordered" />
+        </label>
+
+        <label class="form-control w-1/3 mr-10">
+          <div class="label"><span class="label-text">Prefisso Nazione</span></div>
+          <input formControlName="countryCode"
+                 type="text"
+                 placeholder="IT"
+                 class="input input-bordered" />
+        </label>
+
+        <label class="form-control w-1/3">
+          <div class="label"><span class="label-text">Città</span></div>
+          <input formControlName="town"
+                 type="text"
+                 placeholder="Milano"
+                 class="input input-bordered" />
+        </label>
+      </div>
+
+      <!-- Riga 3 -->
+      <div class="flex w-full mt-2">
+        <label class="form-control w-1/3 mr-10">
+          <div class="label"><span class="label-text">Età</span></div>
+          <input formControlName="age"
+                 type="number"
+                 min="0"
+                 placeholder="25"
+                 class="input input-bordered" />
+        </label>
+
+        <label class="form-control w-1/3 mr-10">
+          <div class="label"><span class="label-text">Taglia</span></div>
+          <input formControlName="size"
+                 type="text"
+                 placeholder="M"
+                 class="input input-bordered" />
+        </label>
+
+        <label class="form-control w-1/3">
+          <div class="label"><span class="label-text">Anni di esperienza</span></div>
+          <input formControlName="yearsExperience"
+                 type="text"
+                 min="0"
+                 placeholder="3"
+                 class="input input-bordered" />
+        </label>
+      </div>
+
+      <!-- Pulsante -->
+      <div class="w-full flex justify-end mt-5">
+        <button class="btn btn-success w-1/12"
+                [disabled]="collaboratorForm.invalid"
+                (click)="submitData()">
+          Crea
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -57,4 +57,10 @@ public class LocationController {
     return collaboratorService.isMinor(jwtTokenProviderService.getUserIdFromToken(token));
   }
 
+  @GetMapping(LOCATION)
+  public ResponseEntity<List<LocationEntity>> getAll() throws ParseException {
+    List<LocationEntity> locations = locationService.getAll();
+    return new ResponseEntity<>(locations, HttpStatus.OK);
+  }
+
 }
