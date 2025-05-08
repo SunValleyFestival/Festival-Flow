@@ -1,13 +1,13 @@
 // user-turns.component.ts
 import { Component, OnInit } from '@angular/core';
-import { Collaborator } from '../../../interfaces/CollaboratorEntity';
-import { CollaboratorService } from '../../../services/http/user/collaborator.service';
+import { Collaborator } from '../../interfaces/CollaboratorEntity';
+import { CollaboratorService } from '../../services/http/user/collaborator.service';
 import { Router } from '@angular/router';
-import {LocationService} from "../../../services/http/user/location.service";
-import { Location } from '../../../interfaces/LocationEntity';
-import {Shift} from "../../../interfaces/ShiftEntity";
-import {Association} from "../../../interfaces/AssociationEntity";
-import {AssociationService} from "../../../services/http/user/association.service";
+import {LocationService} from "../../services/http/user/location.service";
+import { Location } from '../../interfaces/LocationEntity';
+import {Shift} from "../../interfaces/ShiftEntity";
+import {Association} from "../../interfaces/AssociationEntity";
+import {AssociationService} from "../../services/http/user/association.service";
 
 @Component({
   selector: 'app-user-turns',

@@ -18,7 +18,7 @@ import {HttpAuthClient} from "./services/http/token/http-auth-client";
 import {UserDetailComponent} from './pages/admin-area/user-detail/user-detail.component';
 import {UserComponent} from './pages/user/user.component';
 import {AboutComponent} from './pages/about/about.component';
-import { UserTurnsComponent } from './pages/admin-area/user-turns/user-turns.component';
+import { UserTurnsComponent } from './pages/user-turns/user-turns.component';
 import { AddUserComponent } from './pages/admin-area/add-user/add-user.component';
 
 @NgModule({

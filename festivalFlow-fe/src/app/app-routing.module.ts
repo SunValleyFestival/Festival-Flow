@@ -12,7 +12,7 @@ import {CreateLocationComponent} from "./pages/admin-area/create-location/create
 import {UserDetailComponent} from "./pages/admin-area/user-detail/user-detail.component";
 import {UserComponent} from "./pages/user/user.component";
 import {AboutComponent} from "./pages/about/about.component";
-import {UserTurnsComponent} from "./pages/admin-area/user-turns/user-turns.component";
+import {UserTurnsComponent} from "./pages/user-turns/user-turns.component";
 import {AddUserComponent} from "./pages/admin-area/add-user/add-user.component";
 
 const routes: Routes = [
@@ -21,7 +21,6 @@ const routes: Routes = [
   {path: 'admin/user', component: ManageUserComponent},
   {path: 'admin/user/:id', component: UserDetailComponent},
   {path: 'admin/create', component: CreateLocationComponent},
-  {path: 'admin/turns', component: UserTurnsComponent},
   {path: 'admin/add-user', component: AddUserComponent},
   {path: 'admin', component: AdminComponent},
   {path: 'admin/:day', component: AdminComponent},
@@ -30,6 +29,7 @@ const routes: Routes = [
   {path: 'user/user', component: UserComponent, canActivate: [authGuard]},
   {path: 'user', component: HomeComponent, canActivate: [authGuard]},
   {path: 'user/:day', component: HomeComponent, canActivate: [authGuard]},
+  {path: 'user/turns', component: UserTurnsComponent, canActivate: [authGuard]},
   {path: 'user', redirectTo: 'user', pathMatch: 'full'},
   {path: 'not-found', component: NotFoundComponent},
   {path: '', redirectTo: 'user', pathMatch: 'full'},
