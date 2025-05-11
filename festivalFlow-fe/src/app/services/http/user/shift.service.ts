@@ -22,4 +22,11 @@ export class ShiftService {
     return this.http.get(BASE_URL + shiftId);
   }
 
+  /** Ritorna TUTTI i turni disponibili (back-end permitting).
+   Se il tuo API non lo prevede, puoi caricarli per location
+   usando locationService.getAll() + getByLocationId(...) */
+  getAll() {
+    return this.http.get(BASE_URL + 'all');
+  }
+
 }

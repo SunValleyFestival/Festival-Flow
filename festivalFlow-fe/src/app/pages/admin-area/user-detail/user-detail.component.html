@@ -105,5 +105,65 @@
         <button (click)="submitData()" [disabled]="collaboratorForm.invalid" class="btn btn-secondary w-1/12 mr-10">Salva</button>
       </div>
     </form>
+
+    <!-- ================== SEZIONE TURNI ================== -->
+    <h2 class="text-xl mt-10">Turni iscritti</h2>
+
+    <table class="table w-full">
+      <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Location</th>
+        <th>Inizio</th>
+        <th>Fine</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let s of shiftsSubscribed">
+        <td>{{ s.name }}</td>
+        <td>{{ s.location?.name }}</td>
+        <td>{{ s.startTime | date:'shortTime' }}</td>
+        <td>{{ s.endTime   | date:'shortTime' }}</td>
+      </tr>
+      <tr *ngIf="shiftsSubscribed.length === 0">
+        <td colspan="4" class="italic text-center">Nessun turno assegnato</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!-- Bottone per aprire il dialog -->
+    <button class="btn btn-primary mt-4"
+            (click)="showAddShiftModal = true">
+      Aggiungi turno
+    </button>
+
+    <!-- =============== DIALOG “AGGIUNGI TURNO” =============== -->
+    <div class="modal" [ngClass]="{'modal-open': showAddShiftModal}">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg mb-4">Iscrivi a un turno</h3>
+
+        <select class="select select-bordered w-full mb-6"
+                [(ngModel)]="selectedShiftId">
+          <option [ngValue]="null" disabled selected>Seleziona un turno</option>
+          <option *ngFor="let s of availableShifts" [ngValue]="s.id">
+            {{ s.name }} – {{ s.location?.name }} ({{ s.startTime | date:'shortTime' }}-{{ s.endTime | date:'shortTime' }})
+          </option>
+        </select>
+
+        <div class="modal-action">
+          <button class="btn btn-success"
+                  [disabled]="selectedShiftId == null"
+                  (click)="subscribeToShift()">
+            Iscriviti
+          </button>
+          <button class="btn"
+                  (click)="showAddShiftModal = false">
+            Annulla
+          </button>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </div>

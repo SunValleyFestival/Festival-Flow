@@ -37,5 +37,7 @@ public class ShiftService {
         return shiftRepository.save(shift);
     }
 
-
+  public List<ShiftEntity> getAll() {
+    return shiftRepository.findAll();
+  }
 }
