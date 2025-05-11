@@ -34,6 +34,7 @@ public class AdminController {
 
     @PostMapping("export")
     public String export(@RequestBody EmailRequest emailRequest) throws IOException {
+        log.info("Exporting data and sending email to <{}>...", emailRequest.getTo());
         emailService.sendExport(emailRequest.getTo(), exportService.export());
         return null;
     }

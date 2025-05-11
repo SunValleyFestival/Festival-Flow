@@ -18,7 +18,7 @@ export class UserDetailComponent implements OnInit {
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     countryCode: ['+41'],
-    phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+    phone: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
     age: ['', Validators.required],
     size: ['', Validators.required],
     yearsExperience: ['', Validators.required],

@@ -197,13 +197,13 @@ public class ExportService {
 //                    countfourmla.setCellValue("forula");
                     h++;
                 }
-                if (firstColLocation != h) {
+                if (firstColLocation < h-1) {
                     sheetCollaboratori.addMergedRegion(new CellRangeAddress(1, 1, firstColLocation, h - 1));
                     sheetCollaboratori.addMergedRegion(new CellRangeAddress(2, 2, firstColLocation, h - 1));
                 }
 
             }
-            if (firstCol != h) {
+            if (firstCol < h-1) {
                 sheetCollaboratori.addMergedRegion(new CellRangeAddress(0, 0, firstCol, h - 1));
             }
         }
@@ -252,14 +252,14 @@ public class ExportService {
                     }
                     h++;
                 }
-                if (firstColLocation != h) {
+                if (firstColLocation < h-1) {
                     bylocationSheet.addMergedRegion(new CellRangeAddress(1, 1, firstColLocation, h - 1));
                     bylocationSheet.addMergedRegion(new CellRangeAddress(2, 2, firstColLocation, h - 1));
 
                 }
 
             }
-            if (firstCol != h) {
+            if (firstCol < h-1) {
                 bylocationSheet.addMergedRegion(new CellRangeAddress(0, 0, firstCol, h - 1));
             }
         }
