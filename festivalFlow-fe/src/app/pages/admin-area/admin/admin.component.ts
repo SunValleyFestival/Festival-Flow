@@ -96,6 +96,10 @@ export class AdminComponent implements OnInit {
     this.router.navigate(['admin/user']);
   }
 
+  goToAddUserPage() {
+    this.router.navigate(['admin/add-user']);
+  }
+
   goToCreateLocationPage() {
     this.router.navigate(['admin/create']);
   }

@@ -27,4 +27,15 @@ export class AssociationService {
   getCollaboratorsNames(shiftId: number) {
     return this.http.get(BASE_URL + "collaborators/" + shiftId) as Observable<string[]>;
   }
+
+  getAssociations() {
+    return this.http.get(BASE_URL) as Observable<Association[]>;
+  }
+
+  create(association: Association) {
+    return this.http.post(BASE_URL + 'create/user', association);
+  }
+
+  getByCollaboratorId(collaboratorId: number) {
+    return this.http.get(BASE_URL + `collaborator-id/${collaboratorId}`)};
 }

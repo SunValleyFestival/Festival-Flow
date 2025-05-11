@@ -22,4 +22,8 @@ export class LocationService {
   getLocationById(param: any): Observable<Location> {
     return this.http.get(BASE_URL + param);
   }
+
+  getLocations() {
+    return this.http.get(BASE_URL) as Observable<Location[]>;
+  }
 }

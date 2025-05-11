@@ -69,6 +69,17 @@ public class ShiftController {
 
     }
 
+    @CrossOrigin
+    @GetMapping(SHIFT + "all")
+    public ResponseEntity<List<ShiftEntity>> getAll() throws ParseException {
+        List<ShiftEntity> shifts = shiftService.getAll();
+        if (shifts.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } else {
+            return new ResponseEntity<>(shifts, HttpStatus.OK);
+        }
+    }
+
     private boolean isMinor(String token) throws ParseException {
         return collaboratorService.isMinor(jwtTokenProviderService.getUserIdFromToken(token));
     }

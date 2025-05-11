@@ -3,6 +3,11 @@ import {CollaboratorService} from "../../../services/http/admin/collaborator.ser
 import {ActivatedRoute, Router} from "@angular/router";
 import {Collaborator} from "../../../interfaces/CollaboratorEntity";
 import {FormBuilder, Validators} from "@angular/forms";
+import {Shift} from "../../../interfaces/ShiftEntity";
+import {ShiftService} from "../../../services/http/user/shift.service";
+import {AssociationService} from "../../../services/http/user/association.service";
+import {Association} from "../../../interfaces/AssociationEntity";
+import {forkJoin, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-user-detail',
@@ -12,6 +17,12 @@ import {FormBuilder, Validators} from "@angular/forms";
 export class UserDetailComponent implements OnInit {
   protected dataError: boolean = false
   protected collaborator: Collaborator = {} as Collaborator;
+
+  shiftsSubscribed: Shift[] = [];
+  availableShifts: Shift[] = [];
+  showAddShiftModal = false;
+  selectedShiftId: number | null = null;
+
 
   protected collaboratorForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -30,6 +41,8 @@ export class UserDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
+    private associationService: AssociationService,
+    private shiftService: ShiftService,
   ) {
   }
 
@@ -39,6 +52,7 @@ export class UserDetailComponent implements OnInit {
         this.collaboratorService.getCollaboratorById(params['id']).subscribe((collaborator: Collaborator) => {
           this.collaborator = collaborator as Collaborator;
           this.initForm();
+          this.loadSubscriptions();
         });
       }
     });
@@ -93,5 +107,56 @@ export class UserDetailComponent implements OnInit {
       this.collaboratorForm.get('yearsExperience')?.setValue(String(this.collaborator.yearsExperience));
       this.collaboratorForm.get('town')?.setValue(this.collaborator.town);
     }
+  }
+
+  /** 1. Carica i turni a cui l’utente è iscritto */
+  private loadSubscriptions(): void {
+    if (!this.collaborator.id) { return; }
+
+    this.associationService.getByCollaboratorId(this.collaborator.id)
+      .pipe(
+        switchMap((assocs: Association[]) => {
+          const shiftCalls = assocs.map(a => this.shiftService.getShiftById(a.id.shiftId));
+          return forkJoin(shiftCalls);   // array<Shift>
+        })
+      )
+      .subscribe(shifts => {
+        this.shiftsSubscribed = shifts;
+        this.loadAvailableShifts();      // dopo averli caricati
+      });
+  }
+
+  /** 2. Carica tutti i turni e filtra quelli ancora liberi per l’utente */
+  private loadAvailableShifts(): void {
+    this.shiftService.getAll()
+      .subscribe((all: Shift[]) => {          // ① tipizziamo all
+
+        const subscribedIds = this.shiftsSubscribed.map(s => s.id);
+
+        this.availableShifts = all.filter(
+          (s: Shift) => !subscribedIds.includes(s.id ?? -1)   // ② tipizziamo s
+        );
+      });
+  }
+
+  /** 3. Iscrive il collaboratore al turno selezionato */
+  subscribeToShift(): void {
+    if (!this.selectedShiftId || !this.collaborator.id) { return; }
+
+    const association: Association = {
+      id: {
+        collaboratorId: this.collaborator.id,
+        shiftId: this.selectedShiftId
+      }
+    };
+
+    this.associationService.create(association).subscribe({
+      next: () => {
+        this.showAddShiftModal = false;
+        this.selectedShiftId = null;
+        this.loadSubscriptions();     // ricarica liste
+      },
+      error: () => { this.dataError = true; }
+    });
   }
 }
