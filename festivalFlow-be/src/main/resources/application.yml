@@ -1,10 +1,13 @@
 spring:
   jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
 
   datasource:
-    url: jdbc:mysql://157.90.97.105:3306/admin_festivalflowv1beta
+    url: jdbc:mysql://157.90.97.105:3306/admin_festivalflowv1beta?useSSL=false&serverTimezone=UTC
     username: admin_festivalflowv1beta
     password: A93u5?nm8
 
@@ -19,6 +22,7 @@ spring:
         health:
           mail:
             enabled: false # health check at startup
+      test-receiver: info@sunvalleyfestival.com
       mail:
         smtp:
           auth: true
