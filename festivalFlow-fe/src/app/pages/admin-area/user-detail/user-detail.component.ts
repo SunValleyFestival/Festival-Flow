@@ -7,7 +7,7 @@ import {Shift} from "../../../interfaces/ShiftEntity";
 import {ShiftService} from "../../../services/http/user/shift.service";
 import {AssociationService} from "../../../services/http/user/association.service";
 import {Association} from "../../../interfaces/AssociationEntity";
-import {forkJoin, switchMap} from "rxjs";
+import {forkJoin, of, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-user-detail',
@@ -111,18 +111,31 @@ export class UserDetailComponent implements OnInit {
 
   /** 1. Carica i turni a cui l’utente è iscritto */
   private loadSubscriptions(): void {
-    if (!this.collaborator.id) { return; }
+    if (!this.collaborator.id) {
+      console.warn('Collaborator id non impostato, skip loading.');
+      return;
+    }
 
     this.associationService.getByCollaboratorId(this.collaborator.id)
       .pipe(
         switchMap((assocs: Association[]) => {
+          if (assocs.length === 0) {
+            // Nessuna associazione: emetti subito un array vuoto
+            return of([] as Shift[]);
+          }
+          // Ci sono associazioni: chiama forkJoin sui singoli getShiftById()
           const shiftCalls = assocs.map(a => this.shiftService.getShiftById(a.id.shiftId));
-          return forkJoin(shiftCalls);   // array<Shift>
+          return forkJoin(shiftCalls);
         })
       )
-      .subscribe(shifts => {
-        this.shiftsSubscribed = shifts;
-        this.loadAvailableShifts();      // dopo averli caricati
+      .subscribe({
+        next: shifts => {
+          this.shiftsSubscribed = shifts;
+          this.loadAvailableShifts();
+        },
+        error: err => {
+          console.error('Errore caricando subscription o shift:', err);
+        }
       });
   }
 
@@ -146,8 +159,9 @@ export class UserDetailComponent implements OnInit {
     const association: Association = {
       id: {
         collaboratorId: this.collaborator.id,
-        shiftId: this.selectedShiftId
-      }
+        shiftId: this.selectedShiftId,
+      },
+      comment: ""
     };
 
     this.associationService.create(association).subscribe({

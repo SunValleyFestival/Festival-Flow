@@ -51,9 +51,7 @@ export class AddUserComponent implements OnInit {
 
     this.collaboratorService.createCollaborator(collaborator)
       .subscribe((created: Collaborator) => {     // <--  tipo esplicito
-        if (created.id != null) {
-          this.router.navigate(['admin/user']);
-        }
+        this.router.navigate(['admin/user']);
       });
 
   }

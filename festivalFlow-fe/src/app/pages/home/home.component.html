@@ -26,7 +26,7 @@
     <div class="flex-grow lg:order-1">
       <div class="flex flex-col items-center md:overflow-scroll h-mobile" style="">
         <div *ngFor="let location of filteredLocations; index as i" class="card lg:card-side bg-white text-black shadow md:w-2/3 my-5 mx-5">
-          <figure><img [src]="sanitizeImageUrl(location.image)" alt="Album"/></figure>
+          <figure *ngIf="location.image"><img [src]="sanitizeImageUrl(location.image)" alt="Album"/></figure>
           <div class="card-body">
             <h2 class="card-title">{{ location.name }}</h2>
             <div class="join gap-2">
@@ -35,8 +35,8 @@
                 <span>{{ location.shiftAvailability }} Rimanenti</span>
               </div>
               <div *ngIf="location.manager" class="alert bg-gray-50 border-accent w-fit" role="alert">
-                <img alt="group" src="../../../assets/icons/manager.svg">
-                <span>{{ location.manager }}</span>
+                <a href="/user/turns"><img alt="group" src="../../../assets/icons/manager.svg"></a>
+                <a href="/user/turns"><span>{{ location.manager }}</span></a>
               </div>
             </div>
             <p>{{ location.description }}</p>
@@ -48,33 +48,4 @@
       </div>
     </div>
   </div>
-
-  <dialog class="modal" id="welcomeBanner">
-    <div class="modal-box">
-      <h3 class="font-bold text-lg">Ciao!</h3>
-      <p class="py-4">
-        Welcome nel magico mondo del Sun Valley Festival e grazie per il tuo
-        contributo nella community più cool del Ticino.
-      </p>
-      <p class="py-4">Per realizzare questo fantastico
-        evento, è importante che ognuno di noi dia il suo contributo, perché l’unione fa la
-        forza.
-      </p>
-      <p class="py-4">
-        Contiamo sulla tua parola: se ci dai la tua disponibilità, ci aspettiamo che ti
-        presenterai ai turni.
-      </p>
-      <p class="py-4">
-        Con 2 turni ti offriamo un 3DayPass, Badge SVF e T-shirt
-      </p>
-      <p class="py-4">
-        Con 1 turno avrai accesso al festival gratuito per la serata in questione.
-      </p>
-      <div class="modal-action">
-        <form method="dialog">
-          <button class="btn">Chiudi</button>
-        </form>
-      </div>
-    </div>
-  </dialog>
 </div>

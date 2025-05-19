@@ -114,16 +114,12 @@
       <tr>
         <th>Nome</th>
         <th>Location</th>
-        <th>Inizio</th>
-        <th>Fine</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let s of shiftsSubscribed">
-        <td>{{ s.name }}</td>
-        <td>{{ s.location?.name }}</td>
-        <td>{{ s.startTime | date:'shortTime' }}</td>
-        <td>{{ s.endTime   | date:'shortTime' }}</td>
+        <td>{{ s.description }}</td>
+        <td>{{ s.location?.description }}</td>
       </tr>
       <tr *ngIf="shiftsSubscribed.length === 0">
         <td colspan="4" class="italic text-center">Nessun turno assegnato</td>
@@ -146,7 +142,7 @@
                 [(ngModel)]="selectedShiftId">
           <option [ngValue]="null" disabled selected>Seleziona un turno</option>
           <option *ngFor="let s of availableShifts" [ngValue]="s.id">
-            {{ s.name }} – {{ s.location?.name }} ({{ s.startTime | date:'shortTime' }}-{{ s.endTime | date:'shortTime' }})
+            {{ s.location?.name }} – {{ s.description }} )
           </option>
         </select>
 
